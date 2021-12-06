@@ -6,21 +6,75 @@ Dates: Jan 10, 2022-May 6, 2022
 
 Meeting time/place: TuTh 8:00AM - 9:15AM, SBS-Raul H. Castro, Rm 233.
 
-Syllabus: [[file:CS499-Spring2020-Deep-Learning-Syllabus.pdf][PDF]].
+Syllabus: [[https://docs.google.com/document/d/1y3D9J7Fxe9k6g7h3-JREEvRhmSxLLaOmPtfbn137r_4/edit?usp=sharing][Google Doc]].
 
-** Textbook
+** Textbooks
 
+These provide background/theory about the algorithms we study in this class.
+   
 The required readings will be from [[https://www.deeplearningbook.org/][Deep Learning]] by Goodfellow, et
 al., which is freely available online.
 
+You should have some knowledge of computational complexity (big O
+notation), so please read the following if you need to review:
+- The [[https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-4.html#%25_toc_%25_sec_1.2.3][SICP]] book, 1.2.3 "Orders of Growth," has a brief description in
+  general terms (not specific to machine learning).
+- The [[https://arizona-nau.primo.exlibrisgroup.com/discovery/fulldisplay?vid=01NAU_INST:01NAU&search_scope=MyInst_and_CI&tab=Everything&docid=alma991007591689703842&lang=en&context=L&adaptor=Local%2520Search%2520Engine&query=any,contains,algorithms%2520introduction&offset=0&virtualBrowse=true][CLRS]] book has a more detailed description in Chapter 3, "Growth
+  of Functions" (not specific to machine learning).
+
 ** Screencasts
 
-To learn basic R programming skills which will be highly relevant to
-your coding projects in this class, please watch [[https://www.youtube.com/playlist?list=PLwc48KSH3D1M78ilQi35KPe2GHa7B_Rme][these screencasts]] and
-follow along (pause the videos, type the code, then and execute the
-code on your own computer).
+TODO? To learn basic python programming skills which will be highly
+relevant to your coding projects in this class, please watch [[https://www.youtube.com/playlist?list=PLwc48KSH3D1M78ilQi35KPe2GHa7B_Rme][these
+screencasts]] and follow along (pause the videos, type the code, then
+and execute the code on your own computer).
 
-** Lectures
+** Weekly schedule of Homeworks and reading
+
+To do the homeworks you need to use python; it is recommended to
+install/use [[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html][anaconda/miniconda]], with either
+- one of the [[https://docs.anaconda.com/anaconda/user-guide/tasks/integration/index.html][IDEs described on the anaconda docs]], (for beginners,
+  choose one that you have used in the past), or
+- [[https://www.emacswiki.org/emacs/PythonProgrammingInEmacs][Elpy/LspMode]] IDE (for students who already know/use emacs, or who
+  want to learn, [[http://emacsrocks.com/][here are some very informative "emacs rocks"
+  screencasts which show the power of emacs]]).
+
+
+Your content and responses to each homework question will be graded as
+follows
+- Full credit for figures which show correct results, along with code
+  which seems correct and is of high quality.
+- [[https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?usp=sharing][This General Usage Rubric]] will be used to grade the code
+  quality/style/efficiency in each of your homeworks, -5 for each
+  violation of these good coding rules.
+- Some code and result figures, but clearly incorrect, -5 to -10.
+- Missing code or figure, -10 to -20.
+- Missing code and figure, -20 to -40.
+
+Homework topics and readings for each week are listed below. The date
+of the Monday of each week is written. Each homework is due Friday of
+that week, 11:59PM.
+
+- Jan 10, Homework week 1: installing software, reading CSV, data
+  visualization.
+- Jan 17, MLK Holiday, Homework week 2: 
+- Jan 24, Homework week 3:
+- Jan 31, Homework week 4: 
+- Feb 7, week 5 review and exam, [[file:homeworks/Rpkg.org][coding project 1 due]].
+- Feb 14, Homework week 6: 
+- Feb 21, Homework week 7: 
+- Feb 28, Homework week 8: 
+- Mar 7, week 9 review and exam, [[file:homeworks/Rpkg.org][coding project 2 due]].
+- Mar 14, spring break (no homework).
+- Mar 21, Homework week 10:
+- Mar 28, Homework week 11: 
+- Apr 4, Homework week 12: 
+- Apr 11, Homework week 13:
+- Apr 18, Homework week 14:
+- Apr 25, reading week review and exam, [[file:homeworks/Rpkg.org][coding project 3 due]].
+- Final exam week, May 2-5. 
+
+Old materials TODO update.
 
 - Jan 14: [[file:2020-01-14-applications/slides.pdf]]
 - Feb 4: [[file:2020-02-03-capacity/README.org][visualizing underfitting/overfitting in a 1d regression model
@@ -41,36 +95,79 @@ code on your own computer).
 - Apr 10: [[https://www.youtube.com/playlist?list=PLwc48KSH3D1O1iWRXid7CsiXI9gO9lS4V][R keras screencasts for convolutional neural networks]]
 - TODO: [[file:2019-04-04-neural-network-classification/README.org][Data visualizations of neural network training/validation error curves]].
 
-** Coding projects
-
-- [[file:projects/1.org][1: gradient descent algorithm for logistic regression]], due Fri Feb 7
-  @ 11:59PM. (deadline for revisions: email me your revised PDF along
-  with a list of the rubric items that you would like me to
-  re-consider, by Fri Feb 14 @ 11:59PM)
-- [[file:projects/2.org][2: K-fold cross-validation]], due Fri Feb 21 @ 11:59PM.
-- [[file:projects/3.org][3: stochastic gradient descent for neural network with one hidden layer]], due Fri Mar 6 @ 11:59PM.
-- [[file:projects/4.org][4: tensorflow/keras for neural networks with one hidden layer]], due Fri Apr 3 @ 11:59PM.
-- [[file:projects/5.org][5: tensorflow/keras for demonstrating regularization parameters of neural networks]], due Fri Apr 17 @ 11:59PM.
-- [[file:projects/6.org][6: tensorflow/keras convolutional neural networks for image classification]], due Fri May 1 @ 11:59PM.
-
 ** How to ace this class
 
-Before class you should read the suggested book chapters. When you
-read, write a summary in your own words of every paragraph or
-section. Also write questions that you have during your reading so you
-can ask in class (if related to the lecture topic) or in office hours.
+Before class you should prepare by doing the suggested
+readings/videos. When you do that, write a summary in your own words
+of every section. Also write questions that you have during your
+reading so you can ask in class or office hours.
 
-During class, instead of copying what I write on the whiteboard, I
-would suggest to try to write what you understood in your own
+During class, take notes by writing what you understood in your own
 words. Also I would suggest to ask questions in class as soon as you
 need clarification.
 
 After class, you should review your notes with one of your classmates
 (ask one of the students who seem to be correctly answering a lot of
-questions). Ask each other questions and try to teach/summarize some
-of the material with each other -- that is one of the best ways to
-learn.
+questions in class). Ask each other questions and try to
+teach/summarize some of the material with each other -- that is one of
+the best ways to learn.
 
-Finally after doing all of the above, please drop by my office hours (Tuesdays and Wednesdays, 3-4pm, 90-210),
-or email me to schedule a meeting.
+Finally after doing all of the above, please come to office hours (see
+syllabus), or email me to schedule a meeting.
 
+** Reading links
+
+These documentation pages provide practical advice about how to write
+the code necessary for the homeworks.
+
+Python documentation and introductory tutorials:
+- numpy is a python module for multi-dimensional arrays (vectors,
+  matrices, etc). It is useful for storing numeric data sets and doing
+  various computations in learning algorithms (vectorized functions,
+  matrix multiplication, etc). [[https://numpy.org/doc/stable/user/absolute_beginners.html][NumPy: the absolute basics for
+  beginners]], [[https://www.w3schools.com/python/numpy/numpy_intro.asp][W3Schools]], [[https://www.tutorialspoint.com/numpy/numpy_introduction.htm][TutorialsPoint]].
+- pandas is a python module for data reading and manipulation. Whereas
+  every column in a numpy matrix is the same type (typically double),
+  columns in a pandas DataFrame can be different types (string, int,
+  etc). [[https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html][10 minutes to pandas]], [[https://www.w3schools.com/python/pandas/pandas_intro.asp][W3Schools]], [[https://www.tutorialspoint.com/python_pandas/python_pandas_introduction.htm][TutorialsPoint]].
+- [[https://pyjanitor-devs.github.io/pyjanitor/][janitor]] is a python module for data cleaning and reshaping. It is
+  useful for getting data into the right format for learning or
+  visualization.
+- plotnine is a python module for data visualization based on the
+  grammar of graphics, similar to ggplot2 in R: [[https://plotnine.readthedocs.io/en/stable/index.html][docs]], [[tutorials]], [[https://tdhock.github.io/blog/2021/data-reshape-viz-update/][My
+  2021 blog post comparing R and python libraries for data reshaping
+  and visualization]].
+- Scikit-learn is a python module which implements various standard
+  machine learning algorithms. [[https://scikit-learn.org/stable/user_guide.html][User guide]]: [[https://scikit-learn.org/stable/modules/neighbors.html][Nearest Neighbors]], [[https://scikit-learn.org/stable/modules/linear_model.html][Linear
+  Models]].
+- torch is a python module which is similar to numpy, but with two key
+  differences which are useful for machine learning: (1) makes it easy
+  to use automatic differentiation, and (2) computations can be easily
+  performed on GPU for increased speed. [[https://pytorch.org/tutorials/beginner/nlp/pytorch_tutorial.html][Introduction to pytorch
+  tutorial]].
+
+Guides to writing C/C++ code.
+- [[https://webhome.phy.duke.edu/~rgb/General/c_book/c_book/][The C book by Mike Banahan, Declan Brady and Mark Doran]].
+- [[https://github.com/tdhock/when-c][When and how to write low-level (C/C++) instead of high-level (R/Python) code?]]
+
+** General Questions and Answers (FAQ)
+
+- Are there any materials online from previous versions of this class
+  which may be useful? Here are some video screencasts from Spring
+  2020 (R/keras was used instead of python/torch).
+  - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK][Neural networks using keras in R]].
+  - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1MvTf_JOI00_eIPcoeYMM_o][Number of hidden units is a regularization parameter]].
+  - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1O1iWRXid7CsiXI9gO9lS4V][Convolutional Neural Networks in R]].
+- Can I copy/modify the code demos from in class and from your screencast videos? 
+  Yes you can copy/modify these code demos for your homework, since
+  they are a part of the class material. 
+  But in general, copying without giving 
+  a clear citation of your source is plagiarism
+  (and will be pursued as an academic integrity violation).
+- Can I collaborate with my classmates on the homework? 
+  Yes, as long as your share ideas and not code/results. 
+  More specifically, homeworks are individual assignments which should be your own work, 
+  so it is strictly forbidden to copy code/results from classmates or internet sources.
+  However it is encouraged to discuss ideas related to lectures and 
+  homework solutions with classmates.
+  

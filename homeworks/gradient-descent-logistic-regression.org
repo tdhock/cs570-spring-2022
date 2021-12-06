@@ -1,0 +1,178 @@
+Gradient descent for logistic regression
+
+In this project your goal is to implement the gradient descent
+algorithm for learning a logistic regression model, and then use it
+with early stopping regularization to make predictions on several real
+data sets.
+
+If you have never done any plotting before, I would recommend reading
+[[https://r4ds.had.co.nz/data-visualisation.html][this tutorial]] and using the ggplot2 package in R. Or [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch02-ggplot2.html][this user manual]]
+for the animint2 package, which has basically the same syntax (but is
+for interactive plots).
+
+Please use [[file:1.R][this demo script]] for inspiration but do not copy/paste code
+from it (that would be plagiarism).
+
+*** Algorithm/function: GradientDescent
+The goal of this exercise is to code the gradient descent algorithm
+(also known as steepest descent) which iteratively computes linear
+model parameters that minimize the average logistic loss over the
+training data.
+- (10 points) You should code a function GradientDescent which should take as
+  input arguments:
+  - X, a matrix of numeric inputs (one row for each observation, one column
+    for each feature).
+  - y, a vector of binary outputs (the corresponding label for each
+    observation, either 0 or 1).
+  - stepSize, also known as learning rate (epsilon parameter in
+    Algorithm 4.1 in the book), a positive real number that controls
+    how far to step in the negative gradient direction. (try a value between 0 and 1, like 0.1, then either increase or decrease until you get the desired result = train error always decreasing, validation loss decreasing and then increasing as the number of iterations increases)
+  - maxIterations, positive integer that controls how many steps to
+    take. 
+- (5 points) The function should declare a variable called
+  weightVector which is initialized to the zero vector (one element
+  for each feature). 
+  This is the parameter vector (theta) which is used to obtain predicted 
+  values along with an input x vector (by taking the dot product).
+- (5 points) There should be a variable called weightMatrix of real
+  numbers (number of rows = number of input features, number of
+  columns = maxIterations).
+- (15 points) The algorithm should include a for loop over iterations
+  (from 1 to maxIterations). During each iteration you should
+  - first compute the gradient given the current weightVector (make
+    sure that the gradient is of the mean logistic loss over all
+    training data),
+  - then update weightVector by taking a step in the negative gradient
+    direction.
+  - then store the resulting weightVector in the corresponding column
+    of weightMatrix.
+- (5 points) At the end of the algorithm you should return
+  weightMatrix.
+
+*** Experiments/application: run your code on the following data sets
+- Data sets from [[https://web.stanford.edu/~hastie/ElemStatLearn/data.html]]: use [[https://cloud.r-project.org/web/packages/data.table/vignettes/datatable-intro.html][data.table::fread]] to read these CSV files into R:
+  - spam:  output is last column (spam).
+  - SAheart:  output is last column (chd), make sure to convert the famhist column to a binary indicator (0=Absent, 1=Present).
+  - zip.train: output is first column. (ignore
+    classes other than 0 and 1)
+- For each data set:
+  - First scale the inputs (each column should have mean 0 and
+    variance 1). You can do this by subtracting away the mean and then
+    dividing by the standard deviation of each column (or just use a
+    standard function like scale in R).
+  - (10 points) Second, randomly split the data into 60% train, 20%
+    validation, 20% test. Make sure there is no overlap between any of the sets,
+    i.e. each data point is used in exactly one of the sets.
+    In R you can use the following code
+  #+BEGIN_SRC 
+    m <- 10;sample(rep(c("train", "validation", "test"), m*c(0.6, 0.2, 0.2)))
+  #+END_SRC
+    In your report please include a table of
+    counts with a row for each set (train/validation/test) and a
+    column for each class (0/1). In the text write a sentence which
+    explains what class is most frequent in the train set, as that
+    will be used as a baseline prediction. e.g. for zip.train below
+    the most frequent class in the train set is 0 (digit 0).
+  #+BEGIN_SRC 
+            y
+set            0   1
+  test       254 191
+  train      709 614
+  validation 231 200
+  #+END_SRC
+  - (5 points) Use GradientDescent on train data to compute a learned
+    weightMatrix. In your text write what values you used for stepSize
+    and maxIterations (they can be different for each data set).
+  - Multiply train and validation inputs with weightMatrix to obtain a
+    matrix of predicted values (number of rows = number of
+    observations, number of columns = number of iterations).
+  - (10 points) Plot error rate (percent incorrectly predicted labels) and
+    logistic loss as a function of number of iterations, separately
+    for each set (black line for train, red line for validation). 
+    Make sure the axes labels and legend text labels are large enough
+    (about the same size as the other text in your report). For
+    example
+  - [[file:../2019-04-04-neural-network-classification/figure-nnet-spam.png]]
+  - (5 points) Make sure to include a legend or direct labels so the
+    reader knows what the different colors mean.
+  - (5 points) The logistic loss on the train set should always go
+    down, whereas on the validation set it should go down and then go
+    back up after a certain number of iterations. If they do not, then
+    try decreasing the step size and increasing the number of
+    iterations. This is where the term "early stopping regularization"
+    comes from: rather than take all of the steps required to minimize
+    the train loss, it is actually better in terms of validation error
+    to stop at a smaller number of steps.
+  - (5 points) Plot a point to highlight the minimum value of each of
+    the two curves.
+  - (5 points) What is the number of iterations that minimizes the
+    validation error? Either write the number in your text and/or on
+    the figure. The corresponding column of weightMatrix is the one
+    that you should use on the test data.
+  - (10 points) Make a table of error rates 
+    (percent incorrectly predicted labels) with three rows
+    (train/validation/test sets) and two columns (logistic regression
+    and baseline). For the logistic regression (first column), use the
+    weight vector that minimizes the validation error to make
+    predictions on the whole data set, then report the error rates for
+    each set. For the baseline (second column), always predict the
+    class label that is most frequent in the train set, then report
+    the error rates for each set.
+  - (10 points) For each model (logistic regression and baseline),
+    compute the [[https://en.wikipedia.org/wiki/Receiver_operating_characteristic][Receiver Operating Characteristic (ROC)]] curve of the
+    predictions with respect to the test set. Please do NOT implement
+    the ROC curve computation yourself; instead please use an existing
+    package, [[https://github.com/tdhock/WeightedROC#comparison-with-other-r-packages-implementing-roc-curve-computation][here is a list of R packages that implement ROC curve
+    computation]]. 
+    For example you can use =?WeightedROC::WeightedROC= to get help on
+    how to use that function.
+    Plot each model as a different colored curve in ROC
+    space (y axis for TPR = True Positive Rate, x axis for FPR = False
+    Positive Rate), e.g. logistic regression in blue, baseline in
+    violet. Make sure to include a legend so the reader can tell what
+    color corresponds to what model. 
+    Make sure the axes labels and legend text labels are large enough
+    (about the same size as the other text in your report).
+    For example
+  - [[file:1-ROC.PNG]]
+  - (5 points) For each model plot a circle/dot in the same color that
+    shows the FPR/TPR of the predictions at the default threshold.
+
+*** Grading rubric (out of 250 points)
+
+Your final grade for this project will be computed by multiplying the
+percentage from your [[file:group-evals.org][group evaluations]] with your group's total score
+from the rubric below.
+
+Your group should submit a PDF on BBLearn. 
+- The first thing in the PDF should be your names and student ID's
+  (e.g. th798) and a link to your source code in a public repo
+  (e.g. github).
+- 70 points as explained above for figures/tables/text for each data
+  set (x3 = 210 points).
+- 40 points for source code as explained above. 
+
+Extra credit: 
+- 10 points if your github repo includes a README.org (or README.md
+  etc) file with a link to the source code of your GradientDescent
+  function, and an explanation about how to run it on the data sets.
+- 10 points if, instead of writing code that is specific to each data
+  set, you write a for loop over data sets and parameter values, and
+  include a link to this code in your README. For example you could
+  create a data/ directory with sub-directories data/spam/ etc, each
+  with data/spam/X.csv, data/spam/y.csv, data/spam/parameters.csv
+  (which would store a stepSize and maxIterations value to use for
+  each data set), then your code can loop over these data/
+  sub-directories, and create the corresponding tables/figures for
+  each one.
+- 10 points if you do the random train/validation/test split three
+  times for each data set. Each split yields a different learned
+  model, a different test set, and thus a different ROC curve. Plot
+  all three ROC curves in the same color, on the same axes, so the
+  reader can see if the variance, and see if there is any significant
+  difference between your learned model and the baseline.
+  
+FAQ
+- My code is too slow! If your code is too slow then I would suggest trying to optimize it -- for example in R you can replace for loops with matrix-vector operations to get substantial speedups.
+- What values should I use for the number of iterations and step size? I can't tell you what values to use, but you need to try several values until you see the train log loss always going down, and the validation should go down and then up again. (you can use different values for each data set)
+- How to use function X in package Y of language Z? Read the manual! For example in R you can type =?pkg::fun= to get help on any function =fun= from any package =pkg=.
