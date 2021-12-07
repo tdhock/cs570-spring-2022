@@ -1,0 +1,33 @@
+After downloading conda you can install all packages for this class,
+same versions that I use, via:
+
+#+begin_src shell-script
+conda env create -f environment.yml
+#+end_src
+
+That should create a new "cs570s22" python environment which you can
+activate on the command line via
+
+#+begin_src shell-script
+conda activate cs570s22
+#+end_src
+
+After activation, that environment will be used for new python
+processes, looking for python modules, etc.
+
+To tell emacs where my conda environments are, I put the following in
+my ~/.emacs file:
+
+#+begin_src elisp
+(setenv "WORKON_HOME" "/home/tdhock/.local/share/r-miniconda/envs")
+(pyvenv-mode 1)
+#+end_src
+
+In emacs we don't "activate" but the analogous command is to "work on"
+a conda environment. When editing a python file I can type M-x RET
+pyvenv-workon RET cs570s22 RET, then C-c C-z to get an interactive
+shell, then C-c C-y C-e to send line and step, etc. See
+https://elpy.readthedocs.io/en/latest/ide.html for more elpy key
+commands (sending code from python code files to the interactive
+shell), and https://realpython.com/emacs-the-best-python-editor/ for a
+nice tutorial about emacs and python.

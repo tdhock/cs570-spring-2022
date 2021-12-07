@@ -117,8 +117,9 @@ syllabus), or email me to schedule a meeting.
 
 ** Reading links
 
-These documentation pages provide practical advice about how to write
-the code necessary for the homeworks.
+The links below provide practical advice about how to write the code
+necessary for the homeworks, and please read [[file:installation.org][my instructions to
+install all of the necessary software]].
 
 Python documentation and introductory tutorials:
 - numpy is a python module for multi-dimensional arrays (vectors,
