@@ -1,4 +1,4 @@
-After downloading conda you can install all packages for this class,
+After [[https://docs.conda.io/en/latest/miniconda.html][downloading conda]] you can install all packages for this class,
 same versions that I use, via:
 
 #+begin_src shell-script
@@ -21,11 +21,16 @@ my ~/.emacs file:
 #+begin_src elisp
 (setenv "WORKON_HOME" "/home/tdhock/.local/share/r-miniconda/envs")
 (pyvenv-mode 1)
+(elpy-enable)
+(setq conda-anaconda-home (expand-file-name "~/miniconda3"))
+(setq conda-env-home-directory (expand-file-name "~/miniconda3"))
 #+end_src
 
-In emacs we don't "activate" but the analogous command is to "work on"
-a conda environment. When editing a python file I can type M-x RET
-pyvenv-workon RET cs570s22 RET, then C-c C-z to get an interactive
+In emacs When editing a python file we can "activate" or "work on" the
+conda environment via either
+- M-x conda-env-activate RET cs570s22 RET
+- M-x RET pyvenv-workon RET cs570s22 RET
+then C-c C-z to get an interactive
 shell, then C-c C-y C-e to send line and step, etc. See
 https://elpy.readthedocs.io/en/latest/ide.html for more elpy key
 commands (sending code from python code files to the interactive
