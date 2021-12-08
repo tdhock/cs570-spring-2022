@@ -5,8 +5,15 @@ same versions that I use, via:
 conda env create -f environment.yml
 #+end_src
 
-That should create a new "cs570s22" python environment which you can
-activate on the command line via
+That should create a new "cs570s22" python environment.
+Before you activate an environment, you need to setup your shell for the first time.
+
+#+begin_src shell-script
+conda init bash
+#+end_src
+
+That should put some code in your ~/.bash_profile, I had to copy it to my ~/.bashrc to get it to work on my setup (git bash in emacs shell on windows). After restarting your shell you should see a (base) prefix in your prompt, which indicates the name of the currently activated conda environment.
+You can activate another environment via
 
 #+begin_src shell-script
 conda activate cs570s22
@@ -15,12 +22,14 @@ conda activate cs570s22
 After activation, that environment will be used for new python
 processes, looking for python modules, etc.
 
+To get python support in emacs I had to install emacs packages pyvenv and elpy, via M-x package-list-packages.
 To tell emacs where my conda environments are, I put the following in
 my ~/.emacs file:
 
 #+begin_src elisp
 (setenv "WORKON_HOME" "/home/tdhock/.local/share/r-miniconda/envs")
 (pyvenv-mode 1)
+(elpy-enable)
 #+end_src
 
 In emacs we don't "activate" but the analogous command is to "work on"
