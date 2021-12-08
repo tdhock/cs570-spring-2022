@@ -22,7 +22,7 @@ conda activate cs570s22
 After activation, that environment will be used for new python
 processes, looking for python modules, etc.
 
-To get python support in emacs I had to install emacs packages pyvenv and elpy, via M-x package-list-packages.
+To get python support in emacs I had to install emacs packages (pyvenv,elpy,conda) via M-x package-list-packages.
 To tell emacs where my conda environments are, I put the following in
 my ~/.emacs file:
 
