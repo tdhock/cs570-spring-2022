@@ -1,3 +1,4 @@
+zip.test.gz
 *~
 auto
 *.aux
@@ -6,3 +7,4 @@ auto
 *.out
 *.snm
 *.toc
+*solution.py

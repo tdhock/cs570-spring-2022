@@ -55,20 +55,21 @@ Homework topics and readings for each week are listed below. The date
 of the Monday of each week is written. Each homework is due Friday of
 that week, 11:59PM.
 
-- Jan 10, Homework week 1: installing software, reading CSV, data
+- Jan 10, [[file:homeworks/01-installation.org][Homework week 1]]: installing software, reading CSV, data
   visualization.
-- Jan 17, MLK Holiday, Homework week 2: 
-- Jan 24, Homework week 3:
-- Jan 31, Homework week 4: 
+  - [[file:installation.org][Installation instructions]], [[file:slides/01-intro-slides/slides.pdf][slides]].
+- Jan 17, Homework week 2: k-fold cross-validation, nearest neighbors and linear models.
+- Jan 24, Homework week 3: nearest neighbors.
+- Jan 31, Homework week 4: linear model with early stopping regularization.
 - Feb 7, week 5 review and exam, [[file:homeworks/Rpkg.org][coding project 1 due]].
-- Feb 14, Homework week 6: 
-- Feb 21, Homework week 7: 
-- Feb 28, Homework week 8: 
+- Feb 14, Homework week 6: simple neural network from scratch.
+- Feb 21, Homework week 7: simple neural network using torch.
+- Feb 28, Homework week 8: regularizing neural networks.
 - Mar 7, week 9 review and exam, [[file:homeworks/Rpkg.org][coding project 2 due]].
 - Mar 14, spring break (no homework).
-- Mar 21, Homework week 10:
-- Mar 28, Homework week 11: 
-- Apr 4, Homework week 12: 
+- Mar 21, Homework week 10: convolutional networks.
+- Mar 28, Homework week 11: recurrent networks.
+- Apr 4, Homework week 12: TODO.
 - Apr 11, Homework week 13:
 - Apr 18, Homework week 14:
 - Apr 25, reading week review and exam, [[file:homeworks/Rpkg.org][coding project 3 due]].

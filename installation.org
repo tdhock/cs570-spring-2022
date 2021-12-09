@@ -2,7 +2,7 @@ After [[https://docs.conda.io/en/latest/miniconda.html][downloading conda]] you 
 same versions that I use, via:
 
 #+begin_src shell-script
-conda env create -f environment.yml
+conda env create -f https://raw.githubusercontent.com/tdhock/cs570-spring-2022/master/environment.yml
 #+end_src
 
 That should create a new "cs570s22" python environment.
