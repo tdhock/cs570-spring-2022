@@ -38,13 +38,13 @@ that week, 11:59PM.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 31, Homework week 4: linear model with early stopping regularization.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
-- Feb 7, week 5 review and exam, [[file:homeworks/Rpkg.org][coding project 1 due]].
+- Feb 7, week 5 review and exam.
 - Feb 14, Homework week 6: backpropagation algorithm, training neural
   networks from scratch.
 - Feb 21, Homework week 7: implementing a simple auto-grad system.
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6.5]].
 - Feb 28, Homework week 8: training neural networks using torch.
-- Mar 7, week 9 review and exam, [[file:homeworks/Rpkg.org][coding project 2 due]].
+- Mar 7, week 9 review and exam.
 - Mar 14, spring break (no homework).
 - Mar 21, Homework week 10: regularizing neural networks.
   - Reading [[https://www.deeplearningbook.org/contents/regularization.html][DL7]].
@@ -55,7 +55,7 @@ that week, 11:59PM.
 - Apr 11, Homework week 13: recurrent networks.
   - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
 - Apr 18, Homework week 14: Residual learning or other advanced topics.
-- Apr 25, reading week review and exam, [[file:homeworks/Rpkg.org][coding project 3 due]].
+- Apr 25, reading week, exam review Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
 
 ** Rubric for homeworks
