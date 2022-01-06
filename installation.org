@@ -1,3 +1,11 @@
+To do the homeworks you need to use python; it is recommended to
+install/use [[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html][anaconda/miniconda]], with either
+- one of the [[https://docs.anaconda.com/anaconda/user-guide/tasks/integration/index.html][IDEs described on the anaconda docs]], (for beginners,
+  choose one that you have used in the past), or
+- [[https://www.emacswiki.org/emacs/PythonProgrammingInEmacs][Elpy/LspMode]] IDE (for students who already know/use emacs, or who
+  want to learn, [[http://emacsrocks.com/][here are some very informative "emacs rocks"
+  screencasts which show the power of emacs]]).
+
 After [[https://docs.conda.io/en/latest/miniconda.html][downloading conda]] you can install all packages for this class,
 same versions that I use, via:
 

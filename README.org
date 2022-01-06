@@ -12,8 +12,8 @@ Syllabus: [[https://docs.google.com/document/d/1y3D9J7Fxe9k6g7h3-JREEvRhmSxLLaOm
 
 These provide background/theory about the algorithms we study in this class.
    
-The required readings will be from [[https://www.deeplearningbook.org/][Deep Learning]] by Goodfellow, et
-al., which is freely available online.
+The readings are from [[https://www.deeplearningbook.org/][Deep Learning]] by Goodfellow, et al., which is
+freely available online.
 
 You should have some knowledge of computational complexity (big O
 notation), so please read the following if you need to review:
@@ -22,34 +22,7 @@ notation), so please read the following if you need to review:
 - The [[https://arizona-nau.primo.exlibrisgroup.com/discovery/fulldisplay?vid=01NAU_INST:01NAU&search_scope=MyInst_and_CI&tab=Everything&docid=alma991007591689703842&lang=en&context=L&adaptor=Local%2520Search%2520Engine&query=any,contains,algorithms%2520introduction&offset=0&virtualBrowse=true][CLRS]] book has a more detailed description in Chapter 3, "Growth
   of Functions" (not specific to machine learning).
 
-** Screencasts
-
-TODO? To learn basic python programming skills which will be highly
-relevant to your coding projects in this class, please watch [[https://www.youtube.com/playlist?list=PLwc48KSH3D1M78ilQi35KPe2GHa7B_Rme][these
-screencasts]] and follow along (pause the videos, type the code, then
-and execute the code on your own computer).
-
 ** Weekly schedule of Homeworks and reading
-
-To do the homeworks you need to use python; it is recommended to
-install/use [[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html][anaconda/miniconda]], with either
-- one of the [[https://docs.anaconda.com/anaconda/user-guide/tasks/integration/index.html][IDEs described on the anaconda docs]], (for beginners,
-  choose one that you have used in the past), or
-- [[https://www.emacswiki.org/emacs/PythonProgrammingInEmacs][Elpy/LspMode]] IDE (for students who already know/use emacs, or who
-  want to learn, [[http://emacsrocks.com/][here are some very informative "emacs rocks"
-  screencasts which show the power of emacs]]).
-
-
-Your content and responses to each homework question will be graded as
-follows
-- Full credit for figures which show correct results, along with code
-  which seems correct and is of high quality.
-- [[https://docs.google.com/document/d/1W6-HdQLgHayOFXaQtscO5J5yf05G7E6KeXyiBJFcT7A/edit?usp=sharing][This General Usage Rubric]] will be used to grade the code
-  quality/style/efficiency in each of your homeworks, -5 for each
-  violation of these good coding rules.
-- Some code and result figures, but clearly incorrect, -5 to -10.
-- Missing code or figure, -10 to -20.
-- Missing code and figure, -20 to -40.
 
 Homework topics and readings for each week are listed below. The date
 of the Monday of each week is written. Each homework is due Friday of
@@ -58,65 +31,47 @@ that week, 11:59PM.
 - Jan 10, [[file:homeworks/01-installation.org][Homework week 1]]: installing software, reading CSV, data
   visualization.
   - [[file:installation.org][Installation instructions]], [[file:slides/01-intro-slides/slides.pdf][slides]].
-- Jan 17, Homework week 2: k-fold cross-validation, nearest neighbors and linear models.
+- Jan 17, Homework week 2: k-fold cross-validation, nearest neighbors
+  and linear models.
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 24, Homework week 3: nearest neighbors.
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 31, Homework week 4: linear model with early stopping regularization.
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Feb 7, week 5 review and exam, [[file:homeworks/Rpkg.org][coding project 1 due]].
-- Feb 14, Homework week 6: simple neural network from scratch.
-- Feb 21, Homework week 7: simple neural network using torch.
-- Feb 28, Homework week 8: regularizing neural networks.
+- Feb 14, Homework week 6: backpropagation algorithm, training neural
+  networks from scratch.
+- Feb 21, Homework week 7: implementing a simple auto-grad system.
+  - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6.5]].
+- Feb 28, Homework week 8: training neural networks using torch.
 - Mar 7, week 9 review and exam, [[file:homeworks/Rpkg.org][coding project 2 due]].
 - Mar 14, spring break (no homework).
-- Mar 21, Homework week 10: convolutional networks.
-- Mar 28, Homework week 11: recurrent networks.
-- Apr 4, Homework week 12: TODO.
-- Apr 11, Homework week 13:
-- Apr 18, Homework week 14:
+- Mar 21, Homework week 10: regularizing neural networks.
+  - Reading [[https://www.deeplearningbook.org/contents/regularization.html][DL7]].
+- Mar 28, Homework week 11: optimization.
+  - Reading [[https://www.deeplearningbook.org/contents/optimization.html][DL8]].
+- Apr 4, Homework week 12: convolutional networks.
+  - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
+- Apr 11, Homework week 13: recurrent networks.
+  - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
+- Apr 18, Homework week 14: Residual learning or other advanced topics.
 - Apr 25, reading week review and exam, [[file:homeworks/Rpkg.org][coding project 3 due]].
-- Final exam week, May 2-5. 
+- Final exam, Thursday May 5, 8-9:30AM.
 
-Old materials TODO update.
+** Rubric for homeworks
 
-- Jan 14: [[file:2020-01-14-applications/slides.pdf]]
-- Feb 4: [[file:2020-02-03-capacity/README.org][visualizing underfitting/overfitting in a 1d regression model
-  using ggplot2/animint2]].
-- Feb 11: [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][Nearest Neighbors interactive data viz]].
-- Feb 13: [[file:projects/2.R][project 2 coding demo]], [[file:projects/1.R][project 1 suggestions]].
-- Feb 18: [[file:2020-02-18-why-roc/README.org][ROC curve data visualizations]].
-- Feb 27: [[file:projects/3.R][project 3 coding demo]].
-- Mar 5: [[file:spring_2020_practice_mid_term_exam.pdf][practice mid-term]] TODO over the weekend.
-- Mar 10: review/solutions of practice mid-term.
-- Mar 12: mid-term exam.
-- Mar 26: R keras screencasts:
-  - [[https://www.youtube.com/watch?v=97hEAcMndgs&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=2&t=0s][Installation]]
-  - [[https://www.youtube.com/watch?v=s9ZS1JAdmuc&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=3&t=3s][MNIST tutorial]]
-  - [[https://www.youtube.com/watch?v=yZh2VNmdVaU&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=3][Convert spam data to arrays]]
-  - [[https://www.youtube.com/watch?v=57POnU9kvig&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=4][Training a neural network for spam data]]
-- Apr 2: [[https://www.youtube.com/playlist?list=PLwc48KSH3D1MvTf_JOI00_eIPcoeYMM_o][R keras screencasts analyzing number of hidden units]]
-- Apr 10: [[https://www.youtube.com/playlist?list=PLwc48KSH3D1O1iWRXid7CsiXI9gO9lS4V][R keras screencasts for convolutional neural networks]]
-- TODO: [[file:2019-04-04-neural-network-classification/README.org][Data visualizations of neural network training/validation error curves]].
+Your content and responses to each homework question will be graded as
+follows
+- Full credit for figures which show correct results, along with code
+  which is correct and is of high quality.
+- [[https://docs.google.com/document/d/1wLejtG_CU-Gcc5LGBt8woliCd4DyDOfu0ZgCY2HYa0A/edit?usp=sharing][This General Usage Rubric]] will be used to grade the code
+  quality/efficiency in each of your homeworks, -5 for each
+  violation of these good coding rules.
+- Some code and result figures, but clearly incorrect, -5 to -10.
+- Missing code or figure, -10 to -20.
+- Missing code and figure, -20 to -40.
 
-** How to ace this class
-
-Before class you should prepare by doing the suggested
-readings/videos. When you do that, write a summary in your own words
-of every section. Also write questions that you have during your
-reading so you can ask in class or office hours.
-
-During class, take notes by writing what you understood in your own
-words. Also I would suggest to ask questions in class as soon as you
-need clarification.
-
-After class, you should review your notes with one of your classmates
-(ask one of the students who seem to be correctly answering a lot of
-questions in class). Ask each other questions and try to
-teach/summarize some of the material with each other -- that is one of
-the best ways to learn.
-
-Finally after doing all of the above, please come to office hours (see
-syllabus), or email me to schedule a meeting.
-
-** Reading links
+** Software 
 
 The links below provide practical advice about how to write the code
 necessary for the homeworks, and please read [[file:installation.org][my instructions to
@@ -156,7 +111,7 @@ Guides to writing C/C++ code.
 
 - Are there any materials online from previous versions of this class
   which may be useful? Here are some video screencasts from Spring
-  2020 (R/keras was used instead of python/torch).
+  2020 (R/keras was used instead of python/numpy/torch).
   - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK][Neural networks using keras in R]].
   - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1MvTf_JOI00_eIPcoeYMM_o][Number of hidden units is a regularization parameter]].
   - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1O1iWRXid7CsiXI9gO9lS4V][Convolutional Neural Networks in R]].
@@ -173,3 +128,22 @@ Guides to writing C/C++ code.
   However it is encouraged to discuss ideas related to lectures and 
   homework solutions with classmates.
   
+** How to ace this class
+
+Before class you should prepare by doing the suggested
+readings/videos. When you do that, write a summary in your own words
+of every section. Also write questions that you have during your
+reading so you can ask in class or office hours.
+
+During class, take notes by writing what you understood in your own
+words. Also I would suggest to ask questions in class as soon as you
+need clarification.
+
+After class, you should review your notes with one of your classmates
+(ask one of the students who seem to be correctly answering a lot of
+questions in class). Ask each other questions and try to
+teach/summarize some of the material with each other -- that is one of
+the best ways to learn.
+
+Finally after doing all of the above, please come to office hours (see
+syllabus), or email me to schedule a meeting.

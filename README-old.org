@@ -1,0 +1,20 @@
+Old materials TODO update.
+
+- Jan 14: [[file:2020-01-14-applications/slides.pdf]]
+- Feb 4: [[file:2020-02-03-capacity/README.org][visualizing underfitting/overfitting in a 1d regression model
+  using ggplot2/animint2]].
+- Feb 11: [[http://members.cbio.mines-paristech.fr/~thocking/animint2-manual/Ch10-nearest-neighbors.html][Nearest Neighbors interactive data viz]].
+- Feb 13: [[file:projects/2.R][project 2 coding demo]], [[file:projects/1.R][project 1 suggestions]].
+- Feb 18: [[file:2020-02-18-why-roc/README.org][ROC curve data visualizations]].
+- Feb 27: [[file:projects/3.R][project 3 coding demo]].
+- Mar 5: [[file:spring_2020_practice_mid_term_exam.pdf][practice mid-term]] TODO over the weekend.
+- Mar 10: review/solutions of practice mid-term.
+- Mar 12: mid-term exam.
+- Mar 26: R keras screencasts:
+  - [[https://www.youtube.com/watch?v=97hEAcMndgs&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=2&t=0s][Installation]]
+  - [[https://www.youtube.com/watch?v=s9ZS1JAdmuc&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=3&t=3s][MNIST tutorial]]
+  - [[https://www.youtube.com/watch?v=yZh2VNmdVaU&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=3][Convert spam data to arrays]]
+  - [[https://www.youtube.com/watch?v=57POnU9kvig&list=PLwc48KSH3D1PYdSd_27USy-WFAHJIfQTK&index=4][Training a neural network for spam data]]
+- Apr 2: [[https://www.youtube.com/playlist?list=PLwc48KSH3D1MvTf_JOI00_eIPcoeYMM_o][R keras screencasts analyzing number of hidden units]]
+- Apr 10: [[https://www.youtube.com/playlist?list=PLwc48KSH3D1O1iWRXid7CsiXI9gO9lS4V][R keras screencasts for convolutional neural networks]]
+- TODO: [[file:2019-04-04-neural-network-classification/README.org][Data visualizations of neural network training/validation error curves]].
