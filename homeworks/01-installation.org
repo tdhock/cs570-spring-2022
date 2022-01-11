@@ -13,11 +13,13 @@ Your goal is to write a python script that performs the following steps:
 
 1. use urllib.request.urlretrieve to programmatically download a copy
    of the zip.test data set from
+   https://github.com/tdhock/cs570-spring-2022/raw/master/data/zip.test.gz
+   (original was from
    https://web.stanford.edu/~hastie/ElemStatLearn/datasets/zip.test.gz
-   (inside of if statement so that the download only happens if the
-   file does not yet exist on your system). Make sure the saved file
-   has the gz suffix, which indicates that the file has been
-   compressed using gzip. This data file represents images of
+   but is now broken).  Use an if statement so that the download only
+   happens if the file does not yet exist on your system. Make sure
+   the saved file has the gz suffix, which indicates that the file has
+   been compressed using gzip. This data file represents images of
    handwritten digits, one example per line/row. Each example is one
    of the ten possible digits (as indicated by the label in the first
    column). Use pandas.read_csv to read the compressed CSV data file
