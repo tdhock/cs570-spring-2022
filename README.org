@@ -33,6 +33,7 @@ that week, 11:59PM.
   - [[file:installation.org][Installation instructions]], [[file:slides/01-intro-slides/slides.pdf][slides]].
 - Jan 17, Homework week 2: k-fold cross-validation, nearest neighbors
   and linear models.
+  - [[file:slides/02-cross-validation.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 24, Homework week 3: nearest neighbors.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].

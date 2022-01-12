@@ -1,0 +1,135 @@
+---
+title: "Introduction to supervised machine learning, k-fold cross-validation, nearest neighbors, and linear models"
+author: "Toby Dylan Hocking"
+output: beamer_presentation
+---
+
+```{r opts, echo=FALSE}
+knitr::opts_chunk$set(
+  echo=FALSE, results=FALSE,
+  fig.width=10,
+  fig.height=6)
+Sys.setenv(RETICULATE_PYTHON="~/Miniconda3/envs/cs570s22/python.exe")
+in_render <- !is.null(knitr::opts_knit$get('rmarkdown.pandoc.to'))
+```
+
+# Supervised machine learning
+
+- Goal is to learn a function $f(\mathbf x)=y$ where $\mathbf
+  x$ is an
+  input/feature vector and $y$ is an output/label.
+- $x=$image of digit/clothing, $y\in\{0,\dots,9\}$ (ten classes).
+- $x=$vector of word counts in email, $y\in\{1,0\}$ (spam or not).
+- $x=$image of retina, $y=$risk score for heart disease.
+- This week we will focus on a specific kind of supervised learning
+  problem called binary classification, which means $y\in\{1,0\}$.
+  
+---
+
+# Learning algorithm
+
+- We want a learning algorithm \textsc{Learn} which inputs a training
+  data set and outputs a prediction function $f$.
+- We typically represent a training data set with $n$ observations and
+  $p$ features as a matrix $\mathbf X\in\mathbb R^{n\times p}$ with a
+  corresponding label vector $\mathbf y\in\{0,1\}^n$.
+- We will use three such data sets from Elements of Statistical
+  Learning book by Hastie et al. (mixture slightly modified)
+
+```{=latex}
+%>>> {k:X.shape for k, (X,y) in data_dict.items()}
+%{'spam': (4601, 57), 'zip': (623, 256), 'mixture': (200, 2)}
+\small
+\begin{tabular}{crrc}
+name &observations, $n$ & inputs/features, $p$ & outputs/labels \\
+\hline
+zip.test & images, 623 & pixel intensities, 256 & 0/1 digits \\
+spam & emails, 4601 & word counts, 57 & spam=1/not=0 \\
+mixture & people, 200 & height/weight, 2  & democratic/republican \\
+\end{tabular}
+```
+
+
+---
+
+# Visualize iris data with labels
+
+```{python}
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import KFold
+from sklearn.linear_model import LassoCV
+import glmnet_python
+import plotnine as p9
+import numpy as np
+import pandas as pd
+from urllib.request import urlretrieve
+import os
+import webbrowser
+# work-around for rendering plots under windows, which hangs within
+# emacs python shell: instead write a PNG file and view in browser.
+on_windows = os.name == "nt"
+in_render = r.in_render if 'r' in dir() else False
+using_cairo = on_windows and not in_render
+if using_cairo:
+    import matplotlib
+    matplotlib.use("cairo")
+def show(g):
+    if not using_cairo:
+        return g
+    g.save("tmp.png")
+    webbrowser.open('tmp.png')
+
+data_dict = {}
+
+spam_df = pd.read_csv(
+    "~/teaching/cs570-spring-2022/data/spam.data",
+    header=None, sep=" ")
+nrow, ncol = spam_df.shape
+label_col_num = ncol-1
+col_num_vec = spam_df.columns.to_numpy()
+label_vec = spam_df[label_col_num]
+feature_mat = spam_df.iloc[:,col_num_vec != label_col_num]
+data_dict["spam"] = (feature_mat, label_vec)
+
+zip_df = pd.read_csv(
+    "~/teaching/cs570-spring-2022/data/zip.test.gz",
+    sep=" ", header=None)
+label_col_num = 0
+col_num_vec = zip_df.columns.to_numpy()
+all_label_vec = zip_df[label_col_num]
+is01 = all_label_vec.isin([0,1])
+label_vec = all_label_vec[is01]
+feature_mat = zip_df.loc[is01,col_num_vec != label_col_num]
+data_dict["zip"] = (feature_mat, label_vec)
+
+mixture_df = pd.read_csv(
+    "~/teaching/cs570-spring-2022/data/ESL.mixture.csv")
+mixture_df.query('party == "democratic" & height_in > 70')
+label_col_name = "party"
+col_name_vec = mixture_df.columns.to_numpy()
+party_vec = mixture_df[label_col_name]
+label_vec = np.where(party_vec == "democratic", 0, 1)
+feature_mat = mixture_df.loc[:,col_name_vec != label_col_name]
+data_dict["mixture"] = (feature_mat, label_vec)
+
+gg = p9.ggplot()+\
+    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            color="party"
+        ),
+        data=mixture_df)+\
+    p9.scale_color_manual(
+        values={"democratic":"blue", "republican":"red"})
+show(gg)
+```
+
+---
+
+# Visualize iris data without labels
+
+- Let $X\in\mathbb R^{150\times 2}$ be the data matrix (input for clustering).
+
