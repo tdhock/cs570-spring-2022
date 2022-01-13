@@ -75,12 +75,12 @@ import webbrowser
 # emacs python shell: instead write a PNG file and view in browser.
 on_windows = os.name == "nt"
 in_render = r.in_render if 'r' in dir() else False
-using_cairo = on_windows and not in_render
-if using_cairo:
+using_agg = on_windows and not in_render
+if using_agg:
     import matplotlib
-    matplotlib.use("cairo")
+    matplotlib.use("agg")
 def show(g):
-    if not using_cairo:
+    if not using_agg:
         return g
     g.save("tmp.png")
     webbrowser.open('tmp.png')
@@ -125,8 +125,8 @@ def number_to_party_vec(v):
     return np.where(v==0, number_party_dict[0], number_party_dict[1])
 label_vec = np.where(
     party_vec == "democratic",
-    party_to_number["democratic"],
-    party_to_number["republican"])
+    party_number_dict["democratic"],
+    party_number_dict["republican"])
 feature_mat = mixture_df.loc[:,col_name_vec != label_col_name]
 data_dict["mixture"] = (feature_mat, label_vec)
 pd.set_option("display.max_columns", 0)
@@ -179,9 +179,12 @@ show(gg)
 # Function viz
 
 ```{python}
-neigh = KNeighborsClassifier(n_neighbors=5)
+neigh = KNeighborsClassifier(n_neighbors=1)
 neigh.fit(feature_mat, label_vec)
 n_grid = 80
+#https://stackoverflow.com/questions/55496700/starred-expression-inside-square-brackets does not work?
+#np.ogrid[-1:1:5j, -2:3:0.5]
+#slice_vec = feature_mat.apply(lambda x: slice(min(x),max(x), complex(imag=n_grid)), axis=0)
 mesh_args = feature_mat.apply(lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
 mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
 grid_df = pd.DataFrame(dict(zip(mesh_args,[v.flatten() for v in mesh_tup])))
@@ -190,8 +193,6 @@ grid_df["prediction"] = neigh.predict(grid_mat)
 prob_mat = neigh.predict_proba(grid_mat)
 grid_df["prob1"] = prob_mat[:,1]
 grid_df["party"] = number_to_party_vec(grid_df.prediction)
-
-# https://stackoverflow.com/questions/18304722/python-find-contour-lines-from-matplotlib-pyplot-contour 
 gg = p9.ggplot()+\
     p9.theme_bw()+\
     p9.theme(subplots_adjust={'right': 0.8})+\
@@ -222,19 +223,46 @@ show(gg)
 
 ---
 
-# Predicted probability
+# Predicted decision bounary in black
 
 ```{python}
 # https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
+# https://scikit-image.org/docs/dev/auto_examples/edges/plot_contours.html#sphx-glr-auto-examples-edges-plot-contours-py
 from skimage import measure
-prob1_mat = grid_df.prob1.to_numpy().reshape([n_grid,n_grid])
+prob1_mat = grid_df.prob1.to_numpy().reshape([n_grid,n_grid]).transpose()
 contours = measure.find_contours(prob1_mat, 0.5)
 contour_df_list = []
+half_df = (mesh_args-mesh_args.diff()/2)[1:]
+half_df.index = [x-0.5 for x in half_df.index]
+lookup_df = pd.concat([mesh_args, half_df])
 for contour_i, contour_mat in enumerate(contours):
     one_contour_df = pd.DataFrame(contour_mat)
-    #these are indices, what are half indices? halfway between.
-    one_contour_df.columns = mesh_args.columns
+    one_contour_df.columns = [c+"_i" for c in mesh_args]
+    one_contour_df["contour_i"] = contour_i
+    for cname in lookup_df:
+        iname = cname+"_i"
+        contour_col = one_contour_df[iname]
+        lookup_col = lookup_df[cname]
+        index_df = lookup_col[contour_col].reset_index()
+        one_contour_df[cname] = index_df[cname]
+    contour_df_list.append(one_contour_df)
+contour_df = pd.concat(contour_df_list)
+gg_contour = gg+\
+    p9.geom_path(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            group="contour_i",
+        ),
+        data=contour_df)
+show(gg_contour)
 ```
+
+---
+
+# TODO CV figure
+
+- All observations are classified correctly, is this good?
 
 ---
 
