@@ -30,12 +30,14 @@ in_render <- !is.null(knitr::opts_knit$get('rmarkdown.pandoc.to'))
 
 - We want a learning algorithm \textsc{Learn} which inputs a training
   data set and outputs a prediction function $f$.
-- We typically represent a training data set with $n$ observations and
-  $p$ features as a matrix $\mathbf X\in\mathbb R^{n\times p}$ with a
-  corresponding label vector $\mathbf y\in\{0,1\}^n$.
+- In math a training data set with $n$ observations and $p$ features
+  is a matrix $\mathbf X\in\mathbb R^{n\times p}$ with a 
+  label vector $\mathbf y\in\{0,1\}^n$.
+- On computers it is a CSV file with $n$ rows and $p+1$ columns.
+- Want: $\textsc{Learn}(\mathbf X, \mathbf y)\rightarrow f$.
 - We will use three such data sets from Elements of Statistical
   Learning book by Hastie et al. (mixture slightly modified)
-
+  
 ```{=latex}
 %>>> {k:X.shape for k, (X,y) in data_dict.items()}
 %{'spam': (4601, 57), 'zip': (623, 256), 'mixture': (200, 2)}
@@ -49,12 +51,15 @@ mixture & people, 200 & height/weight, 2  & democratic/republican \\
 \end{tabular}
 ```
 
+\url{https://github.com/tdhock/cs570-spring-2022/tree/master/data}
+
+\url{https://hastie.su.domains/ElemStatLearn/data.html}
 
 ---
 
-# Visualize iris data with labels
+# Mixture data table
 
-```{python}
+```{python results=TRUE}
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
@@ -105,14 +110,56 @@ data_dict["zip"] = (feature_mat, label_vec)
 
 mixture_df = pd.read_csv(
     "~/teaching/cs570-spring-2022/data/ESL.mixture.csv")
-mixture_df.query('party == "democratic" & height_in > 70')
+#mixture_df.query('party == "democratic" & height_in > 70')
 label_col_name = "party"
 col_name_vec = mixture_df.columns.to_numpy()
 party_vec = mixture_df[label_col_name]
-label_vec = np.where(party_vec == "democratic", 0, 1)
+party_tuples = [
+    ("democratic","blue",0),
+    ("republican","red",1)
+]
+party_colors = {party:color for party,color,number in party_tuples}
+party_number_dict = {party:number for party,color,number in party_tuples}
+number_party_dict = {number:party for party,color,number in party_tuples}
+def number_to_party_vec(v):
+    return np.where(v==0, number_party_dict[0], number_party_dict[1])
+label_vec = np.where(
+    party_vec == "democratic",
+    party_to_number["democratic"],
+    party_to_number["republican"])
 feature_mat = mixture_df.loc[:,col_name_vec != label_col_name]
 data_dict["mixture"] = (feature_mat, label_vec)
+pd.set_option("display.max_columns", 0)
+mixture_df
+```
 
+---
+
+# Spam data table
+
+```{python results=TRUE}
+pd.set_option("display.max_columns", 6)
+spam_df
+```
+
+---
+
+# Zip.test data table
+
+```{python results=TRUE}
+pd.set_option("display.max_columns", 6)
+zip_df
+```
+
+---
+
+# Visualize mixture data set
+
+- Each axis represents one column of the $\mathbf X$ matrix.
+- Each point represents one row of the $\mathbf X$ matrix.
+- Color represents class label $\mathbf y$.
+
+```{python out.height='75%'}
 gg = p9.ggplot()+\
     p9.theme(subplots_adjust={'right': 0.8})+\
     p9.geom_point(
@@ -123,9 +170,79 @@ gg = p9.ggplot()+\
         ),
         data=mixture_df)+\
     p9.scale_color_manual(
-        values={"democratic":"blue", "republican":"red"})
+        values=party_colors)
 show(gg)
 ```
+
+---
+
+# Function viz
+
+```{python}
+neigh = KNeighborsClassifier(n_neighbors=5)
+neigh.fit(feature_mat, label_vec)
+n_grid = 80
+mesh_args = feature_mat.apply(lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
+mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
+grid_df = pd.DataFrame(dict(zip(mesh_args,[v.flatten() for v in mesh_tup])))
+grid_mat = grid_df.to_numpy()
+grid_df["prediction"] = neigh.predict(grid_mat)
+prob_mat = neigh.predict_proba(grid_mat)
+grid_df["prob1"] = prob_mat[:,1]
+grid_df["party"] = number_to_party_vec(grid_df.prediction)
+
+# https://stackoverflow.com/questions/18304722/python-find-contour-lines-from-matplotlib-pyplot-contour 
+gg = p9.ggplot()+\
+    p9.theme_bw()+\
+    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            color="party"
+        ),
+        size=0.1,
+        data=grid_df)+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            fill="party"
+        ),
+        color="black",
+        size=2,
+        data=mixture_df)+\
+    p9.scale_color_manual(
+        values=party_colors)+\
+    p9.scale_fill_manual(
+        values=party_colors)
+show(gg)
+
+```
+
+---
+
+# Predicted probability
+
+```{python}
+# https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
+from skimage import measure
+prob1_mat = grid_df.prob1.to_numpy().reshape([n_grid,n_grid])
+contours = measure.find_contours(prob1_mat, 0.5)
+contour_df_list = []
+for contour_i, contour_mat in enumerate(contours):
+    one_contour_df = pd.DataFrame(contour_mat)
+    #these are indices, what are half indices? halfway between.
+    one_contour_df.columns = mesh_args.columns
+```
+
+---
+
+# Basic idea of nearest neighbors
+
+---
+
+# Basic idea of linear model
 
 ---
 
