@@ -13,15 +13,19 @@ same versions that I use, via:
 conda env create -f https://raw.githubusercontent.com/tdhock/cs570-spring-2022/master/environment.yml
 #+end_src
 
-That should create a new "cs570s22" python environment.
-Before you activate an environment, you need to setup your shell for the first time.
+That should create a new "cs570s22" python environment. Before you
+activate an environment, you need to setup your shell for the first
+time.
 
 #+begin_src shell-script
 conda init bash
 #+end_src
 
-That should put some code in your ~/.bash_profile, I had to copy it to my ~/.bashrc to get it to work on my setup (git bash in emacs shell on windows). After restarting your shell you should see a (base) prefix in your prompt, which indicates the name of the currently activated conda environment.
-You can activate another environment via
+That should put some code in your ~/.bash_profile, I had to copy it to
+my ~/.bashrc to get it to work on my setup (git bash in emacs shell on
+windows). After restarting your shell you should see a (base) prefix
+in your prompt, which indicates the name of the currently activated
+conda environment.  You can activate another environment via
 
 #+begin_src shell-script
 conda activate cs570s22
@@ -30,24 +34,24 @@ conda activate cs570s22
 After activation, that environment will be used for new python
 processes, looking for python modules, etc.
 
-To get python support in emacs I had to install emacs packages (pyvenv,elpy,conda) via M-x package-list-packages.
-To tell emacs where my conda environments are, I put the following in
-my ~/.emacs file:
+To get python support in emacs I had to install emacs packages
+(elpy,conda) via M-x package-list-packages.  To tell emacs where my
+conda environments are, I put the following in my ~/.emacs file:
 
 #+begin_src elisp
-(setenv "WORKON_HOME" "/home/tdhock/.local/share/r-miniconda/envs")
-(pyvenv-mode 1)
 (elpy-enable)
-(setq conda-anaconda-home (expand-file-name "~/miniconda3"))
-(setq conda-env-home-directory (expand-file-name "~/miniconda3"))
+(setq
+ conda-anaconda-home (expand-file-name "~/miniconda3")
+ conda-env-home-directory (expand-file-name "~/miniconda3"))
 #+end_src
 
-In emacs When editing a python file we can "activate" or "work on" the
-conda environment via either
-- M-x conda-env-activate RET cs570s22 RET
-- M-x RET pyvenv-workon RET cs570s22 RET
-then C-c C-z to get an interactive
-shell, then C-c C-y C-e to send line and step, etc. See
+In emacs When editing a python file we can "activate" the conda
+environment via M-x conda-env-activate RET cs570s22 RET then C-c C-z
+to get an interactive shell, then
+- C-RET to send line and step,
+- C-c to send highlighted region.
+
+See
 https://elpy.readthedocs.io/en/latest/ide.html for more elpy key
 commands (sending code from python code files to the interactive
 shell), and https://realpython.com/emacs-the-best-python-editor/ for a
