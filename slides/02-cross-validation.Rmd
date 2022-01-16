@@ -81,14 +81,13 @@ def make_grid(mat, n_grid = 80):
     return pd.DataFrame(dict(zip(mesh_args,mesh_vectors)))
 # https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
 # https://scikit-image.org/docs/dev/auto_examples/edges/plot_contours.html#sphx-glr-auto-examples-edges-plot-contours-py
-def contour_paths(three_cols, contour_values):
+def contour_paths(three_cols, level):
     from skimage import measure
-    two_cols = three_cols.iloc[:,:2]
-    uniq_df = two_cols.apply(pd.unique)
+    uniq_df = three_cols.iloc[:,:2].apply(pd.unique)
     n_grid = uniq_df.shape[0]
-    fun_mat = two_cols.to_numpy().reshape(
+    fun_mat = three_cols.iloc[:,2].to_numpy().reshape(
         [n_grid,n_grid]).transpose()
-    contours = measure.find_contours(fun_mat, contour_values)
+    contours = measure.find_contours(fun_mat, level)
     contour_df_list = []
     half_df = (uniq_df-uniq_df.diff()/2)[1:]
     half_df.index = [x-0.5 for x in half_df.index]
