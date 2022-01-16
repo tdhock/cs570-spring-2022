@@ -9,7 +9,10 @@ knitr::opts_chunk$set(
   echo=FALSE, results=FALSE,
   fig.width=10,
   fig.height=6)
-Sys.setenv(RETICULATE_PYTHON="~/Miniconda3/envs/cs570s22/python.exe")
+Sys.setenv(RETICULATE_PYTHON=if(.Platform$OS.type=="unix")
+  "/home/tdhock/.local/share/r-miniconda/envs/cs570s22/bin/python"
+  else "~/Miniconda3/envs/cs570s22/python.exe")
+reticulate::use_condaenv("cs570s22", required=TRUE)
 in_render <- !is.null(knitr::opts_knit$get('rmarkdown.pandoc.to'))
 ```
 
@@ -64,7 +67,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LassoCV
-import glmnet_python
 import plotnine as p9
 import numpy as np
 import pandas as pd
