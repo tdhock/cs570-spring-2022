@@ -68,9 +68,44 @@ import plotnine as p9
 import numpy as np
 import pandas as pd
 import os
-import webbrowser
+# grid/contouring functions
+def make_grid(mat, n_grid = 80):
+    assert mat.shape[1] == 2
+    mesh_args = mat.apply(
+        lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
+    mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
+    mesh_vectors = [v.flatten() for v in mesh_tup]
+    return pd.DataFrame(dict(zip(mesh_args,mesh_vectors)))
+# https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
+# https://scikit-image.org/docs/dev/auto_examples/edges/plot_contours.html#sphx-glr-auto-examples-edges-plot-contours-py
+def contour_paths(three_cols, contour_values):
+    from skimage import measure
+    two_cols = three_cols.iloc[:,:2]
+    uniq_df = two_cols.apply(pd.unique)
+    n_grid = uniq_df.shape[0]
+    fun_mat = two_cols.to_numpy().reshape(
+        [n_grid,n_grid]).transpose()
+    contours = measure.find_contours(fun_mat, contour_values)
+    contour_df_list = []
+    half_df = (uniq_df-uniq_df.diff()/2)[1:]
+    half_df.index = [x-0.5 for x in half_df.index]
+    lookup_df = pd.concat([uniq_df, half_df])
+    for contour_i, contour_mat in enumerate(contours):
+        one_contour_df = pd.DataFrame(contour_mat)
+        one_contour_df.columns = [c+"_i" for c in uniq_df]
+        one_contour_df["contour_i"] = contour_i
+        for cname in lookup_df:
+            iname = cname+"_i"
+            contour_col = one_contour_df[iname]
+            lookup_col = lookup_df[cname]
+            index_df = lookup_col[contour_col].reset_index()
+            one_contour_df[cname] = index_df[cname]
+        contour_df_list.append(one_contour_df)
+    return pd.concat(contour_df_list)
+
 # work-around for rendering plots under windows, which hangs within
 # emacs python shell: instead write a PNG file and view in browser.
+import webbrowser
 on_windows = os.name == "nt"
 in_render = r.in_render if 'r' in dir() else False
 using_agg = on_windows and not in_render
@@ -179,13 +214,6 @@ show(gg)
 ```{python}
 neigh = KNeighborsClassifier(n_neighbors=1)
 neigh.fit(feature_mat, label_vec)
-def make_grid(mat, n_grid = 80):
-    assert mat.shape[1] == 2
-    mesh_args = mat.apply(
-        lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
-    mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
-    mesh_vectors = [v.flatten() for v in mesh_tup]
-    return pd.DataFrame(dict(zip(mesh_args,mesh_vectors)))
 grid_df = make_grid(feature_mat)
 #https://stackoverflow.com/questions/55496700/starred-expression-inside-square-brackets does not work?
 #np.ogrid[-1:1:5j, -2:3:0.5]
@@ -228,31 +256,6 @@ show(gg)
 # Predicted decision bounary in black
 
 ```{python}
-# https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
-# https://scikit-image.org/docs/dev/auto_examples/edges/plot_contours.html#sphx-glr-auto-examples-edges-plot-contours-py
-def contour_paths(three_cols, contour_values):
-    from skimage import measure
-    uniq_df = three_cols.iloc[:,:2].apply(pd.unique)
-    n_grid = uniq_df.shape[0]
-    fun_mat = three_cols.iloc[:,2].to_numpy().reshape(
-        [n_grid,n_grid]).transpose()
-    contours = measure.find_contours(fun_mat, contour_values)
-    contour_df_list = []
-    half_df = (uniq_df-uniq_df.diff()/2)[1:]
-    half_df.index = [x-0.5 for x in half_df.index]
-    lookup_df = pd.concat([uniq_df, half_df])
-    for contour_i, contour_mat in enumerate(contours):
-        one_contour_df = pd.DataFrame(contour_mat)
-        one_contour_df.columns = [c+"_i" for c in uniq_df]
-        one_contour_df["contour_i"] = contour_i
-        for cname in lookup_df:
-            iname = cname+"_i"
-            contour_col = one_contour_df[iname]
-            lookup_col = lookup_df[cname]
-            index_df = lookup_col[contour_col].reset_index()
-            one_contour_df[cname] = index_df[cname]
-        contour_df_list.append(one_contour_df)
-    return pd.concat(contour_df_list)
 contour_df = contour_paths(
     grid_df.loc[:,["height_in","weight_lb","prob1"]],
     0.5)
