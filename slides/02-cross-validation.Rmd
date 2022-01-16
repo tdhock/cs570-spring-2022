@@ -67,7 +67,6 @@ from sklearn.linear_model import LassoCV
 import plotnine as p9
 import numpy as np
 import pandas as pd
-from urllib.request import urlretrieve
 import os
 import webbrowser
 # work-around for rendering plots under windows, which hangs within
@@ -231,25 +230,32 @@ show(gg)
 ```{python}
 # https://scikit-image.org/docs/dev/api/skimage.measure.html#skimage.measure.find_contours
 # https://scikit-image.org/docs/dev/auto_examples/edges/plot_contours.html#sphx-glr-auto-examples-edges-plot-contours-py
-from skimage import measure
-prob1_mat = grid_df.prob1.to_numpy().reshape([n_grid,n_grid]).transpose()
-contours = measure.find_contours(prob1_mat, 0.5)
-contour_df_list = []
-half_df = (mesh_args-mesh_args.diff()/2)[1:]
-half_df.index = [x-0.5 for x in half_df.index]
-lookup_df = pd.concat([mesh_args, half_df])
-for contour_i, contour_mat in enumerate(contours):
-    one_contour_df = pd.DataFrame(contour_mat)
-    one_contour_df.columns = [c+"_i" for c in mesh_args]
-    one_contour_df["contour_i"] = contour_i
-    for cname in lookup_df:
-        iname = cname+"_i"
-        contour_col = one_contour_df[iname]
-        lookup_col = lookup_df[cname]
-        index_df = lookup_col[contour_col].reset_index()
-        one_contour_df[cname] = index_df[cname]
-    contour_df_list.append(one_contour_df)
-contour_df = pd.concat(contour_df_list)
+def contour_paths(three_cols, contour_values):
+    from skimage import measure
+    uniq_df = three_cols.iloc[:,:2].apply(pd.unique)
+    n_grid = uniq_df.shape[0]
+    fun_mat = three_cols.iloc[:,2].to_numpy().reshape(
+        [n_grid,n_grid]).transpose()
+    contours = measure.find_contours(fun_mat, contour_values)
+    contour_df_list = []
+    half_df = (uniq_df-uniq_df.diff()/2)[1:]
+    half_df.index = [x-0.5 for x in half_df.index]
+    lookup_df = pd.concat([uniq_df, half_df])
+    for contour_i, contour_mat in enumerate(contours):
+        one_contour_df = pd.DataFrame(contour_mat)
+        one_contour_df.columns = [c+"_i" for c in uniq_df]
+        one_contour_df["contour_i"] = contour_i
+        for cname in lookup_df:
+            iname = cname+"_i"
+            contour_col = one_contour_df[iname]
+            lookup_col = lookup_df[cname]
+            index_df = lookup_col[contour_col].reset_index()
+            one_contour_df[cname] = index_df[cname]
+        contour_df_list.append(one_contour_df)
+    return pd.concat(contour_df_list)
+contour_df = contour_paths(
+    grid_df.loc[:,["height_in","weight_lb","prob1"]],
+    0.5)
 gg_contour = gg+\
     p9.geom_path(
         p9.aes(
