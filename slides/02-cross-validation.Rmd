@@ -64,7 +64,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LassoCV
-import glmnet_python
 import plotnine as p9
 import numpy as np
 import pandas as pd
@@ -125,8 +124,8 @@ def number_to_party_vec(v):
     return np.where(v==0, number_party_dict[0], number_party_dict[1])
 label_vec = np.where(
     party_vec == "democratic",
-    party_to_number["democratic"],
-    party_to_number["republican"])
+    party_number_dict["democratic"],
+    party_number_dict["republican"])
 feature_mat = mixture_df.loc[:,col_name_vec != label_col_name]
 data_dict["mixture"] = (feature_mat, label_vec)
 pd.set_option("display.max_columns", 0)
@@ -181,10 +180,14 @@ show(gg)
 ```{python}
 neigh = KNeighborsClassifier(n_neighbors=5)
 neigh.fit(feature_mat, label_vec)
-n_grid = 80
-mesh_args = feature_mat.apply(lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
-mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
-grid_df = pd.DataFrame(dict(zip(mesh_args,[v.flatten() for v in mesh_tup])))
+def make_grid(mat, n_grid = 80):
+    assert mat.shape[1] == 2
+    mesh_args = mat.apply(
+        lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
+    mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])
+    mesh_vectors = [v.flatten() for v in mesh_tup]
+    return pd.DataFrame(dict(zip(mesh_args,mesh_vectors)))
+grid_df = make_grid(feature_mat)
 grid_mat = grid_df.to_numpy()
 grid_df["prediction"] = neigh.predict(grid_mat)
 prob_mat = neigh.predict_proba(grid_mat)
