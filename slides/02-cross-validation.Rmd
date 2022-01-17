@@ -311,9 +311,12 @@ show(gg_contour)
 
 # K-fold cross-validation for splitting data
 
-```{r image-ref-for-in-text, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Some cool caption', out.width='0.75\\linewidth', fig.pos='H'}
-knitr::include_graphics("drawing-cross-validation.pdf")
-```
+- One way to split is via K-fold cross-validation. 
+- Each row is assigned a fold ID number from 1 to K.
+- For each for ID, those data are held out, and other data are kept.
+- Each row is held out one time.
+
+![](drawing-cross-validation.pdf){width=100%}
 
 ---
 
@@ -351,19 +354,14 @@ for shuffle, random_state in (True,1), (False,None):
             data=shuffle_df)+\
         p9.scale_color_manual(
             values={"democratic":"blue", "republican":"red"})+\
-        p9.theme(subplots_adjust={'right': 0.8})+\
+        p9.theme(subplots_adjust={'right': 0.7})+\
         p9.facet_grid("set ~ fold", labeller="label_both")
     shuffle_ggplots[shuffle] = gg
     fold_df_list.append(mixture_copy)
 fold_df = pd.concat(fold_df_list)
 show(shuffle_ggplots[True])
-```
 
----
-
-# Basic idea of nearest neighbors
-
-```{python}
+# if we wanted to compare shuffle=True vs False.
 gg = p9.ggplot()+\
     p9.theme(subplots_adjust={'right': 0.8})+\
     p9.geom_point(
@@ -376,8 +374,15 @@ gg = p9.ggplot()+\
     p9.scale_color_manual(
         values={"democratic":"blue", "republican":"red"})+\
     p9.facet_grid("shuffle ~ fold", labeller="label_both")
-show(gg)
+
 ```
+
+---
+
+# Two kinds of splits
+
+- Full data into train/test.
+- Train into subtrain/validation.
 
 ---
 
