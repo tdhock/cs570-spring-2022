@@ -211,20 +211,36 @@ show(gg)
 
 ---
 
-# Function viz
+# A basic machine learning algorithm
+
+- Goal of supervised learning is to learn a function which predicts the label for new inputs  $x\in\mathbb R^2$.
+- K-Nearest neighbors: a simple non-linear algorithm.
+- For any new data point, predict the average label of the K nearest neighbors.
+
+---
+
+# Visualize predictions of 1-nearest neighbor algorithm
 
 ```{python}
-neigh = KNeighborsClassifier(n_neighbors=1)
-neigh.fit(feature_mat, label_vec)
 grid_df = make_grid(feature_mat)
 #https://stackoverflow.com/questions/55496700/starred-expression-inside-square-brackets does not work?
 #np.ogrid[-1:1:5j, -2:3:0.5]
 #slice_vec = feature_mat.apply(lambda x: slice(min(x),max(x), complex(imag=n_grid)), axis=0)
 grid_mat = grid_df.to_numpy()
+
+neigh = KNeighborsClassifier(n_neighbors=1)
+neigh.fit(feature_mat, label_vec)
 grid_df["prediction"] = neigh.predict(grid_mat)
 prob_mat = neigh.predict_proba(grid_mat)
 grid_df["prob1"] = prob_mat[:,1]
 grid_df["party"] = number_to_party_vec(grid_df.prediction)
+acc = neigh.score(feature_mat, label_vec)*100
+acc_df = pd.DataFrame({
+    "accuracy_percent":acc,
+    "label":f"train set accuracy = {acc}%",
+    "height_in":68.5,
+    "weight_lb":147
+}, index=[0])
 gg = p9.ggplot()+\
     p9.theme_bw()+\
     p9.theme(subplots_adjust={'right': 0.8})+\
@@ -248,14 +264,21 @@ gg = p9.ggplot()+\
     p9.scale_color_manual(
         values=party_colors)+\
     p9.scale_fill_manual(
-        values=party_colors)
+        values=party_colors)+\
+    p9.geom_label(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            label="label"
+        ),
+        data=acc_df)
 show(gg)
 
 ```
 
 ---
 
-# Predicted decision bounary in black
+# Also plot decision boundary in black
 
 ```{python}
 contour_df = contour_paths(
@@ -274,13 +297,87 @@ show(gg_contour)
 
 ---
 
-# TODO CV figure
+# Is it good to have 100% accuracy on train data?
 
-- All observations are classified correctly, is this good?
+- Remember: goal is function $f$ with accurate predictions on new inputs.
+- What is a new input?
+- We must assume that new/test inputs are similar to old/train inputs.
+- In the statistical literature this is the iid (independent and identically distributed) assumption.
+- We can therefore split the full data set into train/test sets.
+- Train set is used to learn the prediction function $f$.
+- Test set (simulated new inputs) is used to evaluate the accuracy of the function $f$ (but can not be used to learn function $f$).
+
+---
+
+# K-fold cross-validation for splitting data
+
+```{r image-ref-for-in-text, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Some cool caption', out.width='0.75\\linewidth', fig.pos='H'}
+knitr::include_graphics("drawing-cross-validation.pdf")
+```
+
+---
+
+# Visualization of splits/sets in input/feature space
+
+```{python}
+fold_df_list = []
+shuffle_ggplots = {}
+for shuffle, random_state in (True,1), (False,None):
+    n_splits = 5
+    kf = KFold(
+        n_splits=n_splits,
+        random_state=random_state,
+        shuffle=shuffle)
+    mixture_copy = mixture_df.copy()
+    mixture_copy['fold'] = pd.NA
+    mixture_copy['shuffle'] = shuffle
+    shuffle_df_list = []
+    for fold, (train_index, test_index) in enumerate(kf.split(label_vec)):
+        mixture_copy.loc[test_index,"fold"] = fold
+        shuffle_one_fold = mixture_copy.copy()
+        shuffle_one_fold["fold"] = fold
+        shuffle_one_fold.loc[test_index,"set"] = "test"
+        shuffle_one_fold.loc[train_index,"set"] = "train"
+        shuffle_df_list.append(shuffle_one_fold)
+    shuffle_df = pd.concat(shuffle_df_list)
+    gg = p9.ggplot()+\
+        p9.ggtitle(f"KFold(n_splits={n_splits}, shuffle={shuffle})")+\
+        p9.geom_point(
+            p9.aes(
+                x="height_in",
+                y="weight_lb",
+                color="party"
+            ),
+            data=shuffle_df)+\
+        p9.scale_color_manual(
+            values={"democratic":"blue", "republican":"red"})+\
+        p9.theme(subplots_adjust={'right': 0.8})+\
+        p9.facet_grid("set ~ fold", labeller="label_both")
+    shuffle_ggplots[shuffle] = gg
+    fold_df_list.append(mixture_copy)
+fold_df = pd.concat(fold_df_list)
+show(shuffle_ggplots[True])
+```
 
 ---
 
 # Basic idea of nearest neighbors
+
+```{python}
+gg = p9.ggplot()+\
+    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            color="party"
+        ),
+        data=fold_df)+\
+    p9.scale_color_manual(
+        values={"democratic":"blue", "republican":"red"})+\
+    p9.facet_grid("shuffle ~ fold", labeller="label_both")
+show(gg)
+```
 
 ---
 
