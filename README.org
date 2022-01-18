@@ -34,7 +34,7 @@ that week, 11:59PM.
 - Jan 17, [[file:homeworks/02-k-fold-cross-validation.org][Homework week 2]]: k-fold cross-validation, nearest neighbors
   and linear models.
   - [[file:slides/02-cross-validation.pdf][Slides]].
-  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]] (The most important parts are 5.2 and 5.3).
 - Jan 24, Homework week 3: nearest neighbors and feature selection.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 31, Homework week 4: linear model with early stopping regularization.
