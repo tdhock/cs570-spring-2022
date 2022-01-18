@@ -35,7 +35,7 @@ that week, 11:59PM.
   and linear models.
   - [[file:slides/02-cross-validation.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
-- Jan 24, Homework week 3: nearest neighbors.
+- Jan 24, Homework week 3: nearest neighbors and feature selection.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 31, Homework week 4: linear model with early stopping regularization.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
