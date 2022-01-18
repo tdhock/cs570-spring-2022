@@ -31,7 +31,7 @@ that week, 11:59PM.
 - Jan 10, [[file:homeworks/01-installation.org][Homework week 1]]: installing software, reading CSV, data
   visualization.
   - [[file:installation.org][Installation instructions]], [[file:slides/01-intro-slides/slides.pdf][slides]].
-- Jan 17, Homework week 2: k-fold cross-validation, nearest neighbors
+- Jan 17, [[file:homeworks/02-k-fold-cross-validation.org][Homework week 2]]: k-fold cross-validation, nearest neighbors
   and linear models.
   - [[file:slides/02-cross-validation.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].

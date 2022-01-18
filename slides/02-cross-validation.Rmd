@@ -314,17 +314,17 @@ show(gg_contour)
 - One way to split is via K-fold cross-validation. 
 - Each row is assigned a fold ID number from 1 to K.
 - For each for ID, those data are held out, and other data are kept.
-- Each row is held out one time.
+- Popular relative to other splitting methods because of simplicity and fairness (each row is held out one time).
 
 ![](drawing-cross-validation.pdf){width=100%}
 
 ---
 
-# Visualization of splits/sets in input/feature space
+# Visualization of fold IDs in input/feature space
 
 ```{python}
 fold_df_list = []
-shuffle_ggplots = {}
+set_df_list = []
 for shuffle, random_state in (True,1), (False,None):
     n_splits = 5
     kf = KFold(
@@ -343,6 +343,7 @@ for shuffle, random_state in (True,1), (False,None):
         shuffle_one_fold.loc[train_index,"set"] = "train"
         shuffle_df_list.append(shuffle_one_fold)
     shuffle_df = pd.concat(shuffle_df_list)
+    set_df_list.append(shuffle_df)
     gg = p9.ggplot()+\
         p9.ggtitle(f"KFold(n_splits={n_splits}, shuffle={shuffle})")+\
         p9.geom_point(
@@ -353,13 +354,13 @@ for shuffle, random_state in (True,1), (False,None):
             ),
             data=shuffle_df)+\
         p9.scale_color_manual(
-            values={"democratic":"blue", "republican":"red"})+\
+            values=party_colors)+\
         p9.theme(subplots_adjust={'right': 0.7})+\
         p9.facet_grid("set ~ fold", labeller="label_both")
     shuffle_ggplots[shuffle] = gg
     fold_df_list.append(mixture_copy)
+set_df = pd.concat(set_df_list)
 fold_df = pd.concat(fold_df_list)
-show(shuffle_ggplots[True])
 
 # if we wanted to compare shuffle=True vs False.
 gg = p9.ggplot()+\
@@ -372,17 +373,201 @@ gg = p9.ggplot()+\
         ),
         data=fold_df)+\
     p9.scale_color_manual(
-        values={"democratic":"blue", "republican":"red"})+\
+        values=party_colors)+\
     p9.facet_grid("shuffle ~ fold", labeller="label_both")
 
+gg = p9.ggplot()+\
+    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            color="party"
+        ),
+        data=fold_df.query("shuffle==True"))+\
+    p9.scale_color_manual(
+        values=party_colors)+\
+    p9.facet_grid(". ~ fold", labeller="label_both")
+show(gg)
+```
+
+---
+
+# Visualization of splits/sets in input/feature space
+
+```{python}
+show(shuffle_ggplots[True])
+```
+
+---
+
+# One split
+
+```{python}
+one_split = set_df.query("fold==0 & shuffle==True")
+gg = p9.ggplot()+\
+    p9.geom_point(
+        p9.aes(
+            x="height_in",
+            y="weight_lb",
+            color="party"
+        ),
+        data=one_split)+\
+    p9.scale_color_manual(
+        values=party_colors)+\
+    p9.theme(subplots_adjust={'right': 0.7})+\
+    p9.facet_grid(". ~ set", labeller="label_both")
+show(gg)
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+train_df = one_split.query("set=='train'")
+train_feature_mat = train_df[feature_mat.columns]
+train_label_vec = train_df.party
+all_acc_df_list = []
+def plot_neighbors(n_neighbors):
+    neigh = KNeighborsClassifier(n_neighbors=n_neighbors)
+    neigh.fit(train_feature_mat, train_label_vec)
+    grid_df["prediction"] = neigh.predict(grid_mat)
+    prob_mat = neigh.predict_proba(grid_mat)
+    grid_df["prob1"] = prob_mat[:,1]
+    grid_df["party"] = grid_df.prediction
+    one_split["pred"] = neigh.predict(one_split[feature_mat.columns])
+    one_split["correct"] = one_split.party == one_split.pred
+    acc_percent = one_split.groupby("set")["correct"].mean()*100
+    acc_df = acc_percent.reset_index()
+    acc_df["height_in"] = 70
+    acc_df["weight_lb"] = 147
+    acc_df["label"] = "accuracy = " + acc_df.correct.astype(str) + "%"
+    acc_df["n_neighbors"] = n_neighbors
+    all_acc_df_list.append(acc_df)
+    return p9.ggplot()+\
+        p9.ggtitle(f"{n_neighbors} nearest neighbors")+\
+        p9.theme_bw()+\
+        p9.theme(subplots_adjust={'right': 0.8})+\
+        p9.facet_grid(". ~ set", labeller="label_both")+\
+        p9.geom_point(
+            p9.aes(
+                x="height_in",
+                y="weight_lb",
+                color="party"
+            ),
+            size=0.1,
+            data=grid_df)+\
+        p9.geom_point(
+            p9.aes(
+                x="height_in",
+                y="weight_lb",
+                fill="party"
+            ),
+            color="black",
+            size=2,
+            data=one_split)+\
+        p9.scale_color_manual(
+            values=party_colors)+\
+        p9.scale_fill_manual(
+            values=party_colors)+\
+        p9.geom_label(
+            p9.aes(
+                x="height_in",
+                y="weight_lb",
+                label="label"
+            ),
+            data=acc_df)
+show(plot_neighbors(1))
+
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(2))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(3))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(4))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(5))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(10))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(50))
+```
+
+---
+
+# Nearest neighbor predictions
+
+```{python}
+show(plot_neighbors(100))
+```
+
+---
+
+# Accuracy for each model size
+
+```{python}
+all_acc_df = pd.concat(all_acc_df_list)
+gg = p9.ggplot()+\
+    p9.geom_line(
+        p9.aes(
+            x="n_neighbors",
+            y="correct",
+            color="set",
+            group="set"
+        ),
+        data=all_acc_df)
+show(gg)
 ```
 
 ---
 
 # Two kinds of splits
 
-- Full data into train/test.
-- Train into subtrain/validation.
+![](nested_resampling.png){width=100%}
+
+---
+
+# Implementing splits in python
+
+- Full data into train/test -> `sklearn.model_selection.KFold`. For evaluating prediction accuracy and comparing different algorithms.
+- Train into subtrain/validation -> `sklearn.model_selection.GridSearchCV`. For learning hyper-parameters such as `n_neighbors` which must be fixed before running the learning algorithm / computing predictions.
 
 ---
 
@@ -390,7 +575,5 @@ gg = p9.ggplot()+\
 
 ---
 
-# Visualize iris data without labels
-
-- Let $X\in\mathbb R^{150\times 2}$ be the data matrix (input for clustering).
+# How to fairly compare linear model with nearest neighbors?
 
