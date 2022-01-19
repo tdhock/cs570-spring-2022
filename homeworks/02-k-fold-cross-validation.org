@@ -72,3 +72,11 @@ Extra credit:
   that as another evaluation metric (in a separate panel/plot) to
   compare the test accuracy of the algorithms.
   
+** FAQ
+
+- How to fix KeyError: something is not in index?  "not in index"
+  indicates you are not using the indexing correctly. Please refer to
+  the [[https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html][pandas]]/[[https://numpy.org/doc/stable/user/basics.indexing.html#basics-indexing][numpy]] documentation for correct usage examples. You may
+  need to use DF.loc[rows,cols] or DF.iloc[rows,cols]. Also KFold
+  examples may be useful,
+  https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
