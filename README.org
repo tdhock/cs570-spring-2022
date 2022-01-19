@@ -8,6 +8,8 @@ Meeting time/place: TuTh 8:00AM - 9:15AM, SBS-Raul H. Castro, Rm 233.
 
 Syllabus: [[https://docs.google.com/document/d/1y3D9J7Fxe9k6g7h3-JREEvRhmSxLLaOmPtfbn137r_4/edit?usp=sharing][Google Doc]].
 
+Discord: https://discord.gg/gP3kChNmxd
+
 ** Textbooks
 
 These provide background/theory about the algorithms we study in this class.
