@@ -89,6 +89,21 @@ set.
 #+begin_src python
 plotnine.ggplot().save("file.png", width=10, height=5, units="in", dpi=100)
 #+end_src
-
+- how to show figures in jupyter notebooks? try using print on the
+  ggplot object, like
+#+begin_src python
+gg = plotnine.ggplot()
+print(gg)
+#+end_src
 - how to adjust the space used for the legend? use something like
   plotnine.theme(subplots_adjust={'right': 0.5})
+- my digits are being displayed but rotated/upside down? Try changing
+  the x/y mapping or order of values (decreasing vs increasing).
+- I am having trouble adding the pandas.Categorical to each layer for
+  faceting. Do you have any tips?
+  https://pandas.pydata.org/docs/reference/api/pandas.Categorical.html
+- when I try matplotlib.use("cairo") in jupyter notebooks it throws
+  the ModuleNotFound error? Try removing that line of code (use
+  default backend).
+
+

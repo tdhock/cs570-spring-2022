@@ -8,6 +8,8 @@ Meeting time/place: TuTh 8:00AM - 9:15AM, SBS-Raul H. Castro, Rm 233.
 
 Syllabus: [[https://docs.google.com/document/d/1y3D9J7Fxe9k6g7h3-JREEvRhmSxLLaOmPtfbn137r_4/edit?usp=sharing][Google Doc]].
 
+Discord: https://discord.gg/gP3kChNmxd
+
 ** Textbooks
 
 These provide background/theory about the algorithms we study in this class.
@@ -34,7 +36,7 @@ that week, 11:59PM.
 - Jan 17, [[file:homeworks/02-k-fold-cross-validation.org][Homework week 2]]: k-fold cross-validation, nearest neighbors
   and linear models.
   - [[file:slides/02-cross-validation.pdf][Slides]].
-  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]] (The most important parts are 5.2 and 5.3).
 - Jan 24, Homework week 3: nearest neighbors and feature selection.
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Jan 31, Homework week 4: linear model with early stopping regularization.
@@ -68,9 +70,9 @@ follows
 - [[https://docs.google.com/document/d/1wLejtG_CU-Gcc5LGBt8woliCd4DyDOfu0ZgCY2HYa0A/edit?usp=sharing][This General Usage Rubric]] will be used to grade the code
   quality/efficiency in each of your homeworks, -5 for each
   violation of these good coding rules.
-- Some code and result figures, but clearly incorrect, -5 to -10.
-- Missing code or figure, -10 to -20.
-- Missing code and figure, -20 to -40.
+- Some code and figures/results/answers, but clearly incorrect, -5 to -10.
+- Missing code or figure/results/answers, -10 to -20.
+- Missing code and figure/results/answers, -20 to -40.
 
 ** Software 
 
@@ -103,10 +105,6 @@ Python documentation and introductory tutorials:
   to use automatic differentiation, and (2) computations can be easily
   performed on GPU for increased speed. [[https://pytorch.org/tutorials/beginner/nlp/pytorch_tutorial.html][Introduction to pytorch
   tutorial]].
-
-Guides to writing C/C++ code.
-- [[https://webhome.phy.duke.edu/~rgb/General/c_book/c_book/][The C book by Mike Banahan, Declan Brady and Mark Doran]].
-- [[https://github.com/tdhock/when-c][When and how to write low-level (C/C++) instead of high-level (R/Python) code?]]
 
 ** General Questions and Answers (FAQ)
 
