@@ -4,7 +4,7 @@ Topic: Advanced Intelligent Systems (Deep Learning)
 
 Dates: Jan 10, 2022-May 6, 2022
 
-Meeting time/place: TuTh 8:00AM - 9:15AM, SBS-Raul H. Castro, Rm 233.
+Meeting time/place: TuTh 8:00AM - 9:15AM, SBS-Raul H. Castro, Rm 310.
 
 Syllabus: [[https://docs.google.com/document/d/1y3D9J7Fxe9k6g7h3-JREEvRhmSxLLaOmPtfbn137r_4/edit?usp=sharing][Google Doc]].
 
