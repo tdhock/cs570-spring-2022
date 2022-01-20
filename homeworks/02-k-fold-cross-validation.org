@@ -33,8 +33,8 @@ For this project you need to use scikit-learn.
   attribute stores which hyper-parameter was selected as best, so
   print out that value. Is it always the same for each data set and
   split, or does it vary?
-- Use sklearn.linear_model.LassoCV(cv=5) to implement a linear model
-  which uses 5-fold cross-validation to choose the
+- Use sklearn.linear_model.LogisticRegressionCV(cv=5) to implement a
+  linear model which uses 5-fold cross-validation to choose the
   regularization/alpha hyper-parameter.
 - Also write code that computes what is the more frequent
   class label (0 or 1) in the train set.
