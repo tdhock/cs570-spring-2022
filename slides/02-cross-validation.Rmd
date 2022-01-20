@@ -325,6 +325,7 @@ show(gg_contour)
 ```{python}
 fold_df_list = []
 set_df_list = []
+shuffle_ggplots = {}
 for shuffle, random_state in (True,1), (False,None):
     n_splits = 5
     kf = KFold(
@@ -545,6 +546,7 @@ show(plot_neighbors(100))
 ```{python}
 all_acc_df = pd.concat(all_acc_df_list)
 gg = p9.ggplot()+\
+    p9.theme(subplots_adjust={'right': 0.8})+\
     p9.geom_line(
         p9.aes(
             x="n_neighbors",

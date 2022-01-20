@@ -1,0 +1,48 @@
+---
+title: "matplotlib test"
+author: "Toby Dylan Hocking"
+output: beamer_presentation
+---
+
+# setup slide
+
+```{r}
+Sys.setenv(RETICULATE_PYTHON=if(.Platform$OS.type=="unix")
+  "/home/tdhock/.local/share/r-miniconda/envs/cs570s22/bin/python"
+  else "~/Miniconda3/envs/cs570s22/python.exe")
+```
+
+```{python}
+import matplotlib.pyplot as plt
+```
+
+---
+
+# no chunk options
+
+```{python}
+plt.plot([1, 2, 3, 4])
+plt.ylabel('some numbers')
+plt.show()
+```
+
+---
+
+# fig.height, fig.width
+
+```{python fig.height=2, fig.width=8}
+plt.plot([1, 2, 3, 4])
+plt.ylabel('some numbers')
+plt.show()
+```
+
+---
+
+# out.height, out.width
+
+```{python out.height='25%', out.width='100%'}
+plt.plot([1, 2, 3, 4])
+plt.ylabel('some numbers')
+plt.show()
+```
+
