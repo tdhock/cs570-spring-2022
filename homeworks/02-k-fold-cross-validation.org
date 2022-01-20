@@ -35,7 +35,16 @@ For this project you need to use scikit-learn.
   split, or does it vary?
 - Use sklearn.linear_model.LogisticRegressionCV(cv=5) to implement a
   linear model which uses 5-fold cross-validation to choose the
-  regularization/alpha hyper-parameter.
+  regularization/alpha hyper-parameter. Actually, you probably need to
+  scale the inputs before learning the linear model, as described on
+  the scikit-learn [[https://scikit-learn.org/stable/modules/preprocessing.html][pre-processing]] tutorial page. You may need to
+  increase the max_iter parameter from its default of 100, for
+  example, 
+
+#+BEGIN_SRC 
+pipe = make_pipeline(StandardScaler(), LogisticRegression(cv=5, max_iter=1000))
+#+END_SRC
+
 - Also write code that computes what is the more frequent
   class label (0 or 1) in the train set.
 - Now compute predictions on the test set, and store them in a
