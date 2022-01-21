@@ -66,14 +66,14 @@ mixture & people, 200 & height/weight, 2  & democratic/republican \\
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
-from sklearn.linear_model import LassoCV
 import plotnine as p9
 import numpy as np
 import pandas as pd
 import os
 # grid/contouring functions
 def make_grid(mat, n_grid = 80):
-    assert mat.shape[1] == 2
+    nrow, ncol = mat.shape
+    assert ncol == 2
     mesh_args = mat.apply(
         lambda x: np.linspace(min(x),max(x), n_grid), axis=0)
     mesh_tup = np.meshgrid(*[mesh_args[x] for x in mesh_args])

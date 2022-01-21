@@ -78,6 +78,9 @@ Extra credit:
 - if you compute and plot ROC curves for each (test fold, algorithm)
   combination. Make sure each algorithm is drawn in a different color,
   and there is a legend that the reader can use to read the figure.
+- try two different versions of nearest neighbors, with and without
+  StandardScaler(), and save/print/plot test accuracy values for both
+  versions.
 - if you compute area under the ROC curve (AUC) and include
   that as another evaluation metric (in a separate panel/plot) to
   compare the test accuracy of the algorithms.
@@ -90,3 +93,5 @@ Extra credit:
   need to use DF.loc[rows,cols] or DF.iloc[rows,cols]. Also KFold
   examples may be useful,
   https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html
+- What is the difference betwen loc and iloc? loc uses the index
+  (row/column names) whereas iloc uses integer row/column numbers.
