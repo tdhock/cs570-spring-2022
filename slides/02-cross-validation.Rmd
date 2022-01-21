@@ -1,12 +1,15 @@
 ---
 title: "Introduction to supervised machine learning, k-fold cross-validation, nearest neighbors, and linear models"
 author: "Toby Dylan Hocking"
-output: beamer_presentation
+output: 
+  beamer_presentation:
+    dev: png
 ---
 
 ```{r opts, echo=FALSE}
 knitr::opts_chunk$set(
   echo=FALSE, results=FALSE,
+  dpi=200,
   fig.width=10,
   fig.height=6)
 Sys.setenv(RETICULATE_PYTHON=if(.Platform$OS.type=="unix")
@@ -67,6 +70,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 import plotnine as p9
+p9.options.figure_size=(4.5,2.5)
 import numpy as np
 import pandas as pd
 import os
@@ -196,7 +200,7 @@ zip_df
 
 ```{python out.height='75%'}
 gg = p9.ggplot()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -238,12 +242,12 @@ acc = neigh.score(feature_mat, label_vec)*100
 acc_df = pd.DataFrame({
     "accuracy_percent":acc,
     "label":f"train set accuracy = {acc}%",
-    "height_in":68.5,
+    "height_in":70,
     "weight_lb":147
 }, index=[0])
 gg = p9.ggplot()+\
     p9.theme_bw()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, "bottom":0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -354,31 +358,18 @@ for shuffle, random_state in (True,1), (False,None):
                 color="party"
             ),
             data=shuffle_df)+\
+        p9.scale_x_continuous(breaks=[68,72])+\
         p9.scale_color_manual(
             values=party_colors)+\
-        p9.theme(subplots_adjust={'right': 0.7})+\
+        p9.theme(subplots_adjust={'right': 0.65, "bottom":0.2, "top":0.9})+\
         p9.facet_grid("set ~ fold", labeller="label_both")
     shuffle_ggplots[shuffle] = gg
     fold_df_list.append(mixture_copy)
 set_df = pd.concat(set_df_list)
 fold_df = pd.concat(fold_df_list)
 
-# if we wanted to compare shuffle=True vs False.
 gg = p9.ggplot()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
-    p9.geom_point(
-        p9.aes(
-            x="height_in",
-            y="weight_lb",
-            color="party"
-        ),
-        data=fold_df)+\
-    p9.scale_color_manual(
-        values=party_colors)+\
-    p9.facet_grid("shuffle ~ fold", labeller="label_both")
-
-gg = p9.ggplot()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -388,6 +379,7 @@ gg = p9.ggplot()+\
         data=fold_df.query("shuffle==True"))+\
     p9.scale_color_manual(
         values=party_colors)+\
+    p9.scale_x_continuous(breaks=[68,72])+\
     p9.facet_grid(". ~ fold", labeller="label_both")
 show(gg)
 ```
@@ -416,7 +408,7 @@ gg = p9.ggplot()+\
         data=one_split)+\
     p9.scale_color_manual(
         values=party_colors)+\
-    p9.theme(subplots_adjust={'right': 0.7})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.facet_grid(". ~ set", labeller="label_both")
 show(gg)
 ```
@@ -449,7 +441,7 @@ def plot_neighbors(n_neighbors):
     return p9.ggplot()+\
         p9.ggtitle(f"{n_neighbors} nearest neighbors")+\
         p9.theme_bw()+\
-        p9.theme(subplots_adjust={'right': 0.8})+\
+        p9.theme(subplots_adjust={'right': 0.7, "top":0.8, "bottom":0.2})+\
         p9.facet_grid(". ~ set", labeller="label_both")+\
         p9.geom_point(
             p9.aes(
@@ -478,6 +470,7 @@ def plot_neighbors(n_neighbors):
                 y="weight_lb",
                 label="label"
             ),
+            size=6,
             data=acc_df)
 show(plot_neighbors(1))
 
@@ -546,7 +539,9 @@ show(plot_neighbors(100))
 ```{python}
 all_acc_df = pd.concat(all_acc_df_list)
 gg = p9.ggplot()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.8, 'bottom':0.2})+\
+    p9.scale_y_continuous(
+        name="Percent accuracy")+\
     p9.geom_line(
         p9.aes(
             x="n_neighbors",
