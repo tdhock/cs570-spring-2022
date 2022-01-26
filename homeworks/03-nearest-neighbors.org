@@ -12,10 +12,12 @@ This class should work just like sklearn.neighbors.KNeighborsClassifier.
 - predict(X=test_features) should compute a binary vector of predicted
   class labels. For each test data row, use numpy to compute the
   distances with all of the train data. Each distance is the square
-  root of the sum of squared differences over all features. Sort the
-  distances (numpy.argsort) to find the smallest n_neighbors
-  values. The predicted class should be the most frequent label among
-  the nearest n_neighbors.
+  root of the sum of squared differences over all features (you don't
+  have to take the square root though because it is a monotonic
+  transformation, does not change the ordering of the
+  observations). Sort the distances (numpy.argsort) to find the
+  smallest n_neighbors values. The predicted class should be the most
+  frequent label among the nearest n_neighbors.
 
 *** Class: MyCV
 
@@ -29,7 +31,7 @@ This class should work just like sklearn.model_selection.GridSearchCV.
   param_grid. For each, use fit(*subtrain_data) and
   predict(validation_features) methods of the estimator, then save the
   validation accuracy. For each parameter (n_neighbors) in param_grid
-  compute the mean test accuracy over the K splits. Finally, minimize
+  compute the mean test accuracy over the K splits. Finally, maximize
   the mean test accuracy to determine a best parameter (n_neighbors)
   to save in the best_params_ attribute.
 - predict(X=test_features) should use best_params_ to set
