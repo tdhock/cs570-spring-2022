@@ -15,6 +15,7 @@ zip_labels = zip01_df[0].to_numpy()
 dir(np.random)
 help(np.random.randint)
 help(np.random.set_state)
+np.random.seed(1)
 n_folds = 5
 fold_vec = np.random.randint(low=0, high=n_folds, size=zip_labels.size)
 test_fold = 0
