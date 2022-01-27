@@ -8,7 +8,8 @@ the one you used last week in scikit-learn.
 
 This class should work just like sklearn.neighbors.KNeighborsClassifier.
 - instantiate it with n_neighbors parameter.
-- fit(X=train_features, y=train_labels) method should store data.
+- fit(X=train_features, y=train_labels) method should store data as
+  members/attributes of that instance.
 - predict(X=test_features) should compute a binary vector of predicted
   class labels. For each test data row, use numpy to compute the
   distances with all of the train data. Each distance is the square
@@ -71,3 +72,16 @@ This class should work just like sklearn.model_selection.GridSearchCV.
   expected?
 
 *** FAQ
+
+- In python how to define methods of a class? Say for MyCV there
+  should be something like
+
+#+BEGIN_SRC python
+  class MyCV:
+      def fit(self, X, y):
+	  """This is a method. the first argument should be self."""
+	  self.train_features = X
+  my_instance = MyCV()
+  # This is how to call the method (self argument is omitted).
+  my_instance.fit(X=train_X, y=train_y)
+#+END_SRC
