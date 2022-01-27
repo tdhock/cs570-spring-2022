@@ -40,8 +40,9 @@ This class should work just like sklearn.model_selection.GridSearchCV.
 
 *** Experiments/application
 
-- Use the same experimental setup as last week, but add your MyCV +
-  MyKNN as a new algorithm to compare. 
+- Use the same experimental setup as last week (with 3-fold CV
+  train/test splits defined by KFold), but add your MyCV + MyKNN as a
+  new algorithm to compare.
 - Make sure to run experiments on both spam and zip data, and show a
   table of resulting test accuracy numbers, as well as a ggplot like
   last week.
