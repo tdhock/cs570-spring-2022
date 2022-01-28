@@ -8,7 +8,8 @@ the one you used last week in scikit-learn.
 
 This class should work just like sklearn.neighbors.KNeighborsClassifier.
 - instantiate it with n_neighbors parameter.
-- fit(X=train_features, y=train_labels) method should store data.
+- fit(X=train_features, y=train_labels) method should store data as
+  members/attributes of that instance.
 - predict(X=test_features) should compute a binary vector of predicted
   class labels. For each test data row, use numpy to compute the
   distances with all of the train data. Each distance is the square
@@ -41,20 +42,28 @@ This class should work just like sklearn.model_selection.GridSearchCV.
 *** Experiments/application
 
 - Use the same experimental setup as last week (with 3-fold CV
-  train/test splits defined by KFold), but add your MyCV + MyKNN as a
-  new algorithm to compare.
+  train/test splits defined by KFold, and with
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
+  your MyCV + MyKNN as a new algorithm to compare.
 - Make sure to run experiments on both spam and zip data, and show a
   table of resulting test accuracy numbers, as well as a ggplot like
-  last week.
+  last week. On the ggplot y axis there should be at least the
+  following algorithms: MyCV+MyKNN, featureless,
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV.
 - Does your implementation get similar test accuracy as scikit-learn?
   (it should!)
   
 *** Extra credit
 
-- Implement pipelines and scaling as well, similar to make_pipeline
-  and StandardScaler from scikit-learn. Add your method to the test
-  accuracy figure. Does your implementation get similar test accuracy
-  values?
+- Implement scaling as well, maybe similar to make_pipeline and
+  StandardScaler from scikit-learn. Add your method to the test
+  accuracy figure, so we should see scaled and unscaled as separate
+  algorithms on the test accuracy plot. How does your implementation
+  of scaled nearest neighbors compare to unscaled? Which is more
+  accurate? How do they compare to the scikit-learn versions? NOTE:
+  for some data sets (zip) you may have some features in the train set
+  which are constant (zero variance/sd). You can't divide by zero, so
+  instead just leave that feature alone (don't attempt to scale it).
 - Using the zip and/or spam data, implement a computational experiment
   that demonstrates adding noise features results in lower test
   accuracy, similar to the one shown in the class slides. Make a
@@ -63,3 +72,16 @@ This class should work just like sklearn.model_selection.GridSearchCV.
   expected?
 
 *** FAQ
+
+- In python how to define methods of a class? Say for MyCV there
+  should be something like
+
+#+BEGIN_SRC python
+  class MyCV:
+      def fit(self, X, y):
+	  """This is a method. the first argument should be self."""
+	  self.train_features = X
+  my_instance = MyCV()
+  # This is how to call the method (self argument is omitted).
+  my_instance.fit(X=train_X, y=train_y)
+#+END_SRC
