@@ -7,7 +7,8 @@ the one you used last week in scikit-learn.
 *** Class: MyKNN
 
 This class should work just like sklearn.neighbors.KNeighborsClassifier.
-- instantiate it with n_neighbors parameter.
+- instantiate it with n_neighbors parameter, which should be stored as
+  an attribute of that instance.
 - fit(X=train_features, y=train_labels) method should store data as
   members/attributes of that instance.
 - predict(X=test_features) should compute a binary vector of predicted
@@ -22,7 +23,10 @@ This class should work just like sklearn.neighbors.KNeighborsClassifier.
 
 *** Class: MyCV
 
-This class should work just like sklearn.model_selection.GridSearchCV.
+This class should work just like
+sklearn.model_selection.GridSearchCV. In other words, it should do
+best parameter selection via cross-validation for any estimator (there should
+be no code that is specific to nearest neighbors).
 - instantiation: MyCV(estimator=MyKNN(), param_grid={'n_neighbors':range(20)}, cv=5)
 - fit(X=train_features, y=train_labels) should compute the best number
   of neighbors using K-fold cross-validation, with the number of folds
@@ -33,11 +37,13 @@ This class should work just like sklearn.model_selection.GridSearchCV.
   predict(validation_features) methods of the estimator, then save the
   validation accuracy. For each parameter (n_neighbors) in param_grid
   compute the mean test accuracy over the K splits. Finally, maximize
-  the mean test accuracy to determine a best parameter (n_neighbors)
-  to save in the best_params_ attribute.
-- predict(X=test_features) should use best_params_ to set
-  attributes/parameters (n_neighbors) of estimator, then run
-  estimator.predict(X=test_features).
+  the mean test accuracy to determine a best parameter dictionary (key
+  should be n_neighbors) to save in the best_params_
+  attribute. Finally use setattr with the key in best_params_ to set
+  the corresponding attribute of the estimator.
+- predict(X=test_features) runs estimator.predict(X=test_features) --
+  the best number of neighbors should already have been set as an
+  attribute of estimator, at the end of the fit method.
 
 *** Experiments/application
 

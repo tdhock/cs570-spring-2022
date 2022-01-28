@@ -54,6 +54,8 @@ for test_i in range(n_test):
     distance_vec.shape
     sorted_indices = distance_vec.argsort()
     n_neighbors = 301
+    if test_i == 5:
+        pdb.set_trace()
     nearest_indices = sorted_indices[:n_neighbors]
     nearest_labels = set_labels["train"][nearest_indices]
     # 3. predicted probability and class
@@ -75,3 +77,14 @@ class MyCV:
 my_instance = MyCV("foo", 5)
 my_instance.estimator
 my_instance.param_grid
+my_instance.some_random_attr = 6
+
+s = """
+
+this is
+
+a python
+
+string
+
+"""
