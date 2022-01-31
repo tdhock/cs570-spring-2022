@@ -40,7 +40,9 @@ that week, 11:59PM.
 - Jan 24, [[file:homeworks/03-nearest-neighbors.org][Homework week 3]]: nearest neighbors.
   - [[file:slides/03-nearest-neighbors.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
-- Jan 31, Homework week 4: linear model with early stopping regularization.
+- Jan 31, [[file:homeworks/04-gradient-descent-logistic-regression.org][Homework week 4]]: linear model with early stopping
+  regularization.
+  - [[file:slides/04-linear-models.Rmd][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
 - Feb 7, week 5 review and exam.
 - Feb 14, Homework week 6: backpropagation algorithm, training neural
