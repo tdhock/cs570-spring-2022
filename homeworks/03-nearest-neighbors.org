@@ -36,8 +36,8 @@ be no code that is specific to nearest neighbors).
   param_grid. For each, use fit(*subtrain_data) and
   predict(validation_features) methods of the estimator, then save the
   validation accuracy. For each parameter (n_neighbors) in param_grid
-  compute the mean test accuracy over the K splits. Finally, maximize
-  the mean test accuracy to determine a best parameter dictionary (key
+  compute the mean validation accuracy over the K splits. Finally, maximize
+  the mean validation accuracy to determine a best parameter dictionary (key
   should be n_neighbors) to save in the best_params_
   attribute. Finally use setattr with the key in best_params_ to set
   the corresponding attribute of the estimator.

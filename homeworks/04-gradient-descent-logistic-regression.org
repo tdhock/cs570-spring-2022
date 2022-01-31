@@ -52,8 +52,8 @@ should be no code that is specific to linear models).
   param_grid. For each, use fit(*subtrain_data) and
   predict(validation_features) methods of the estimator, then save the
   validation accuracy. For each hyper-parameter dictionary in
-  param_grid compute the mean test accuracy over the K
-  splits. Finally, maximize the mean test accuracy to determine a best
+  param_grid compute the mean validation accuracy over the K
+  splits. Finally, maximize the mean validation accuracy to determine a best
   parameter dictionary to save in the best_params_ attribute. Finally
   use setattr with the key in best_params_ to set the corresponding
   attribute of the estimator.
@@ -62,9 +62,9 @@ should be no code that is specific to linear models).
   attribute of estimator, at the end of the fit method.
 
 After having coded these two classes, run MyCV+MyLogReg on both the
-spam and zip data sets. Make a plot of validation error as a function
-of number of iterations. For full credit your plot should show the
-expected U shape (if it does not, then increase the number of
+spam and zip data sets. Make a plot of mean validation error as a
+function of number of iterations. For full credit your plot should
+show the expected U shape (if it does not, then increase the number of
 max_iterations values in param_grid). According to your plot, what is
 the best number of iterations for spam? For zip?
 
