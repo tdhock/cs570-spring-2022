@@ -131,6 +131,7 @@ number of iterations for spam? For zip?
   matrix-vector operations to get substantial speedups.
 - What values should I use for the number of iterations and step size?
   I can't tell you what values to use, but you need to try several
-  values until you see the train log loss always going down, and the
+  values until you see the subtrain log loss always going down, and the
   validation should be U-shaped (go down and then up again). You can
   use different values for each data set.
+
