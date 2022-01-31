@@ -6,8 +6,6 @@ with early stopping regularization to make predictions on several real
 data sets. There are two options, and you only need to implement one
 of the two, but you can implement both for extra credit.
 
-** Option 1: MyLogReg + MyCV
-
 *** Algorithm/function: MyLogReg
 The goal of this exercise is to code the gradient descent algorithm
 from scratch using numpy.
@@ -38,9 +36,9 @@ from scratch using numpy.
   predicted values from decision_function, and obtain a vector of
   predicted classes (1 if predicted value is positive, 0 otherwise).
 
-*** Class: MyCV
+** Option 1: MyLogReg + MyCV
 
-This class should work just like sklearn.model_selection.GridSearchCV
+The MyCV class should work just like sklearn.model_selection.GridSearchCV
 (OK to use same code as last week). In other words, it should do best
 parameter selection via cross-validation for any estimator (there
 should be no code that is specific to linear models).
@@ -72,20 +70,29 @@ the best number of iterations for spam? For zip?
 
 ** Option 2: MyLogRegCV
 
-- This class should be similar to MyLogReg described above, but with
-  the following differences.
+The MyLogRegCV class should do a subtrain/validation split and compute
+the validation loss for each iteration of the gradient descent. This
+method should be faster than MyLogReg+MyCV.
+- You will need to modify MyLogReg so that it computes the logistic
+  loss with respect to the validation set (stored as an attribute or
+  an optional argument of the fit method).
 - It should implement its own cross-validation for determining the
   best number of iterations (should not be used with MyCV).
 - The fit(X=train_features, y=train_labels) method should input the
   entire train set, instead of the subtrain set. It should begin by
   splitting the data set into subtrain/validation sets. Then it should
-  run scaling and gradient descent on the subtrain set as in MyLogReg,
-  but in each iteration of the gradient descent for loop, you should
-  compute the logistic loss with respect to the validation set. At the
-  end the validation loss values for each iteration should be stored
-  as a DataFrame in the scores_ attribute, and the max_iterations
+  run MyLogReg().fit(X=subtrain_features, y=subtrain_labels), but in
+  each iteration of the gradient descent for loop, you should compute
+  the logistic loss with respect to the validation set. At the end the
+  validation loss values for each iteration should be stored as a
+  DataFrame in the scores_ attribute, and the best_iterations
   hyper-parameter attribute of the class should be set based on the
-  number of iterations which minimized the validation loss.
+  number of iterations which minimized the validation loss. Finally
+  you can run
+  MyLogReg(max_iterations=best_iterations).fit(X=train_features,
+  train_labels) and store the instance as an attribute, self.lr.
+- The decision_function/predict(X=test_features) methods should just
+  call the corresponding methods of self.lr.
 
 After having coded this class, run MyLogRegCV on both the spam and zip
 data sets. Make a plot of validation loss as a function of number of
