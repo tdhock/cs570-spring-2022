@@ -329,3 +329,68 @@ gg_abline = gg+p9.geom_abline(
     data=line_param_df)
 show(gg_abline)
 ```
+
+---
+
+# How are the coefficients learned?
+
+- Typically we use some version of gradient descent.
+- This algorithm requires definition of a differentiable loss function
+  to minimize on the train set.
+- For regression problems ($y\in\mathbb R$) we use the square loss,
+  $\ell(\beta + \mathbf w^T \mathbf x, y) = (\beta + \mathbf w^T \mathbf x-y)^2$.
+  
+```{python}
+pred_lim = 5
+pred_grid = np.linspace(-pred_lim, pred_lim)
+fun_dict = {
+    "logistic":lambda f, y: np.log(1+np.exp(-y*f)),
+    "square":lambda f, y: (y-f)**2,
+}
+def gg_loss(fun_name):
+    fun = fun_dict[fun_name]
+    loss_df = pd.concat([
+        pd.DataFrame({
+            "loss":fun(pred_grid, y),
+            "predicted_score":pred_grid,
+            "label":y,
+        }) for y in (-1,1)])
+    gg = p9.ggplot()+\
+        p9.facet_grid(". ~ label", labeller="label_both")+\
+        p9.theme_bw()+\
+        p9.theme(subplots_adjust={'right': 1, 'bottom':0.2})+\
+        p9.theme(figure_size=(4.5,2))+\
+        p9.geom_line(
+            p9.aes(
+                x="predicted_score",
+                y="loss",
+                ),
+            data=loss_df)+\
+        p9.scale_x_continuous(breaks=range(-pred_lim, pred_lim+1))
+    return gg
+show(gg_loss("square"))
+```
+
+---
+
+# Logistic regression and loss function
+
+- For classification problems ($y\in\{0,1\}$) we use the logistic
+  loss, resulting in a model called logistic regression.
+- Confusing name because it is actually for classification problems,
+  not regression problems! 
+- Labels are converted to $\tilde y\in \{-1,1\}$, then logistic loss
+  is $\ell(\beta + \mathbf w^T \mathbf x, y) = \log[1+\exp(-\tilde
+  y(\beta + \mathbf w^T \mathbf x))]$.
+  
+```{python}
+show(gg_loss("logistic"))
+
+```
+  
+---
+
+# Gradient Descent Algorithm
+  
+- Start with random initial coefficients near zero.
+- Compute the gradient, which is the direction of steepest ascent.
