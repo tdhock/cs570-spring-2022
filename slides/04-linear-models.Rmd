@@ -22,10 +22,10 @@ in_render <- !is.null(knitr::opts_knit$get('rmarkdown.pandoc.to'))
 # Supervised machine learning
 
 - Goal is to learn a function $f(\mathbf x)=y$ where $\mathbf
-  x$ is an
-  input/feature vector and $y$ is an output/label.
-- $x=$image of digit/clothing, $y\in\{0,\dots,9\}$ (ten classes).
-- $x=$vector of word counts in email, $y\in\{1,0\}$ (spam or not).
+  x\in\mathbb R^p$ is an input/feature vector and $y$ is an
+  output/label.
+- $\mathbf x=$image of digit/clothing, $y\in\{0,\dots,9\}$ (ten classes).
+- $\mathbf x=$vector of word counts in email, $y\in\{1,0\}$ (spam or not).
 - This week we will study linear models in depth.
   
 ---
@@ -39,8 +39,9 @@ import plotnine as p9
 # default in inches.
 p9.options.figure_size=(4.5,2.5)
 # for override in individual plots.
-p9.theme(figure_size=(4.5,2.5))
+# p9.theme(figure_size=(4.5,2.5))
 import numpy as np
+np.set_printoptions(linewidth=55)
 import pandas as pd
 import os
 # grid/contouring functions
@@ -140,6 +141,7 @@ feature_mat = mixture_df.loc[:,col_name_vec != label_col_name]
 data_dict["mixture"] = (feature_mat, label_vec)
 pd.set_option("display.max_columns", 0)
 mixture_df
+
 ```
 
 ---
@@ -158,7 +160,7 @@ grid_df["prediction"] = neigh.predict(grid_mat)
 grid_df["party"] = number_to_party_vec(grid_df.prediction)
 gg = p9.ggplot()+\
     p9.theme_bw()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -196,7 +198,7 @@ grid_df["prediction"] = neigh.predict(grid_mat)
 grid_df["party"] = number_to_party_vec(grid_df.prediction)
 gg = p9.ggplot()+\
     p9.theme_bw()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -224,7 +226,7 @@ show(gg)
 
 ---
 
-# Linear model
+# Linear model predictions
 
 ```{python}
 from sklearn.linear_model import LogisticRegression
@@ -233,7 +235,7 @@ grid_df["prediction"] = lr.predict(grid_mat)
 grid_df["party"] = number_to_party_vec(grid_df.prediction)
 gg = p9.ggplot()+\
     p9.theme_bw()+\
-    p9.theme(subplots_adjust={'right': 0.8})+\
+    p9.theme(subplots_adjust={'right': 0.7, 'bottom':0.2})+\
     p9.geom_point(
         p9.aes(
             x="height_in",
@@ -263,15 +265,33 @@ show(gg)
 
 # What is a linear model?
 
-- Compute a score that measures how likely the feature vector is to be in the positive class.
-
-for loop over features
+- Compute a real-valued score that measures how likely the feature
+  vector is to be in the positive class. (predict positive class if
+  score greater than zero)
+- Parameters required in order to compute score must be learned from
+  the train data: weights $\mathbf w\in\mathbb R^p$ and intercept
+  $\beta\in\mathbb R$
+  (sometimes called regression coefficients in the statistics
+  literature).
+- The score is computed by multiplying each feature with a weight,
+  then adding them to the intercept: $f(\mathbf x)=\beta+\mathbf w^T \mathbf x$.
+  Pseudo-code:
+  
+```python
+def predict_score(feature_vec, weight_vec, intercept):
+  score = intercept
+  for weight, feature in zip(weight_vec, feature_vec):
+    score += weight * feature
+  return score
+```
 
 ---
 
-# linear model coefficients
+# Using learned coefficients to compute predictions
 
-```{python result=TRUE}
+```{python echo=TRUE, results=TRUE}
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression().fit(mix_features, mix_labels)
 lr.intercept_
 lr.coef_
 lr.decision_function(grid_mat)
@@ -279,3 +299,33 @@ lr.decision_function(grid_mat)
 ```
 
 --- 
+
+# Equations for plotting the decision boundary
+
+- The linear model decision boundary is defined by $f(\mathbf x)=
+  \beta + \mathbf w^T \mathbf x = 0$.
+- On one side of this line we predict positive, and on the other side
+  we predict negative.
+- For the mixture data set ($p=2$) this implies $\beta + w_1 x_1 + w_2
+  x_2 = 0$, and $x_2 = -(\beta+w_1 x_1)/w_2 = -\beta/w_2 - (w_1/w_2) x_1$.
+
+```{python echo=TRUE, results=TRUE}
+line_param_df = pd.DataFrame({
+    "slope":-lr.coef_[:,0]/lr.coef_[:,1],
+    "intercept":-lr.intercept_/lr.coef_[:,1]})
+line_param_df
+```
+
+---
+
+# Plotting the decision boundary with data and predictions
+
+```{python}
+gg_abline = gg+p9.geom_abline(
+    p9.aes(
+        slope="slope",
+        intercept="intercept",
+    ),
+    data=line_param_df)
+show(gg_abline)
+```
