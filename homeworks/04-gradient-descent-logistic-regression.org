@@ -6,7 +6,7 @@ with early stopping regularization to make predictions on several real
 data sets. There are two options, and you only need to implement one
 of the two, but you can implement both for extra credit.
 
-*** Algorithm/function: MyLogReg
+** Algorithm/function: MyLogReg
 The goal of this exercise is to code the gradient descent algorithm
 from scratch using numpy.
 - You should code a scikit-learn style class named MyLogReg.
@@ -36,7 +36,7 @@ from scratch using numpy.
   predicted values from decision_function, and obtain a vector of
   predicted classes (1 if predicted value is positive, 0 otherwise).
 
-** Option 1: MyLogReg + MyCV
+** Option 1: MyCV
 
 The MyCV class should work just like sklearn.model_selection.GridSearchCV
 (OK to use same code as last week). In other words, it should do best
@@ -118,7 +118,8 @@ number of iterations for spam? For zip?
   
 ** Extra credit
 
-- Implement both options instead of just one.
+- Implement both options instead of just one, and include both on your
+  test accuracy plot. Which is more accurate, or are they about the same?
 - In addition to plotting the validation loss/error as a function of
   the number of iterations, plot accuracy and/or Area Under the ROC
   Curve (AUC).
