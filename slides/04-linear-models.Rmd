@@ -413,7 +413,7 @@ $$ \mathcal L(\mathbf w,\beta)=\sum_{i=1}^n \ell(\beta + \mathbf w^T
   \mathcal L(\mathbf w, \beta) = \partial L(\mathbf w, \beta)/\partial \beta$.
 - $\nabla_{\mathbf w} \mathcal L:\mathbb R^{p+1}\rightarrow\mathbb
   R^p$ tells us how $\mathbf w$ is changing at the input coefficients,
-  $\nabla_\beta \mathcal L(\mathbf w, \beta) = [\partial L(\mathbf w,
+  $\nabla_{\mathbf w} \mathcal L(\mathbf w, \beta) = [\partial L(\mathbf w,
   \beta)/\partial w_1 \cdots \partial L(\mathbf w,
   \beta)/\partial w_p]$.
 
@@ -452,7 +452,14 @@ $$ \nabla \mathcal L(\mathbf w,\beta)=\sum_{i=1}^n \nabla \ell(\beta +
 
 $$\nabla_\beta L_i = \frac{\partial L_i}{\partial \beta} =
 \frac{\partial L_i}{\partial \hat y_i}
-\frac{\partial \hat y_i}{\partial \beta}.$$
+\frac{\partial \hat y_i}{\partial \beta} =
+\frac{\partial L_i}{\partial \hat y_i},\ 
+\nabla_{\mathbf w} L_i = 
+\frac{\partial L_i}{\partial \hat y_i}
+\nabla_{\mathbf w} \hat y_i =
+\frac{\partial L_i}{\partial \hat y_i}
+\mathbf x_i.
+$$
 
 ---
 
@@ -490,7 +497,7 @@ $$\frac{\partial L_i}{\partial \hat y_i} =
 \big(\exp[c_i]\big)
 \big(-y_i\big) =
 \frac{-y_i\exp(c_i)}{1+\exp(c_i)} =
-\frac{-y_i}{1+\exp(-c_i)}.$$
+\frac{-y_i}{1+\exp(y_i\hat y_i)}.$$
 
 ---
 
@@ -736,10 +743,10 @@ show(show_it(80))
 - Subtrain set used to compute gradients and learn model **parameters**
   ($\beta,\mathbf w$).
 - Validation set used to learn **hyper-parameter**, number of iterations
-  $k$. The best one minimizes error (maximizes accuracy) with respect
+  $k$. The best one minimizes error/loss (maximizes accuracy) with respect
   to validation set.
-- Plot subtrain and validation loss as a function of iteration $k$,
-  you should see subtrain always decreasing, and validation U shape.
+- Plot subtrain and validation loss as a function of iteration $k$:
+  subtrain always decreasing, and validation U shape.
   
 ---
 
