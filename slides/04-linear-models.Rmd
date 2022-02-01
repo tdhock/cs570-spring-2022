@@ -410,11 +410,12 @@ $$ \mathcal L(\mathbf w,\beta)=\sum_{i=1}^n \ell(\beta + \mathbf w^T
   loss with respect to the optimization variables,
 - $\nabla_\beta \mathcal L:\mathbb R^{p+1}\rightarrow\mathbb R$ tells
   us how $\beta$ is changing at the input coefficients, $\nabla_\beta
-  \mathcal L(\mathbf w, \beta) = \partial L(\mathbf w, \beta)/\partial \beta$.
+  \mathcal L(\mathbf w, \beta) = \partial \mathcal L(\mathbf w, \beta)/\partial \beta$.
 - $\nabla_{\mathbf w} \mathcal L:\mathbb R^{p+1}\rightarrow\mathbb
   R^p$ tells us how $\mathbf w$ is changing at the input coefficients,
-  $\nabla_{\mathbf w} \mathcal L(\mathbf w, \beta) = [\partial L(\mathbf w,
-  \beta)/\partial w_1 \cdots \partial L(\mathbf w,
+  $\nabla_{\mathbf w} \mathcal L(\mathbf w, \beta) = [\partial
+  \mathcal L(\mathbf w,
+  \beta)/\partial w_1 \cdots \partial \mathcal L(\mathbf w,
   \beta)/\partial w_p]$.
 
 ---
