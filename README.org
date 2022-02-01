@@ -43,7 +43,7 @@ that week, 11:59PM.
 - Jan 31, [[file:homeworks/04-gradient-descent-logistic-regression.org][Homework week 4]]: linear model with early stopping
   regularization.
   - [[file:slides/04-linear-models.pdf][Slides]].
-  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]].
+  - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]], [[https://www.deeplearningbook.org/contents/numerical.html][DL4.3]]. 
 - Feb 7, week 5 review and exam.
 - Feb 14, Homework week 6: backpropagation algorithm, training neural
   networks from scratch.
