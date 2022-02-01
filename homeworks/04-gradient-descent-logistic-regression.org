@@ -62,8 +62,9 @@ should be no code that is specific to linear models).
   attribute of estimator, at the end of the fit method.
 
 After having coded these two classes, run MyCV+MyLogReg on both the
-spam and zip data sets. Make a plot of mean validation error as a
-function of number of iterations. For full credit your plot should
+spam and zip data sets. Make a plot of mean validation error rate as a
+function of number of iterations (note that error rate is 1-accuracy
+rate, both vary between 0 and 1). For full credit your plot should
 show the expected U shape (if it does not, then increase the number of
 max_iterations values in param_grid). According to your plot, what is
 the best number of iterations for spam? For zip?
@@ -122,7 +123,8 @@ number of iterations for spam? For zip?
   test accuracy plot. Which is more accurate, or are they about the same?
 - In addition to plotting the validation loss/error as a function of
   the number of iterations, plot accuracy and/or Area Under the ROC
-  Curve (AUC).
+  Curve (AUC). Does the minimum of validation loss/error happen at the
+  same number of iterations as the maximum of accuracy and/or AUC?
   
 ** FAQ
 
