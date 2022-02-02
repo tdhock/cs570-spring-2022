@@ -1,5 +1,5 @@
 ---
-title: "Linear models"
+title: "Linear models with early stopping regularization"
 author: "Toby Dylan Hocking"
 output: 
   beamer_presentation:
@@ -732,6 +732,14 @@ show(show_it(80))
 
 ---
 
+# Interactive visualization of gradient descent for regression
+
+http://ml.nau.edu/viz/2022-02-02-gradient-descent-regression/
+
+![](04-gradient-descent-regression.png){width=100%}
+
+---
+
 # Early stopping regularization
 
 - Goal is to have good predictions on held-out data (test set).
@@ -910,6 +918,48 @@ $$ \max_{\beta,\mathbf w} \sum_{i=1}^n
 \log[1-s(\beta+\mathbf w^T\mathbf x_i)]I[y_i=-1].
 $$
 
+---
+
+# Why don't we just maximize the accuracy?
+
+- Accuracy is number/percent of correctly predicted labels.
+- Error is number/percent of incorrectly predicted labels (also called
+  zero-one loss).
+- Zero-one loss can not be used for learning (gradient is zero),
+  but logistic loss is a decent approximation (and has non-zero gradient).
+
+```{python}
+pred_lim = 5
+pred_grid = np.linspace(-pred_lim, pred_lim)
+loss_dict = {
+    "logistic":lambda f, y: np.log(1+np.exp(-y*f)),
+    "zero-one":lambda f, y: np.where(f>0, 1, -1)!=y,
+}
+loss_df_list = []
+for loss_name, loss_fun in loss_dict.items():
+    for y in (-1,1):
+        loss_df_list.append(pd.DataFrame({
+            "loss_name":loss_name,
+            "loss_value":loss_fun(pred_grid, y),
+            "predicted_score":pred_grid,
+            "label":y,
+        }))
+loss_df = pd.concat(loss_df_list)
+gg = p9.ggplot()+\
+    p9.facet_grid(". ~ label", labeller="label_both")+\
+    p9.theme_bw()+\
+    p9.theme(subplots_adjust={'right': 1, 'bottom':0.2})+\
+    p9.theme(figure_size=(4.5,2))+\
+    p9.geom_point(
+        p9.aes(
+            x="predicted_score",
+            y="loss_value",
+            color="loss_name",
+            ),
+        data=loss_df)+\
+    p9.scale_x_continuous(breaks=range(-pred_lim, pred_lim+1))
+show(gg)
+```
 
 ---
 
