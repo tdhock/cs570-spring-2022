@@ -417,6 +417,23 @@ $$ \mathcal L(\mathbf w,\beta)=\sum_{i=1}^n \ell(\beta + \mathbf w^T
   \mathcal L(\mathbf w,
   \beta)/\partial w_1 \cdots \partial \mathcal L(\mathbf w,
   \beta)/\partial w_p]$.
+  
+---
+
+# Brief review of some facts from calculus
+
+- Why do we need to do calculus? Because we need to compute partial
+  derivatives / gradients to implement our learning algorithm!
+- $d/dx\ y = dy/dx$ is the derivative of $y$ with respect to $x$.
+- Constant: $d/dx\ a = 0. 
+- Polynomial: $d/dx\  x^a = a x^{a-1}$. (including linear, $a=1$)
+- Logarithm: $d/dx \log x = 1/x$.
+- Exponential: $d/dx \exp x = \exp x$.
+- Linearity: $d/dx [g(x) + h(x)] = d/dx\ g(x) + d/dx\ h(x)$.
+- Chain rule: if $z = g(x)$ and $y = h(g(x)) = h(z)$ then we have
+
+$$ \frac{dy}{dx} = \frac{dy}{dz} \frac{dz}{dx} = h'(z) g'(x) =
+h'(g(x)) g'(x). $$
 
 ---
 
@@ -870,7 +887,6 @@ show(gg)
   prediction in the validation set.
 - The optimal hyper-parameter values are specific to each data set
   (you always need to do a subtrain/validation split).
-
 
 ---
 
