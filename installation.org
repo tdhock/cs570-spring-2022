@@ -6,6 +6,8 @@ install/use [[https://docs.conda.io/projects/conda/en/latest/user-guide/install/
   want to learn, [[http://emacsrocks.com/][here are some very informative "emacs rocks"
   screencasts which show the power of emacs]]).
 
+** Instructions for conda (all students)
+
 After [[https://docs.conda.io/en/latest/miniconda.html][downloading conda]] you can install all packages for this class,
 same versions that I use, via:
 
@@ -34,9 +36,26 @@ conda activate cs570s22
 After activation, that environment will be used for new python
 processes, looking for python modules, etc.
 
+** Python support in emacs (only students who want to use emacs)
+
 To get python support in emacs I had to install emacs packages
-(elpy,conda) via M-x package-list-packages.  To tell emacs where my
-conda environments are, I put the following in my ~/.emacs file:
+(elpy,conda). To do that first you need to put the following in your
+~/.emacs file to tell it to download packages from the MELPA
+repository,
+
+#+BEGIN_SRC elisp
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+#+END_SRC
+
+Then run M-x package-list-packages (M-x means hold down the option/alt
+key and type x) to see a list of packages you can install. Search for
+elpy and conda (maybe with C-s, meaning hold down control key and type
+s), mark for installation by typing i, then type x to install all
+packages marked for installation. Finally to tell emacs to use elpy
+with python code, and my conda environments, I put the following in my
+~/.emacs file:
 
 #+begin_src elisp
 (elpy-enable)

@@ -6,9 +6,10 @@ with early stopping regularization to make predictions on several real
 data sets. There are two options, and you only need to implement one
 of the two, but you can implement both for extra credit.
 
-** Algorithm/function: MyLogReg
+** Class: MyLogReg
 The goal of this exercise is to code the gradient descent algorithm
-from scratch using numpy.
+from scratch using numpy. This class is required for both option 1 and
+2 below.
 - You should code a scikit-learn style class named MyLogReg.
 - It should have attributes max_iterations and step_size which control
   the gradient descent algorithm.
@@ -107,10 +108,13 @@ number of iterations for spam? For zip?
 - Use the same experimental setup as last week (with 3-fold CV
   train/test splits defined by KFold, and with
   GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
-  your new algorithm to compare.
+  your new algorithm to compare. 
 - Make sure to run experiments on both spam and zip data, and show a
   table of resulting test accuracy numbers, as well as a ggplot like
-  last week. On the ggplot y axis there should be at least the
+  last week. When you compute accuracy make sure that your
+  labels/predictions are both either 0/1 or -1/1! If predictions are
+  -1/1 and labels are 0/1 then all negative labels will be falsely
+  incorrect! On the ggplot y axis there should be at least the
   following algorithms: featureless,
   GridSearchCV+KNeighborsClassifier, LogisticRegressionCV, your new
   algorithm (either MyLogRegCV or MyLogReg+MyCV).
