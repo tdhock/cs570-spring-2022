@@ -425,7 +425,7 @@ $$ \mathcal L(\mathbf w,\beta)=\sum_{i=1}^n \ell(\beta + \mathbf w^T
 - Why do we need to do calculus? Because we need to compute partial
   derivatives / gradients to implement our learning algorithm!
 - $d/dx\ y = dy/dx$ is the derivative of $y$ with respect to $x$.
-- Constant: $d/dx\ a = 0. 
+- Constant: $d/dx\ a = 0$. 
 - Polynomial: $d/dx\  x^a = a x^{a-1}$. (including linear, $a=1$)
 - Logarithm: $d/dx \log x = 1/x$.
 - Exponential: $d/dx \exp x = \exp x$.
@@ -905,6 +905,10 @@ coefficients on the original scale.
 - Let $m_j,s_j$ be the mean/sd of each column $j$.
 - Let $\tilde {\mathbf{ w}},\tilde\beta$ be the parameters learned using
   the scaled inputs.
+- If $S^{-1}=\text{Diag}(1/s_1,\dots,1/s_p)$ then predictions are
+$f(\tilde{\mathbf x})=
+\tilde{\mathbf w}^T\tilde{\mathbf x} +\tilde{\beta} =
+\tilde{\mathbf w}^T S^{-1} (\mathbf x-\mathbf m)+\tilde{\beta}$.
 - Then the parameters for unscaled inputs are $w_j=\tilde w_j/s_j$ for
   all features $j$ with positive variance, and $\beta=\tilde \beta -
   \sum_{j=1}^p \tilde w_j m_j/s_j$.
@@ -963,8 +967,9 @@ for loss_name, loss_fun in loss_dict.items():
 loss_df = pd.concat(loss_df_list)
 gg = p9.ggplot()+\
     p9.facet_grid(". ~ label", labeller="label_both")+\
+    p9.scale_x_continuous(breaks=np.arange(-5, 7, 2))+\
     p9.theme_bw()+\
-    p9.theme(subplots_adjust={'right': 1, 'bottom':0.2})+\
+    p9.theme(subplots_adjust={'right': 0.7, "bottom":0.2})+\
     p9.theme(figure_size=(4.5,2))+\
     p9.geom_point(
         p9.aes(
@@ -972,8 +977,7 @@ gg = p9.ggplot()+\
             y="loss_value",
             color="loss_name",
             ),
-        data=loss_df)+\
-    p9.scale_x_continuous(breaks=range(-pred_lim, pred_lim+1))
+        data=loss_df)
 show(gg)
 ```
 
