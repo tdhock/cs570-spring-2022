@@ -45,6 +45,10 @@ that week, 11:59PM.
   - [[file:slides/04-linear-models.pdf][Slides]], [[http://ml.nau.edu/viz/2022-02-02-gradient-descent-regression/][interactive figure showing gradient descent for regression]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]], [[https://www.deeplearningbook.org/contents/numerical.html][DL4.3]]. 
 - Feb 7, week 5 review and exam.
+  - Exam is 10 Feb 2022, in class.
+  - [[file:exams/exam1_practice.pdf][Practice exam PDF]].
+  - During the exam you are allowed to use one page of handwritten
+    notes.
 - Feb 14, Homework week 6: backpropagation algorithm, training neural
   networks from scratch.
 - Feb 21, Homework week 7: implementing a simple auto-grad system.
