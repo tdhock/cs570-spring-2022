@@ -1,0 +1,53 @@
+Backprop algorithm and training neural networks from scratch
+
+For this project you will be implementing a stochastic gradient
+descent algorithm for a neural network with several hidden layer. The
+goal of this project is to implement the backpropagation algorithm
+from scratch so you learn how it works.
+
+** Class: MyMLP (multi-layer perceptron)
+- __init__ method should store hyper-parameters, max_iterations,
+  batch_size, step_size, and units_per_layer (list or numpy array of
+  positive integers, first element should equal number of input
+  features, last element should be 1). Also initialize attribute
+  weight_mat_list to a list of numpy matrices with random values near
+  zero, each matrix being for one of the layer prediction functions in
+  the neural network.
+- compute_gradient(X=batch_features, y=batch_labels) method
+  should compute and return a list of numpy arrays representing the
+  gradient of all model parameters.
+  - forward part should compute predictions and store
+  intermediate unit values.
+  - compute loss given predictions and y.
+  - backward part should compute all gradients given loss and
+    intermediate unit values.
+- fit(X=subtrain_features, y=subtrain_labels) method should run
+  gradient descent, using the compute_gradient method on each batch.
+- decision_function(X=test_features) method should return a numpy
+  array of real number predicted scores given the current weights in
+  the neural network.
+- predict(X=test_features) method should return a numpy array of
+  predicted classes given the current weights in the neural network.
+
+** Hyper-parameter training options
+
+You can use either of the two options which were described in the last
+homework on linear models.
+
+** Experiments/application
+
+- Use similar experimental setup as last homework on linear models
+  (with 3-fold CV train/test splits defined by KFold, and with
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
+  your new algorithm to compare.
+- Make sure to run experiments on both spam and zip data. This time
+  make sure to scale the data sets before putting them into the
+  data_dict (so you don't have to worry about scaling in neural
+  network code). Show a table of resulting test accuracy numbers, as
+  well as a ggplot like in last homework. On the ggplot y axis there
+  should be at least the following algorithms: featureless,
+  GridSearchCV+KNeighborsClassifier, LogisticRegressionCV, your new
+  algorithm (either MyMLPCV or MyMLP+MyCV).
+- Does your implementation get similar test accuracy as scikit-learn,
+  or better?  (it should!)
+
