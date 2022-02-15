@@ -52,6 +52,7 @@ that week, 11:59PM.
 - Feb 14, [[file:homeworks/06-backprop.org][Homework week 6]]: backpropagation algorithm, training neural
   networks from scratch.
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]].
+  - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6]].
 - Feb 21, Homework week 7: implementing a simple auto-grad system.
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6.5]].
 - Feb 28, Homework week 8: training neural networks using torch.
