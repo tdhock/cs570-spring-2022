@@ -209,24 +209,58 @@ show(gg)
 # Loss for three classes
 
 ```{python}
-from_zero_to_one = np.linspace(0,1)
-zero_one_grid = make_grid(pd.DataFrame({
-    "pred_prob1":from_zero_to_one,
-    "pred_prob2":from_zero_to_one
-}))
-zero_one_grid["pred_prob0"] = 1-zero_one_grid.pred_prob1-zero_one_grid.pred_prob2
-zero_one_grid.query("pred_prob0 >= 0 & pred_prob0+pred_prob1+pred_prob2<=1")
-
+# equilateral triangle with one vertex at 0,0 another at xmax,0 and
+# another at xmax/2,ymax
+xmax = 1.0
+upper_x = xmax/2.0
+ymax = np.sqrt(xmax - upper_x**2)
+simplex_grid = make_grid(pd.DataFrame({
+    "x":np.linspace(0,xmax),
+    "y":np.linspace(0,ymax)
+}), n_grid=200)
+vertices_mat = np.array([
+    [xmax, 0, 1],
+    [upper_x, ymax, 1],
+    [0,0,1]
+])
+to_prob_mat = np.linalg.inv(vertices_mat)
+simplex_grid_mat = np.column_stack(
+    [simplex_grid, np.repeat(1, simplex_grid.shape[0])])
+simplex_prob_mat = np.matmul(simplex_grid_mat, to_prob_mat)
+keep = simplex_prob_mat.min(axis=1) >= 0
+keep_grid = pd.concat([
+    pd.DataFrame(simplex_prob_mat), simplex_grid
+], axis=1)[keep]
+loss_simplex_list = []
+loss_max = 5
+for label in range(3):
+    label_prob = keep_grid[label]
+    loss_vec = np.log(1/label_prob)
+    loss_only = pd.DataFrame({
+        "loss":np.where(loss_vec<loss_max, loss_vec, loss_max),
+        "label":label,
+    })
+    loss_grid = pd.concat([keep_grid.reset_index(), loss_only], axis=1)
+    loss_simplex_list.append(loss_grid)
+loss_simplex = pd.concat(loss_simplex_list)
 gg = p9.ggplot()+\
+    p9.facet_grid(". ~ label", labeller="label_both")+\
     p9.geom_tile(
         p9.aes(
-            x="pred_prob1",
-            y="pred_prob2",
-            fill="pred_prob0"
+            x="x",
+            y="y",
+            fill="loss",
             ),
-        data=zero_one_grid)+\
+        data=loss_simplex)+\
     p9.scale_fill_gradient(
         low="white",
-        high="red")
+        high="red")+\
+    p9.scale_x_continuous(
+        name="",
+        breaks=[])+\
+    p9.scale_y_continuous(
+        name="",
+        breaks=[])+\
+    p9.coord_equal()
 show(gg)
 ```
