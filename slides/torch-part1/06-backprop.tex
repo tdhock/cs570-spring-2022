@@ -67,6 +67,8 @@
     $f(x)=f^{(L)}[\cdots f^{(1)}[x] ]\in\mathbb R$.
   \item Linear model is special case with $L=1$ function, 0 hidden
     layers.
+  \item ``Deep'' learning means $L\geq 3$ functions, at least 2 hidden
+    layers.
   \end{itemize}
 \end{frame}
 
@@ -122,11 +124,15 @@ $u^{(1)},\dots, u^{(L-1)}\in\mathbb Z_+$ are positive integers
 (hyper-parameters that control the number of units in each hidden
 layer, and the size of the parameter matrices $W^{(l)}$).
 \begin{itemize}
+\item ``Units'' is a synonym for ``features'' and ``variables.''
+\item First and last layer are ``visible'' others are ``hidden.''
 \item First layer size $u^{(0)}$ is fixed to input size.
 \item Last layer size $u^{(L)}$ is fixed to output size.
 \item Number of layers and hidden layer sizes
   $u^{(1)},\dots, u^{(L-1)}$ must be chosen (by you).
 \item No hidden layers/units means $L=1$, linear model.
+\item  ``Deep'' learning means $L\geq 3$ functions, at least 2 hidden
+  layers.
 \end{itemize}
 \end{frame}
 
@@ -150,24 +156,36 @@ layer.
 
 \begin{frame}
   \frametitle{Network diagrams}
+  Neural network
+  diagrams show how each unit (node) is computed by applying the
+  weights (edges) to the values of the units at the previous layer.
 
 \includegraphics[width=\textwidth]{figure-architecture-reg20}
 \end{frame}
 
 \begin{frame}
   \frametitle{Network diagrams}
+  Neural network
+  diagrams show how each unit (node) is computed by applying the
+  weights (edges) to the values of the units at the previous layer.
 
 \includegraphics[width=\textwidth]{figure-architecture-oneOut}
 \end{frame}
 
 \begin{frame}
   \frametitle{Network diagrams}
+  Neural network
+  diagrams show how each unit (node) is computed by applying the
+  weights (edges) to the values of the units at the previous layer.
 
 \includegraphics[width=\textwidth]{figure-architecture-tenOut}
 \end{frame}
 
 \begin{frame}
   \frametitle{Network diagrams}
+  Neural network
+  diagrams show how each unit (node) is computed by applying the
+  weights (edges) to the values of the units at the previous layer.
 
 \includegraphics[width=\textwidth]{figure-architecture-fiveLayers}
 \end{frame}
