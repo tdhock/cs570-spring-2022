@@ -11,9 +11,10 @@ demonstrate how "automatic differentiation" systems work.
 
 Each instance of this class represents an initial node in the computation
 graph (not computed as a function of other nodes), with attributes
-- value: numpy array representing value computed at this node.
+- value: numpy array representing value computed at this node (created
+  at instantiation during __init__, explained below).
 - grad: numpy array representing gradient of the loss with respect to
-  this node.
+  this node (created during backward method, explained below).
 - You should be able to initialize via code like
 
 #+BEGIN_SRC python
@@ -30,14 +31,25 @@ labels = node(np.array([[-1, 1, 2]]).T)
 This class represents a node in the computation graph which is
 computed as a function of other nodes. This should be a virtual class,
 which means it should not be instantiated directly, but instead it
-should define methods that are used in sub-classes.
-- __init__
-- backward
+should define methods that are used in subclasses.
+- __init__ method should accept one or more node instances as
+  arguments, then assign them to attributes based on subclass-specific
+  input_names attribute (same length as expected number of arguments
+  to init method). Finally call self.forward() and save result in
+  value attribute.
+- backward() method should begin by calling self.gradient(), resulting
+  in a tuple of gradients (one for each item of input_name). Then save
+  each gradient as the grad attribute of the corresponding input node.
 
 ** Classes: mm,relu,loss
 
-- forward
-- gradient
+- should inherit from (be subclass of) operation.
+- should define input_names attribute as a tuple of names of input
+  nodes.
+- forward() method should return the value computed by this operation,
+  based on values in input nodes.
+- gradient() method should return tuple of gradients, one for each
+  input node.
 
 ** Class: AutoMLP (automatic multi-layer perceptron)
 
@@ -71,7 +83,7 @@ which uses the new node class and subclasses, as described above.
 
 ** Hyper-parameter training and diagnostic plot
 
-You can use either of the two options which were described in the last
+You can use either of the two options which were described in the 
 homework on linear models.
 - AutoMLPCV: a single class with a fit method that splits train into
   subtrain and validation sets, then computes loss with respect to
@@ -101,7 +113,7 @@ number of epochs for spam? For zip?
   well as a ggplot like in last homework. On the ggplot y axis there
   should be at least the following algorithms: featureless,
   GridSearchCV+KNeighborsClassifier, LogisticRegressionCV, your new
-  algorithm (either MyMLPCV or MyMLP+MyCV).
+  algorithm (either AutoMLPCV or AutoMLP+MyCV).
 - Does your implementation get similar test accuracy as scikit-learn,
   or better?  (it should!)
 
