@@ -6,7 +6,7 @@ goal of this project is to implement the backpropagation algorithm
 from scratch so you learn how it works.
 
 ** Class: MyMLP (multi-layer perceptron)
-- __init__ method should store hyper-parameters, max_iterations,
+- __init__ method should store hyper-parameters, max_epochs,
   batch_size, step_size, and units_per_layer (list or numpy array of
   positive integers, first element should equal number of input
   features, last element should be 1). Also initialize attribute
@@ -22,17 +22,33 @@ from scratch so you learn how it works.
   - backward part should compute all gradients given loss and
     intermediate unit values.
 - fit(X=subtrain_features, y=subtrain_labels) method should run
-  gradient descent, using the compute_gradient method on each batch.
+  gradient descent until max_epochs is reached. There should be two
+  for loops, first over epochs, then over batches. You should use the
+  compute_gradient method on each batch.
 - decision_function(X=test_features) method should return a numpy
   array of real number predicted scores given the current weights in
   the neural network.
 - predict(X=test_features) method should return a numpy array of
   predicted classes given the current weights in the neural network.
 
-** Hyper-parameter training options
+** Hyper-parameter training and diagnostic plot
 
 You can use either of the two options which were described in the last
 homework on linear models.
+- MyMLPCV: a single class with a fit method that splits train into
+  subtrain and validation sets, then computes loss with respect to
+  both sets at the end of each epoch.
+- MyMLP+MyCV: two different classes, one as described above (MyMLP),
+  and the other (MyCV) which handles hyper-parameter selection via
+  subtrain/validation splits, and should have no code specific to
+  neural networks.
+
+Whichever method you choose, run it on the full spam/zip data sets,
+and make a plot for each data set, of subtrain/validation loss as a
+function of number of epochs. For full credit your validation loss
+should show the expected U shape (if it does not, then you may need to
+change hyper-parameters). According to your plot, what is the best
+number of epochs for spam? For zip?
 
 ** Experiments/application
 
