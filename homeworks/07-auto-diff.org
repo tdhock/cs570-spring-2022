@@ -1,0 +1,107 @@
+Backprop algorithm and training neural networks from scratch
+
+Like last week, the goal is to implement a stochastic gradient descent
+algorithm for a neural network from scratch. Last week there was a
+monolithic compute_gradient method which contained all of the logic
+for the backpropagation algorithm. This week we will break the
+gradient computation into several different classes in order to
+demonstrate how "automatic differentiation" systems work.
+
+** Class: node
+
+Each instance of this class represents an initial node in the computation
+graph (not computed as a function of other nodes), with attributes
+- value: numpy array representing value computed at this node.
+- grad: numpy array representing gradient of the loss with respect to
+  this node.
+- You should be able to initialize via code like
+
+#+BEGIN_SRC python
+features = node(np.array([
+    [1, 2],
+    [2,3],
+    [1,5]
+]))
+labels = node(np.array([[-1, 1, 2]]).T)
+#+END_SRC
+
+** Class: operation
+
+This class represents a node in the computation graph which is
+computed as a function of other nodes. This should be a virtual class,
+which means it should not be instantiated directly, but instead it
+should define methods that are used in sub-classes.
+- __init__
+- backward
+
+** Classes: mm,relu,loss
+
+- forward
+- gradient
+
+** Class: AutoMLP (automatic multi-layer perceptron)
+
+This should be similar to what we did last week, except that instead
+of the compute_gradient method, there should be a take_step method
+which uses the new node class and subclasses, as described above.
+
+- __init__ method should store hyper-parameters, max_epochs,
+  batch_size, step_size, and units_per_layer (list or numpy array of
+  positive integers, first element should equal number of input
+  features, last element should be 1). Also initialize attribute
+  weight_mat_list to a list of node instances, each node value should
+  be a numpy matrix with random values near zero for one of the
+  initial layer prediction functions in the neural network.
+- take_step(X=batch_features, y=batch_labels) method should
+  - begin by creating node instances for X,y.
+  - use a for loop over layers to compute intermediate nodes.
+  - call backward() on the final node instance (mean loss) to compute
+    and store gradients in each node.
+  - use a for loop over nodes in weight_mat_list to update each
+    parameter matrix (take a step in the negative gradient direction).
+- fit(X=subtrain_features, y=subtrain_labels) method should run
+  gradient descent until max_epochs is reached. There should be two
+  for loops, first over epochs, then over batches. You should use the
+  take_step method on each batch.
+- decision_function(X=test_features) method should return a numpy
+  array of real number predicted scores given the current weights in
+  the neural network.
+- predict(X=test_features) method should return a numpy array of
+  predicted classes given the current weights in the neural network.
+
+** Hyper-parameter training and diagnostic plot
+
+You can use either of the two options which were described in the last
+homework on linear models.
+- AutoMLPCV: a single class with a fit method that splits train into
+  subtrain and validation sets, then computes loss with respect to
+  both sets at the end of each epoch.
+- AutoMLP+MyCV: two different classes, one as described above
+  (AutoMLP), and the other (MyCV) which handles hyper-parameter
+  selection via subtrain/validation splits, and should have no code
+  specific to neural networks.
+
+Whichever method you choose, run it on the full spam/zip data sets,
+and make a plot for each data set, of subtrain/validation loss as a
+function of number of epochs. For full credit your validation loss
+should show the expected U shape (if it does not, then you may need to
+change hyper-parameters). According to your plot, what is the best
+number of epochs for spam? For zip?
+
+** Experiments/application
+
+- Use similar experimental setup as last homework on linear models
+  (with 3-fold CV train/test splits defined by KFold, and with
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
+  your new algorithm to compare.
+- Make sure to run experiments on both spam and zip data. This time
+  make sure to scale the data sets before putting them into the
+  data_dict (so you don't have to worry about scaling in neural
+  network code). Show a table of resulting test accuracy numbers, as
+  well as a ggplot like in last homework. On the ggplot y axis there
+  should be at least the following algorithms: featureless,
+  GridSearchCV+KNeighborsClassifier, LogisticRegressionCV, your new
+  algorithm (either MyMLPCV or MyMLP+MyCV).
+- Does your implementation get similar test accuracy as scikit-learn,
+  or better?  (it should!)
+

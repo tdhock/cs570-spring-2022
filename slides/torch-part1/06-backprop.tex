@@ -425,5 +425,53 @@ backpropagation (0-3).
   \end{enumerate}
 \end{frame}
 
+\section{Automatic differentiation}
+
+\begin{frame}
+  \frametitle{Computation graph}
+  \begin{itemize}
+  \item Each node in the computation graph is a tensor (0d=scalar,
+    1d=vector, 2d=matrix, etc).
+  \item Each edge in the computation graph is an operation.
+  \item Only three operations needed: matrix multiply (\texttt{mm}),
+    non-linear activation (\texttt{act}), and computing loss given
+    predicted scores (\texttt{loss}).
+  \end{itemize}
+
+  \begin{tikzpicture}[->,>=latex,shorten >=1pt,auto,node distance=2.1cm,
+      thick,main node/.style={circle,draw}]
+    \node[main node] (h0) {$h^{(0)}$};
+    \node[main node] (W1) [below of=h0] {$W^{(1)}$};
+    \node (dots) [right of=h0] {$\dots$};
+    \node[main node] (hLm1) [right of=dots] {$h^{(L-1)}$};
+    \node[main node] (WL) [below of=hLm1] {$W^{(L)}$};
+    \node[main node] (aL) [right of=hLm1] {$a^{(L)}$};
+    \node[main node] (hL) [right of=aL] {$h^{(L)}$};
+    \node[main node] (y) [below of=hL] {$y$};
+    \node[main node] (J) [right of=hL] {$J$};
+    \path[every node/.style={font=\sffamily\small}]
+    (h0) edge node {\texttt{mm}} (dots)
+    (W1) edge [bend left] (dots)
+    (dots) edge node {\texttt{act}}  (hLm1)
+    (hLm1) edge node {\texttt{mm}} (aL)
+    (WL) edge [bend left] (aL)
+    (y) edge [bend left] (J)
+    (aL) edge node {\texttt{act}} (hL)
+    (hL) edge node {\texttt{loss}} (J)
+    ;
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Operations}
+  \begin{itemize}
+  \item Each operation should define __init__ and backward methods.
+  \item method __init__(node1, node2, ...) instantiates a new node in
+    the computation graph.
+  \item method backward() computes gradient and recursively calls
+    backward() on parents.
+  \end{itemize}
+\end{frame}
 
 \end{document}
