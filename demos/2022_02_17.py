@@ -53,10 +53,12 @@ for layer_i in range(1, len(units_per_layer)):
 
 # forward propagation.
 h_list = [ set_features["subtrain"] ]
+a_list = []
 for layer_i in range(1, len(units_per_layer)):
     prev_layer_h = h_list[layer_i-1]
     layer_weight_mat = weight_mat_list[layer_i-1].T
     layer_a = np.matmul(prev_layer_h, layer_weight_mat)
+    a_list.append(layer_a)
     if layer_i == len(units_per_layer)-1:
         layer_h = layer_a #identity activation for last layer
     else:
@@ -70,14 +72,15 @@ subtrain_labels = set_labels["subtrain"].reshape(layer_h.size, 1)
 grad_loss_last_h = -subtrain_labels/(
     1+np.exp(subtrain_labels * layer_h))
 grad_loss_last_h.shape
+grad_h = grad_loss_last_h
 for layer_i in range(len(units_per_layer)-1, 0, -1):
     # grad_a is nrow_batch x units_this_layer
-    if layer_i == len(units_per_layer)-1:
-        grad_a = np.repeat(
-            1, nrow*units_per_layer[layer_i]
-        ).reshape(nrow, units_per_layer[layer_i])
-    else:
-        grad_a = np.where(layer_h < 0, 0, 1)
+    layer_a = a_list[layer_i-1]
+    grad_act = np.where( #gradient of relu activation
+        layer_a < 0,
+        1 if layer_i == len(units_per_layer)-1 else 0,
+        1)
+    grad_a = grad_act * grad_h
     grad_w = TODO #rule 1.
     grad_h = TODO #rule 3.
     grad_w_list.append(grad_w) # at the beginning would be better

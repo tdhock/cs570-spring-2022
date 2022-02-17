@@ -370,9 +370,10 @@ backpropagation (0-3).
 \item[Rule 1] computes
   $\nabla_{W^{(l)}} J$ using $\nabla_{a^{(l)}} J$, for any $l\in\{1,\dots,L\}$
 \begin{eqnarray}
-  \nabla_{w_k^{(l)}} J
-  &=& \left(\nabla_{a^{(l)}} J\right)
-      \left( h^{(l-1)} \right)^T \label{eq:grad-loss-w}
+  \nabla_{W^{(l)}} J
+  &=& \left( h^{(l-1)} \right)^T
+      \left(\nabla_{a^{(l)}} J\right)
+       \label{eq:grad-loss-w}
 \end{eqnarray}
 \item[Rule 2] computes
   $\nabla_{a^{(l)}} J$ using $\nabla_{h^{(l)}} J$, for any $l\in\{1,\dots,L\}$.
@@ -392,6 +393,20 @@ backpropagation (0-3).
 \end{eqnarray}
 \end{description}
 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Implementation details}
+  \begin{itemize}
+  \item Previous slides explained computations for a single
+    observation, here we explain for a batch.
+  \item Each $h^{(l)},a^{(l)}$ and their gradients can be stored as a
+    matrix (nrow=batch size, ncol=$u^{(l)}$=number units in this layer).
+  \item Each $W^{(l)}$ and its gradient is a $u^{(l-1)}\times u^{(l)}$
+    matrix.
+  \item Matrix multiply features by weights to get next layer,
+    $a^{(l)}=h^{(l-1)} W^{(l)}$.
+  \end{itemize}
 \end{frame}
 
 
