@@ -24,7 +24,9 @@ from scratch so you learn how it works.
 - fit(X=subtrain_features, y=subtrain_labels) method should run
   gradient descent until max_epochs is reached. There should be two
   for loops, first over epochs, then over batches. You should use the
-  compute_gradient method on each batch.
+  compute_gradient method on each batch. Make sure batches are
+  randomly selected so that you have at least one positive and one
+  negative example/label in each batch.
 - decision_function(X=test_features) method should return a numpy
   array of real number predicted scores given the current weights in
   the neural network.
@@ -39,7 +41,8 @@ homework on linear models.
   subtrain and validation sets, then computes loss with respect to
   both sets at the end of each epoch.
 - MyMLP+MyCV: two different classes, one as described above (MyMLP),
-  and the other (MyCV) which handles hyper-parameter selection via
+  and the other (MyCV) which handles hyper-parameter selection (just
+  max_epochs, leave other hyper-parameters constant) via
   subtrain/validation splits, and should have no code specific to
   neural networks.
 
