@@ -89,10 +89,10 @@ which uses the new node class and subclasses, as described above.
 - take_step(X=batch_features, y=batch_labels) method should
   - begin by creating node instances for X,y.
   - use a for loop over layers to compute intermediate nodes using
-    operation subclasses. Note that this code is defining both the
+    Operation subclasses. Note that this code is defining both the
     forward and backward propagation via a computation graph, but the
     details of the gradient computations are abstracted away in the
-    operation subclasses.
+    Operation subclasses.
   - call backward() on the final node instance (mean loss) to compute
     and store gradients in each node. 
   - use a for loop over nodes in weight_mat_list to update each
