@@ -5,9 +5,16 @@ algorithm for a neural network from scratch. Last week there was a
 monolithic compute_gradient method which contained all of the logic
 for the backpropagation algorithm. This week we will break the
 gradient computation into several different classes in order to
-demonstrate how "automatic differentiation" systems work.
+demonstrate how "automatic differentiation" systems work. The
+advantage of such systems is "separation of concerns," which is a
+common theme in computer science. In this instance we separate the
+gradient computations into separate classes which represent operations
+for computing predictions, so that the person who writes the fit()
+method of the learning algorithm just needs to compose instances of
+these classes, and does not need to understand the details of the
+gradient computations.
 
-** Class: node
+** Class: InitialNode
 
 Each instance of this class represents an initial node in the computation
 graph (not computed as a function of other nodes), with attributes
@@ -18,15 +25,17 @@ graph (not computed as a function of other nodes), with attributes
 - You should be able to initialize via code like
 
 #+BEGIN_SRC python
-features = node(np.array([
-    [1, 2],
-    [2,3],
-    [1,5]
-]))
-labels = node(np.array([[-1, 1, 2]]).T)
+  import numpy as np
+  features = InitialNode(np.array([
+      [1, 2],
+      [2,3],
+      [1,5]
+  ]))
+  labels = InitialNode(np.array([[-1, 1, 2]]).T)
+  weight_node = InitialNode(weight_mat)
 #+END_SRC
 
-** Class: operation
+** Class: Operation
 
 This class represents a node in the computation graph which is
 computed as a function of other nodes. This should be a virtual class,
@@ -39,17 +48,30 @@ should define methods that are used in subclasses.
   value attribute.
 - backward() method should begin by calling self.gradient(), resulting
   in a tuple of gradients (one for each item of input_name). Then save
-  each gradient as the grad attribute of the corresponding input node.
+  each gradient as the grad attribute of the corresponding input
+  node. You can include error checking code to ensure that the shapes
+  of the value and grad are the same. Finally call backward method of
+  each input node, which results in a recursive call to compute
+  gradients for all nodes in the computation graph.
 
-** Classes: mm,relu,loss
+** Classes: mm,relu,logistic_loss
 
-- should inherit from (be subclass of) operation.
+- should inherit from (be subclass of) Operation.
 - should define input_names attribute as a tuple of names of input
   nodes.
 - forward() method should return the value computed by this operation,
-  based on values in input nodes.
+  based on values in input nodes. Will be called on instantiation, and
+  result saved in value attribute.
 - gradient() method should return tuple of gradients, one for each
-  input node.
+  input node. Will be called from within backward() method.
+- Usage should be as below:
+
+#+begin_src python
+  a_mat = mm(feature_mat, weight_mat)
+  h_mat = relu(a_mat)
+  loss_node = logistic_loss(a_mat, label_vec)
+  loss_node.backward()
+#+end_src
 
 ** Class: AutoMLP (automatic multi-layer perceptron)
 
@@ -66,15 +88,20 @@ which uses the new node class and subclasses, as described above.
   initial layer prediction functions in the neural network.
 - take_step(X=batch_features, y=batch_labels) method should
   - begin by creating node instances for X,y.
-  - use a for loop over layers to compute intermediate nodes.
+  - use a for loop over layers to compute intermediate nodes using
+    operation subclasses. Note that this code is defining both the
+    forward and backward propagation via a computation graph, but the
+    details of the gradient computations are abstracted away in the
+    operation subclasses.
   - call backward() on the final node instance (mean loss) to compute
-    and store gradients in each node.
+    and store gradients in each node. 
   - use a for loop over nodes in weight_mat_list to update each
     parameter matrix (take a step in the negative gradient direction).
 - fit(X=subtrain_features, y=subtrain_labels) method should run
   gradient descent until max_epochs is reached. There should be two
   for loops, first over epochs, then over batches. You should use the
-  take_step method on each batch.
+  take_step method on each batch. Optionally compute the
+  subtrain/validation loss at the end of each epoch.
 - decision_function(X=test_features) method should return a numpy
   array of real number predicted scores given the current weights in
   the neural network.

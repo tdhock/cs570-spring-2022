@@ -428,14 +428,33 @@ backpropagation (0-3).
 \section{Automatic differentiation}
 
 \begin{frame}
-  \frametitle{Computation graph}
+  \frametitle{Why automatic differentiation?}
+  \begin{itemize}
+  \item Also called ``auto-grad,'' short for automatic gradient.
+  \item People who design new neural network architectures and loss
+    functions (fit method of learner class) do not necessarily have
+    the expertise to compute the gradients.
+  \item Automatic differentiation allows ``separation of concerns.''
+  \item People who know how to compute gradients can implement classes
+    which encapsulate forward/backward computations for individual
+    operations (matrix multiplication, log, exp, etc).
+  \item Other people can use these classes to implement their neural
+    network, without having to know about the details of the
+    forward/backward computations (and no worries about coding
+    buggy/incorrect gradients).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Computation graph for multi-layer perceptron}
   \begin{itemize}
   \item Each node in the computation graph is a tensor (0d=scalar,
     1d=vector, 2d=matrix, etc).
-  \item Each edge in the computation graph is an operation.
+  \item Each edge in the computation graph is an operation (with
+    methods for forward/back-prop).
   \item Only three operations needed: matrix multiply (\texttt{mm}),
-    non-linear activation (\texttt{act}), and computing loss given
-    predicted scores (\texttt{loss}).
+    non-linear activation (\texttt{act}), and computing \texttt{loss} given
+    labels $y$ and predicted scores $a^{(L)}$.
   \end{itemize}
 
   \begin{tikzpicture}[->,>=latex,shorten >=1pt,auto,node distance=2.1cm,
@@ -446,9 +465,8 @@ backpropagation (0-3).
     \node[main node] (hLm1) [right of=dots] {$h^{(L-1)}$};
     \node[main node] (WL) [below of=hLm1] {$W^{(L)}$};
     \node[main node] (aL) [right of=hLm1] {$a^{(L)}$};
-    \node[main node] (hL) [right of=aL] {$h^{(L)}$};
-    \node[main node] (y) [below of=hL] {$y$};
-    \node[main node] (J) [right of=hL] {$J$};
+    \node[main node] (y) [below of=aL] {$y$};
+    \node[main node] (J) [right of=aL] {$J$};
     \path[every node/.style={font=\sffamily\small}]
     (h0) edge node {\texttt{mm}} (dots)
     (W1) edge [bend left] (dots)
@@ -456,22 +474,120 @@ backpropagation (0-3).
     (hLm1) edge node {\texttt{mm}} (aL)
     (WL) edge [bend left] (aL)
     (y) edge [bend left] (J)
-    (aL) edge node {\texttt{act}} (hL)
-    (hL) edge node {\texttt{loss}} (J)
+    (aL) edge node {\texttt{loss}} (J)
     ;
   \end{tikzpicture}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Operations}
+  \frametitle{Nodes in the computation graph}
   \begin{itemize}
-  \item Each operation should define __init__ and backward methods.
-  \item method __init__(node1, node2, ...) instantiates a new node in
-    the computation graph.
-  \item method backward() computes gradient and recursively calls
-    backward() on parents.
+  \item Each node in the computation graph can be represented by an
+    instance of a python class.
+  \item \texttt{value} attribute is a numpy array, result of forward
+    propagation, computed during instantiation.
+  \item \texttt{grad} attribute is a numpy array of same size,
+    gradient of loss with respect to this node, result of
+    back-propagation. 
+  \item Main idea is to link these instances together to form a
+    computation graph and \texttt{value} (forward pass),
+    then recursively compute \texttt{grad} (backward pass).
   \end{itemize}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Initial nodes in the computation graph}
+  \begin{itemize}
+  \item Initial node in the computation graph can be represented by an
+    instance of \texttt{InitialNode} class.
+  \item \texttt{value} attribute is a numpy array, 
+    stored on instantiation.
+  \item Main uses are wrapping training data and neural network
+    weights: \texttt{InitialNode(weight\_mat)},
+    \texttt{InitialNode(feature\_mat)},
+    \texttt{InitialNode(label\_vec)}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Derived nodes in the computation graph}
+  \begin{itemize}
+  \item \texttt{Operation} class represents a node in the computation
+    graph which is computed using other nodes.
+  \item On instantiation, stores input nodes and does forward
+    propagation.
+  \item Method backward() computes gradient and recursively calls
+    backward() on input nodes.
+  \item \texttt{Operation} is virtual so we only instantiate sub-classes:
+    \texttt{mm(features, weights)},
+    \texttt{relu(a\_mat)},
+    \texttt{logistic\_loss(a\_mat, label\_vec)}.
+  \item Sub-classes should define \texttt{forward} and
+    \texttt{gradient} methods which implement details of
+    forward/back-prop, results are stored as \texttt{value}/\texttt{grad}
+    attributes.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simple computation graph for linear model}
+  \begin{itemize}
+  \item Only two operations needed: matrix multiply (\texttt{mm}) and
+    computing loss given predicted scores (\texttt{loss}).
+  \item To implement the \texttt{loss} operation/class, you need to
+    know how to compute the gradient of the loss (maybe difficult for
+    complex loss functions).
+  \end{itemize}
+
+  \begin{tikzpicture}[->,>=latex,shorten >=1pt,auto,node distance=2.1cm,
+      thick,main node/.style={circle,draw}]
+    \node[main node] (h0) {$h^{(0)}$};
+    \node[main node] (W1) [below of=h0] {$W^{(1)}$};
+    \node[main node] (a1) [right of=h0] {$a^{(1)}$};
+    \node[main node] (y) [below of=a1] {$y$};
+    \node[main node] (J) [right of=a1] {$J$};
+    \path[every node/.style={font=\sffamily\small}]
+    (h0) edge node {\texttt{mm}} (a1)
+    (W1) edge [bend left] (a1)
+    (y) edge [bend left] (J)
+    (a1) edge node {\texttt{loss}} (J)
+    ;
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Detailed computation graph for linear model}
+  \begin{itemize}
+  \item Example: square loss $\ell(a^{(1)}, y) = (a^{(1)}-y)^2 = d^2$,
+  \item Mean squared error: $J = \sum_{i=1}^n \ell(a_i^{(1)}, y_i)/n=\sum_{i=1}^n s_i/n$.
+  \item More operations needed: matrix multiply (\texttt{mm}),
+    subtraction (\texttt{diff}), \texttt{square}, \texttt{mean}.
+  \item Each operation has a simple gradient (demo).
+  \end{itemize}
+
+  \begin{tikzpicture}[->,>=latex,shorten >=1pt,auto,node distance=2.1cm,
+      thick,main node/.style={circle,draw}]
+    \node[main node] (h0) {$h^{(0)}$};
+    \node[main node] (W1) [below of=h0] {$W^{(1)}$};
+    \node[main node] (a1) [right of=h0] {$a^{(1)}$};
+    \node[main node] (y) [below of=a1] {$y$};
+    \node[main node] (d) [right of=a1] {$d$};
+    \node[main node] (s) [right of=d] {$s$};
+    \node[main node] (J) [right of=s] {$J$};
+    \path[every node/.style={font=\sffamily\small}]
+    (h0) edge node {\texttt{mm}} (a1)
+    (W1) edge [bend left] (a1)
+    (y) edge [bend left] (d)
+    (a1) edge node {\texttt{diff}} (d)
+    (d) edge node {\texttt{square}} (s)
+    (s) edge node {\texttt{mean}} (J)
+    ;
+  \end{tikzpicture}
+
+\end{frame}
+
+
 
 \end{document}

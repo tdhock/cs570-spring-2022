@@ -54,6 +54,7 @@ that week, 11:59PM.
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6]].
 - Feb 21, [[file:homeworks/07-auto-diff.org][Homework week 7]]: implementing a simple auto-grad system.
+  - [[file:slides/torch-part1/06-backprop.pdf][Slides]], section Automatic differentiation.
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6.5]].
 - Feb 28, Homework week 8: training neural networks using torch.
 - Mar 7, week 9 review and exam.
