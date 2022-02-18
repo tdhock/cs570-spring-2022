@@ -59,7 +59,7 @@
   \item Have an input $\mathbf x\in\mathbb R^d$ -- a vector of $d$
     real numbers.
   \item And an output $y$ (real number: regression, integer ID:
-    classification).
+    classification, spam filtering, images of digits/clothing, etc).
   \item Want to learn a prediction function $f(\mathbf x) = y$ that
     will work on a new input.
   \item In a neural network (or multi-layer perceptron) with $L-1$
@@ -425,7 +425,7 @@ backpropagation (0-3).
     \end{cases} 
   \end{eqnarray*}
   Starting at current weights $\mathbf v=[-2, 1]$ and using gradient descent
-  with step size $\alpha=0.5$,   (show your work!)
+  with step size $\alpha=0.5$,   ($\mathcal L$ is total loss, show your work!)
 
   \begin{enumerate}
   \item For the full gradient method, there is one step. What is the
@@ -523,6 +523,28 @@ backpropagation (0-3).
     \texttt{InitialNode(feature\_mat)},
     \texttt{InitialNode(label\_vec)}.
   \end{itemize}
+
+  \begin{tikzpicture}[->,>=latex,shorten >=1pt,auto,node distance=2.1cm,
+      thick,main node/.style={circle,draw}]
+    \node[main node, fill=orange] (h0) {$h^{(0)}$};
+    \node[main node, fill=orange] (W1) [below of=h0] {$W^{(1)}$};
+    \node (dots) [right of=h0] {$\dots$};
+    \node[main node] (hLm1) [right of=dots] {$h^{(L-1)}$};
+    \node[main node, fill=orange] (WL) [below of=hLm1] {$W^{(L)}$};
+    \node[main node] (aL) [right of=hLm1] {$a^{(L)}$};
+    \node[main node, fill=orange] (y) [below of=aL] {$y$};
+    \node[main node] (J) [right of=aL] {$J$};
+    \path[every node/.style={font=\sffamily\small}]
+    (h0) edge node {\texttt{mm}} (dots)
+    (W1) edge [bend left] (dots)
+    (dots) edge node {\texttt{act}}  (hLm1)
+    (hLm1) edge node {\texttt{mm}} (aL)
+    (WL) edge [bend left] (aL)
+    (y) edge [bend left] (J)
+    (aL) edge node {\texttt{loss}} (J)
+    ;
+  \end{tikzpicture}
+
 \end{frame}
 
 \begin{frame}
@@ -603,6 +625,13 @@ backpropagation (0-3).
 
 \end{frame}
 
-
+\begin{frame}
+  \frametitle{Possible exam questions}
+  \begin{itemize}
+  \item Given a computation graph, and values for initial nodes,
+    compute \texttt{value} in each derived node by hand (forward
+    propagation), then compute \texttt{grad} (back-prop).
+  \end{itemize}
+\end{frame}
 
 \end{document}
