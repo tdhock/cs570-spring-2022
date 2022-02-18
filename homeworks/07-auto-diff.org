@@ -26,12 +26,12 @@ graph (not computed as a function of other nodes), with attributes
 
 #+BEGIN_SRC python
   import numpy as np
-  features = InitialNode(np.array([
+  feature_node = InitialNode(np.array([
       [1, 2],
       [2,3],
       [1,5]
   ]))
-  labels = InitialNode(np.array([[-1, 1, 2]]).T)
+  label_node = InitialNode(np.array([[-1, 1, 2]]).T)
   weight_node = InitialNode(weight_mat)
 #+END_SRC
 
@@ -67,23 +67,24 @@ should define methods that are used in subclasses.
 - Usage should be as below:
 
 #+begin_src python
-  a_mat = mm(feature_mat, weight_mat)
-  h_mat = relu(a_mat)
-  loss_node = logistic_loss(a_mat, label_vec)
-  loss_node.backward()
+  a_node = mm(feature_node, weight_node)
+  h_node = relu(a_node)
+  loss_node = logistic_loss(a_node, label_node)
+  loss_node.backward() #assigns grad attributes.
+  print(weight_node.grad) #should be defined by now.
 #+end_src
 
 ** Class: AutoMLP (automatic multi-layer perceptron)
 
 This should be similar to what we did last week, except that instead
 of the compute_gradient method, there should be a take_step method
-which uses the new node class and subclasses, as described above.
+which uses the new node classes, as described above.
 
 - __init__ method should store hyper-parameters, max_epochs,
   batch_size, step_size, and units_per_layer (list or numpy array of
   positive integers, first element should equal number of input
   features, last element should be 1). Also initialize attribute
-  weight_mat_list to a list of node instances, each node value should
+  weight_node_list to a list of node instances, each node value should
   be a numpy matrix with random values near zero for one of the
   initial layer prediction functions in the neural network.
 - take_step(X=batch_features, y=batch_labels) method should
@@ -95,7 +96,7 @@ which uses the new node class and subclasses, as described above.
     Operation subclasses.
   - call backward() on the final node instance (mean loss) to compute
     and store gradients in each node. 
-  - use a for loop over nodes in weight_mat_list to update each
+  - use a for loop over nodes in weight_node_list to update each
     parameter matrix (take a step in the negative gradient direction).
 - fit(X=subtrain_features, y=subtrain_labels) method should run
   gradient descent until max_epochs is reached. There should be two
