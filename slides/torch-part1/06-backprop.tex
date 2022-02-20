@@ -404,8 +404,14 @@ backpropagation (0-3).
     matrix (nrow=batch size, ncol=$u^{(l)}$=number units in this layer).
   \item Each $W^{(l)}$ and its gradient is a $u^{(l-1)}\times u^{(l)}$
     matrix.
+  \item You may want to code assertions to make sure each matrix is
+    the correct shape.
   \item Matrix multiply features by weights to get next layer,
     $a^{(l)}=h^{(l-1)} W^{(l)}$.
+  \item Use np.where to implement relu activation (output is
+    non-negative).
+  \item Make sure last activation is identity --- final predicted
+    values should be real numbers (both positive and negative).
   \end{itemize}
 \end{frame}
 
@@ -565,6 +571,25 @@ backpropagation (0-3).
     forward/back-prop, results are stored as \texttt{value}/\texttt{grad}
     attributes.
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Functions and gradients}
+  \begin{itemize}
+  \item $J = \text{logistic\_loss}(A, y)\in\mathbb R^{b\times 1}$ is
+    same as in linear models. Values are
+    $J_i = \log[1+\exp(-y_i A_i)]$ and gradient is
+    $(\nabla_A J)_i = -y_i/(1+\exp(y_i A_i))$.
+  \item $A = \texttt{mm}(X, W) = XW \in\mathbb R^{b\times u}$ where
+    $X$ is a $b \times p$ matrix ($b=$number of samples in batch, $p=$number
+    of units/features in this layer), and $W$ is a $p \times u$ matrix
+    ($u=$number of units/features in next layer). Gradient of linear
+    function is constant: $\nabla_X J = (\nabla_A J) (W^T)$, $\nabla_W J = X^T (\nabla_A J)$
+  \item $H = \texttt{relu}(A) \in\mathbb R^{b\times u}$ where each
+    element $H_i = A_i\text{ if } A_i > 0\text{ else } 0$. Gradient
+    $\nabla_A J = \nabla_A H \nabla_H J$ is piecewise constant, $(\nabla_A J)_i= (\nabla_H J)_i \text{ if } A_i > 0 \text{ else } 0$.
+  \end{itemize}
+  
 \end{frame}
 
 \begin{frame}

@@ -9,10 +9,15 @@ from scratch so you learn how it works.
 - __init__ method should store hyper-parameters, max_epochs,
   batch_size, step_size, and units_per_layer (list or numpy array of
   positive integers, first element should equal number of input
-  features, last element should be 1). Also initialize attribute
-  weight_mat_list to a list of numpy matrices with random values near
-  zero, each matrix being for one of the layer prediction functions in
-  the neural network.
+  features, last element should be 1). You have the choice of
+  hyper-parameters, as long as you do ``deep'' learning, meaning at
+  least two hidden layers (at least four layers total). For debugging
+  you may want to set units_per_layer = [n_input_features, 1] which
+  means you will get a linear model and batch_size=n_rows (same as
+  linear model homework). Also initialize attribute weight_mat_list to
+  a list of numpy matrices with random values near zero, each matrix
+  being for one of the layer prediction functions in the neural
+  network.
 - compute_gradient(X=batch_features, y=batch_labels) method
   should compute and return a list of numpy arrays representing the
   gradient of all model parameters.
