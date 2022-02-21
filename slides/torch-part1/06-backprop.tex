@@ -581,10 +581,12 @@ backpropagation (0-3).
     $J_i = \log[1+\exp(-y_i A_i)]$ and gradient is
     $(\nabla_A J)_i = -y_i/(1+\exp(y_i A_i))$.
   \item $A = \texttt{mm}(X, W) = XW \in\mathbb R^{b\times u}$ where
-    $X$ is a $b \times p$ matrix ($b=$number of samples in batch, $p=$number
-    of units/features in this layer), and $W$ is a $p \times u$ matrix
-    ($u=$number of units/features in next layer). Gradient of linear
-    function is constant: $\nabla_X J = (\nabla_A J) (W^T)$, $\nabla_W J = X^T (\nabla_A J)$
+    $X$ is a $b \times p$ matrix ($b=$number of samples in batch,
+    $p=$number of units/features in this layer), and $W$ is a
+    $p \times u$ matrix ($u=$number of units/features in next
+    layer). Gradient of linear function is constant:
+    $\nabla_X J = (\nabla_A J) (W^T)$,
+    $\nabla_W J = X^T (\nabla_A J)$.
   \item $H = \texttt{relu}(A) \in\mathbb R^{b\times u}$ where each
     element $H_i = A_i\text{ if } A_i > 0\text{ else } 0$. Gradient
     $\nabla_A J = \nabla_A H \nabla_H J$ is piecewise constant, $(\nabla_A J)_i= (\nabla_H J)_i \text{ if } A_i > 0 \text{ else } 0$.
@@ -656,6 +658,18 @@ backpropagation (0-3).
   \item Given a computation graph, and values for initial nodes,
     compute \texttt{value} in each derived node by hand (forward
     propagation), then compute \texttt{grad} (back-prop).
+  \item In linear models we used scaling inside of the fit method ---
+    make sure each feature/column has mean=0 and sd=1 before running
+    gradient descent. What would you have to change in your neural
+    network class to use scaling?
+  \item In linear models we used gradient descent to learn an
+    intercept parameter (a constant added to each real-valued
+    prediction). We discussed two methods: (1) adding a column of ones
+    to the feature matrix and an entry to the weight vector, or (2)
+    adding a separate node representing the intercept in the
+    computation graph. How would you modify your neural network class,
+    using each method? (each hidden/output unit/feature in the neural
+    network should have its own intercept parameter)
   \end{itemize}
 \end{frame}
 
