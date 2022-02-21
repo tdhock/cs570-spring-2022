@@ -145,3 +145,13 @@ number of epochs for spam? For zip?
 - Does your implementation get similar test accuracy as scikit-learn,
   or better?  (it should!)
 
+** Extra credit
+
+- Show your MyMLP class from last week on your test accuracy plot. Is
+  it more accurate than AutoMLP, or about the same? (it should be
+  about the same if both were implemented correctly)
+- Implement learning an intercept for every hidden/output unit, as an
+  instantiation parameter in AutoMLP(intercept=True). Show both
+  intercept=True and False on your test accuracy plot: which is more
+  accurate, or are they about the same? (it should be about the same,
+  maybe a little more accurate with intercept)
