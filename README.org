@@ -57,7 +57,7 @@ that week, 11:59PM.
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]], section Automatic differentiation.
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6.5]].
 - Feb 28, [[file:homeworks/08-torch-mlp.org][Homework week 8]]: training neural networks using torch.
-  - Slides
+  - [[file:slides/torch-part1/06-backprop.pdf][Slides]], section Torch.
 - Mar 7, week 9 review and exam.
 - Mar 14, spring break (no homework).
 - Mar 21, Homework week 10: regularizing neural networks.
