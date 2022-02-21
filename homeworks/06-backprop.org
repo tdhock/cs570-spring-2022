@@ -21,8 +21,7 @@ from scratch so you learn how it works.
 - compute_gradient(X=batch_features, y=batch_labels) method
   should compute and return a list of numpy arrays representing the
   gradient of all model parameters.
-  - forward part should compute predictions and store
-  intermediate unit values.
+  - forward part should compute predictions and store intermediate unit values.
   - compute loss given predictions and y.
   - backward part should compute all gradients given loss and
     intermediate unit values.
