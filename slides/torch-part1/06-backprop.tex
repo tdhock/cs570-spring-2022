@@ -673,4 +673,61 @@ backpropagation (0-3).
   \end{itemize}
 \end{frame}
 
+\section{Torch}
+
+\begin{frame}
+  \frametitle{torch}
+  \begin{itemize}
+  \item Machine learning library/module for python (and R, C++).
+  \item Lots of standard neural network architectures and loss
+    functions supported out of the box.
+  \item Supports automatic differentiation! (easy to experiment with
+    new models and loss functions without having to worry about
+    gradient computations)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{torch code}
+\begin{verbatim}
+import torch
+class Net(torch.nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        n_hidden = 2
+        self.act = torch.nn.Sigmoid()
+        self.hidden = torch.nn.Linear(1, n_hidden)
+        self.out = torch.nn.Linear(n_hidden, 1)
+    def forward(self, x):
+        x = self.act(self.hidden(x))
+        x = self.out(x)
+        return x
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Differences between gradient descent algorithm variants}
+
+\begin{verbatim}
+net = Net()
+optimizer = torch.optim.SGD(net.parameters(), lr=0.03)
+optimizer.zero_grad()
+loss_value = criterion(net(inputs), outputs)
+loss_value.backward()
+optimizer.step()
+\end{verbatim}
+
+\begin{verbatim}
+loss_one = criterion(net(one_input), one_output)
+loss_batch = criterion(net(batch_inputs), batch_outputs)
+loss_subtrain = criterion(net(subtrain_inputs), subtrain_outputs)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{DataLoaders}
+  TODO
+\end{frame}
+
 \end{document}
