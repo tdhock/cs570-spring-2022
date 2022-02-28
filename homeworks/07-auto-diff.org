@@ -83,7 +83,7 @@ which uses the new node classes, as described above.
 - __init__ method should store hyper-parameters, max_epochs,
   batch_size, step_size, and units_per_layer (list or numpy array of
   positive integers, first element should equal number of input
-  features, last element should be 1). Also initialize attribute
+  features, last element should be 1). For debugging you may want to set units_per_layer = [n_input_features, 1] which means you will get a linear model and batch_size=n_rows (same as linear model homework). Also initialize attribute
   weight_node_list to a list of node instances, each node value should
   be a numpy matrix with random values near zero for one of the
   initial layer prediction functions in the neural network.
@@ -155,3 +155,7 @@ number of epochs for spam? For zip?
   intercept=True and False on your test accuracy plot: which is more
   accurate, or are they about the same? (it should be about the same,
   maybe a little more accurate with intercept)
+  
+** FAQ
+
+- How to debug? For debugging you may want to set units_per_layer = [n_input_features, 1] which means you will get a linear model and batch_size=n_rows (same as linear model homework).
