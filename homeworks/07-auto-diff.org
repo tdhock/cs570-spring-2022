@@ -159,3 +159,4 @@ number of epochs for spam? For zip?
 ** FAQ
 
 - How to debug? For debugging you may want to set units_per_layer = [n_input_features, 1] which means you will get a linear model and batch_size=n_rows (same as linear model homework).
+- How to make sure hyper-parameters are correctly chosen? You need to experiment with hyper-parameters until you find some combination (max_epochs, batch_size, step_size, units_per_layer) which results in the characteristic loss curves (subtrain always decreasing, validation U shaped as number of epochs increases).
