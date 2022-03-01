@@ -688,20 +688,59 @@ backpropagation (0-3).
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{torch code}
+  \frametitle{torch code for linear model for binary classification}
 \begin{verbatim}
 import torch
-class Net(torch.nn.Module):
+class LinearModel(torch.nn.Module):
     def __init__(self):
+        super(LinearModel, self).__init__()
+        self.weight_vec = torch.nn.Linear(n_features, 1)
+    def forward(self, features):
+        return self.weight_vec(features)
+\end{verbatim}
+
+  \begin{itemize}
+  \item Linear is a matrix multiplication, with optional intercept
+    (present by default, bias=False to suppress).
+  \item One output because we are doing binary classification (want to
+    predict a single real-valued score).
+  \item Linear and other objects with weight parameters to learn must
+    be assigned to an attribute of self (so torch.optim algorithms can
+    find weights to update).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{torch code for neural network with one hidden layer}
+\begin{verbatim}
+class OneHiddenLayer(torch.nn.Module):
+    def __init__(self, n_features, n_hidden):
         super(Net, self).__init__()
-        n_hidden = 2
-        self.act = torch.nn.Sigmoid()
-        self.hidden = torch.nn.Linear(1, n_hidden)
-        self.out = torch.nn.Linear(n_hidden, 1)
-    def forward(self, x):
-        x = self.act(self.hidden(x))
-        x = self.out(x)
-        return x
+        self.hidden_weights = torch.nn.Linear(
+          n_features, n_hidden)
+        self.activation = torch.nn.ReLU()
+        self.out_weights = torch.nn.Linear(n_hidden, 1)
+    def forward(self, feature_mat):
+        a_mat = self.hidden_weights(feature_mat)
+        h_mat = self.activation(a_mat)
+        return self.out_weights(h_mat)
+\end{verbatim}
+
+Use activation after each Linear layer except for last.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{torch code for stack of hidden layers}
+\begin{verbatim}
+class Net(torch.nn.Module):
+    def __init__(self, n_features, n_hidden):
+        super(Net, self).__init__()
+        self.stack = torch.nn.Sequential(
+          torch.nn.Linear(n_features, n_hidden),
+          torch.nn.ReLU(),
+          torch.nn.Linear(n_hidden, 1))
+    def forward(self, feature_mat):
+        return self.stack(feature_mat)
 \end{verbatim}
 \end{frame}
 
@@ -710,24 +749,67 @@ class Net(torch.nn.Module):
 
 \begin{verbatim}
 net = Net()
+loss_fun = torch.nn.CrossEntropy()
 optimizer = torch.optim.SGD(net.parameters(), lr=0.03)
+
+# to do in a loop:
 optimizer.zero_grad()
-loss_value = criterion(net(inputs), outputs)
-loss_value.backward()
-optimizer.step()
+loss_value = loss_fun(net(inputs), outputs) # last node
+loss_value.backward() # auto grad
+optimizer.step() # learning
+
+# stochastic, batch, full gradient descent variants:
+loss_one = loss_fun(
+  net(one_input), one_output)
+loss_batch = loss_fun(
+  net(batch_inputs), batch_outputs)
+loss_subtrain = loss_fun(
+  net(subtrain_inputs), subtrain_outputs)
 \end{verbatim}
 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Copy data from numpy and onto GPU}
+  \begin{itemize}
+  \item Torch is very similar to numpy (tensor data types, vectorized
+    functions and methods).
+  \item Can easily run on GPU for speedups, but need to copy neural network weights and data to GPU memory.
+  \end{itemize}
 \begin{verbatim}
-loss_one = criterion(net(one_input), one_output)
-loss_batch = criterion(net(batch_inputs), batch_outputs)
-loss_subtrain = criterion(net(subtrain_inputs), subtrain_outputs)
+device = "cuda" if torch.cuda.is_available() else "cpu"
+# features and labels to torch and GPU
+cpu_features = torch.from_numpy(numpy_features).float()
+dev_features = cpu_features.to(device)
+cpu_labels = torch.from_numpy(numpy_labels).float()
+dev_labels = cpu_labels.to(device)
+# weights to GPU
+cpu_net = Net()
+dev_net = cpu_net.to(device)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{torch Dataset/DataLoader helpers for batching}
+\begin{verbatim}
+class CSV(torch.utils.data.Dataset):
+    def __init__(self, features, labels):
+        self.features = features
+        self.labels = labels
+    def __getitem__(self, item):
+        return self.features[item,:], self.labels[item]
+    def __len__(self):
+        return len(self.labels)
+ds = CSV(feature_mat, set_labels["subtrain"])
+dl = torch.utils.data.DataLoader(
+  ds, batch_size=1000, shuffle=True)
+for batch_features, batch_labels in dl:
+    # gradient descent code here.
 \end{verbatim}
 
+Not necessary (you can do your own batching), but can be useful.
+
 \end{frame}
 
-\begin{frame}
-  \frametitle{DataLoaders}
-  TODO 
-\end{frame}
 
 \end{document}
