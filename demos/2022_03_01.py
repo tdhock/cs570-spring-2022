@@ -51,12 +51,20 @@ class LinearModel(torch.nn.Module):
         return self.weight_vec(feature_mat)
 
 model = LinearModel()
-loss_fun = torch.nn.CrossEntropyLoss()
+loss_fun = torch.nn.BCEWithLogitsLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.5)
 
 optimizer.zero_grad()
-batch_size = 10
-feature_tensor = torch.from_numpy(scaled_features["subtrain"]).float()[:batch_size,:]
-label_tensor = torch.from_numpy(set_labels["subtrain"])[:batch_size]
-pred_vec = model(feature_tensor)
+feature_tensor = torch.from_numpy(scaled_features["subtrain"]).float()
+label_01 = set_labels["subtrain"]
+label_tensor = torch.from_numpy(label_01).float()
+pred_vec = model(feature_tensor).reshape(nrow)
 loss_value = loss_fun(pred_vec, label_tensor)
+loss_value.backward()
+label_neg_pos = np.where(label_01 == 1, 1, -1)
+optimizer.step()
+
+# loss_value is mean logistic loss.
+loss_value
+np.mean(np.log(1+np.exp(-label_neg_pos * pred_vec.detach().numpy())))
+
