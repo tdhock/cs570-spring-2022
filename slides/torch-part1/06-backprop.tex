@@ -715,7 +715,7 @@ class LinearModel(torch.nn.Module):
 \begin{verbatim}
 class OneHiddenLayer(torch.nn.Module):
     def __init__(self, n_features, n_hidden):
-        super(Net, self).__init__()
+        super(OneHiddenLayer, self).__init__()
         self.hidden_weights = torch.nn.Linear(
           n_features, n_hidden)
         self.activation = torch.nn.ReLU()
@@ -749,7 +749,7 @@ class Net(torch.nn.Module):
 
 \begin{verbatim}
 net = Net()
-loss_fun = torch.nn.CrossEntropy()
+loss_fun = torch.nn.BCEWithLogitsLoss()
 optimizer = torch.optim.SGD(net.parameters(), lr=0.03)
 
 # to do in a loop:
