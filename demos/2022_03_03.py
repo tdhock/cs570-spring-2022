@@ -121,7 +121,6 @@ for set_name in set_features:
     label_vec = set_labels[set_name]
     set_loss = compute_loss(feature_mat, label_vec)
     loss_df_list.append(pd.DataFrame({
-        "epoch":epoch,
         "set_name":set_name,
         "loss":set_loss.detach().numpy(),
         }, index=[0]))
@@ -132,7 +131,7 @@ loss_df = pd.concat(loss_df_list)
 loss_df_list = []
 max_epochs=100
 model = LinearModel()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 for epoch in range(max_epochs):
     # first update weights.
     for batch_features, batch_labels in subtrain_dataloader:
