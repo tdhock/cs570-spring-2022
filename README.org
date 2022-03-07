@@ -45,10 +45,9 @@ that week, 11:59PM.
   - [[file:slides/04-linear-models.pdf][Slides]], [[http://ml.nau.edu/viz/2022-02-02-gradient-descent-regression/][interactive figure showing gradient descent for regression]].
   - Reading [[https://www.deeplearningbook.org/contents/ml.html][DL5]], [[https://www.deeplearningbook.org/contents/numerical.html][DL4.3]]. 
 - Feb 7, week 5 review and exam.
-  - Exam is 10 Feb 2022, in class.
+  - Exam is 10 Feb 2022, in class. During the exam you are allowed to
+    use one page of handwritten notes.
   - [[file:exams/exam1_practice.pdf][Practice exam PDF]].
-  - During the exam you are allowed to use one page of handwritten
-    notes.
 - Feb 14, [[file:homeworks/06-backprop.org][Homework week 6]]: backpropagation algorithm, training neural
   networks from scratch.
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]].
@@ -59,6 +58,9 @@ that week, 11:59PM.
 - Feb 28, [[file:homeworks/08-torch-mlp.org][Homework week 8]]: training neural networks using torch.
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]], section Torch.
 - Mar 7, week 9 review and exam.
+  - Exam is 10 Mar 2022, in class. During the exam you are allowed to
+    use one page of handwritten notes.
+  - [[file:exams/spring_2022_mid_term_exam_2_practice.pdf][Practice exam 2 PDF]].
 - Mar 14, spring break (no homework).
 - Mar 21, Homework week 10: regularizing neural networks.
   - Reading [[https://www.deeplearningbook.org/contents/regularization.html][DL7]].
