@@ -2,8 +2,11 @@ To do the homeworks you need to use python; it is recommended to
 install/use [[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html][anaconda/miniconda]], with either
 - one of the [[https://docs.anaconda.com/anaconda/user-guide/tasks/integration/index.html][IDEs described on the anaconda docs]], (for beginners,
   choose one that you have used in the past), or
-- [[https://www.youtube.com/playlist?list=PLwc48KSH3D1OeAHFQhWpd8Fz8rLhTaD7t][My emacs and python screencasts show you how to install emacs and
-  configure it to work with python]].
+- emacs, which allows you to write/edit code without using the mouse,
+  and has great python support, including conda environments,
+  interactive execution, completion, ...
+  - [[https://www.youtube.com/playlist?list=PLwc48KSH3D1OeAHFQhWpd8Fz8rLhTaD7t][My emacs and python screencasts show you how to install emacs and
+    configure it to work with python]].
   - [[https://www.gnu.org/software/emacs/download.html][Download and Install GNU Emacs]].
   - [[https://elpy.readthedocs.io/en/latest/introduction.html#installation][Installation instructions for Elpy, which is a python IDE for emacs]].
   - [[https://www.emacswiki.org/emacs/PythonProgrammingInEmacs][PythonProgrammingInEmacs on the emacswiki has instructions for
