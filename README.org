@@ -62,7 +62,7 @@ that week, 11:59PM.
     use one page of handwritten notes.
   - [[file:exams/spring_2022_mid_term_exam_2_practice.pdf][Practice exam 2 PDF]].
 - Mar 14, spring break (no homework).
-- Mar 21, Homework week 10: regularizing neural networks.
+- Mar 21, [[file:homeworks/10-neural-network-regularization.org][Homework week 10]]: regularizing neural networks.
   - Reading [[https://www.deeplearningbook.org/contents/regularization.html][DL7]].
 - Mar 28, Homework week 11: optimization.
   - Reading [[https://www.deeplearningbook.org/contents/optimization.html][DL8]].
