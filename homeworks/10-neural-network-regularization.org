@@ -25,7 +25,7 @@ learner instance. For example if you want to use the number of hidden
 layers as a regularization hyper-parameter,
 
 #+begin_src python
-rmlp = RegularizedMLP(max_epochs=1000, units_per_layer=100)
+rmlp = RegularizedMLP(max_epochs=100, units_per_layer=100)
 rmlp.hidden_layers = 2
 rmlp.fit(subtrain_features, subtrain_labels)
 #+end_src
@@ -54,8 +54,9 @@ learner_instance.loss_each_fold, which should be a DataFrame with
 columns fold, set, loss, hidden_layers (but hidden_layers column name
 should be taken from dictionary keys, not hard coded into the MyCV
 class). Also save mean loss over folds in learner_instance.loss_mean,
-which should be a DataFrame with columns set, loss,
-hidden_layers. Save best hyper-parameters in
+which should be a DataFrame with columns set, loss, hidden_layers
+(these are the data you should plot to show the regularizing effect of
+the number of hidden layers). Save best hyper-parameters in
 learner_instance.best_param, which should be a dictionary, one of the
 elements of param_grid. Finally use best_param dictionary to set
 attributes of estimator, save that as learner_instance.estimator, and
@@ -71,8 +72,7 @@ of learner_instance.estimator.
   sets, which should be saved as the loss_mean attribute.
 - Make a two-panel plot (one panel for spam, one for zip) which shows
   the zero-one loss as a function of the regularization
-  hyper-parameter. X axis should be the regularization hyper-parameter
-  you choose to study (for example, number of hidden units/layers),
+  hyper-parameter. X axis should be the number of hidden layers,
   NOT the number of epochs. Use a different color for each set,
   e.g. subtrain=red, validation=blue. Draw a point to emphasize the
   minimum of the validation loss curve.

@@ -52,12 +52,12 @@ for set_name, is_set in is_set_dict.items():
 
 nrow, ncol = set_features["subtrain"].shape
 class NNet(torch.nn.Module):
-    def __init__(self, n_hidden):
+    def __init__(self, n_hidden_units):
         super(NNet, self).__init__()
         self.seq = torch.nn.Sequential(
-            torch.nn.Linear(ncol, n_hidden),
+            torch.nn.Linear(ncol, n_hidden_units),
             torch.nn.ReLU(),
-            torch.nn.Linear(n_hidden, 1))
+            torch.nn.Linear(n_hidden_units, 1))
     def forward(self, feature_mat):
         return self.seq(feature_mat)
 
@@ -86,37 +86,41 @@ def compute_loss(features, labels):
         pred_vec.reshape(len(pred_vec)),
         labels)
 
-loss_df_list = []
-max_epochs=100
-model = LinearModel()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
-for epoch in range(max_epochs):
-    # first update weights.
-    for batch_features, batch_labels in subtrain_dataloader:
-        optimizer.zero_grad()
-        batch_loss = compute_loss(batch_features, batch_labels)
-        batch_loss.backward()
-        optimizer.step()
-    # then compute subtrain/validation loss.
-    for set_name in set_features:
-        feature_mat = set_features[set_name]
-        label_vec = set_labels[set_name]
-        set_loss = compute_loss(feature_mat, label_vec)
-        set_df = pd.DataFrame({
-            "epoch":epoch,
-            "set_name":set_name,
-            "loss":set_loss.detach().numpy(),
-            }, index=[0])
-        print(set_df)
-        loss_df_list.append(set_df)
-loss_df = pd.concat(loss_df_list)
+loss_df_dict = {}
+max_epochs=20
+
+for n_hidden_units in [1,5,10,50,80,100,200,500,1000,5000]:
+    if (n_hidden_units,"validation") not in loss_df_dict:
+        model = NNet(n_hidden_units)
+        optimizer = torch.optim.SGD(model.parameters(), lr=1)
+        for epoch in range(max_epochs):
+            # first update weights.
+            for batch_features, batch_labels in subtrain_dataloader:
+                optimizer.zero_grad()
+                batch_loss = compute_loss(batch_features, batch_labels)
+                batch_loss.backward()
+                optimizer.step()
+        # then compute subtrain/validation loss.
+        for set_name in set_features:
+            feature_mat = set_features[set_name]
+            label_vec = set_labels[set_name]
+            set_loss = compute_loss(feature_mat, label_vec)
+            set_df = pd.DataFrame({
+                "n_hidden_units":n_hidden_units,
+                "set_name":set_name,
+                "loss":set_loss.detach().numpy(),
+                }, index=[0])
+            print(set_df)
+            loss_df_dict[(n_hidden_units,set_name)] = set_df
+loss_df = pd.concat(loss_df_dict.values())
 
 import plotnine as p9
 
 gg = p9.ggplot()+\
+    p9.scale_x_log10()+\
     p9.geom_line(
         p9.aes(
-            x="epoch",
+            x="n_hidden_units",
             y="loss",
             color="set_name"
         ),
