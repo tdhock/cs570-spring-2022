@@ -65,6 +65,7 @@ that week, 11:59PM.
 - Mar 21, [[file:homeworks/10-neural-network-regularization.org][Homework week 10]]: regularizing neural networks.
   - Reading [[https://www.deeplearningbook.org/contents/regularization.html][DL7]].
 - Mar 28, [[file:homeworks/11-optimization.org][Homework week 11]]: optimization.
+  - [[file:slides/11-optimization.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/optimization.html][DL8]].
 - Apr 4, Homework week 12: convolutional networks.
   - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
