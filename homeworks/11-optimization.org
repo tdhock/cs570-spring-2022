@@ -1,0 +1,129 @@
+Neural network optimization
+
+** Overview
+
+In previous projects we have mainly used classic stochastic gradient
+descent as the optimization algorithm. In this project the goal is to
+explore other algorithms for optmizing neural networks. For this
+project you need to use torch.
+Your experiment should result in a plot of subtrain/validation loss
+(on the y axis) as a function of a number of hidden layers (on the x
+axis), for various optimization algorithms.
+
+** Class: OptimizerMLP
+
+This class should define a learner with fit and predict methods,
+similar to what we did last week. Modify it so that you can specify
+the optimization algorithm to use as attributes or instantiation
+parameters of the learner. For example if you want to use SGD with
+momentum=0.5,
+
+#+begin_src python
+  omlp = OptimizerMLP(max_epochs=100, units_per_layer=[n_features,100,10,1])
+  omlp.opt_name = "SGD"
+  omlp.opt_params = {"momentum":0.5}
+  omlp.fit(subtrain_features, subtrain_labels)
+#+end_src
+
+** Class: MyCV
+
+This should be similar to previous homeworks (similar to
+GridSearchCV in scikit-learn). You should be able to specify
+hyper-parameter values to search over as a list of dictionaries. Each
+dictionary represents a particular hyper-parameter combination,
+
+#+begin_src python
+  param_grid = []
+  for momentum in 0.1, 0.5:
+      param_grid.append({
+          "opt_name":"SGD",
+          "opt_params":{"momentum":momentum}
+      })
+  for beta1 in 0.85, 0.9, 0.95:
+      for beta2 in 0.99, 0.999, 0.9999:
+          param_grid.append({
+              "opt_name":"Adam",
+              "opt_params":{"betas":(beta1, beta2)}
+          })
+  learner_instance = MyCV(
+    estimator=omlp, 
+    param_grid=param_grid,
+    cv=K)
+  learner_instance.fit(train_features, train_labels)
+#+end_src
+
+The fit method should use K-fold cross-validation to do K splits of
+the train data into subtrain/validation sets. For each split and
+hyper-parameter dictionary you should call estimator.fit on the
+subtrain data and then compute the zero-one loss on the
+subtrain/validation data. Save all loss values in
+learner_instance.loss_each_fold, which should be a DataFrame with
+columns fold, set, epoch, loss, opt_name, opt_params. Also save mean loss
+over folds in learner_instance.loss_mean, which should be a DataFrame
+with columns set, epoch, loss, opt_name, opt_params. Yes a DataFrame can have
+a column like opt_params, each entry of which is a python dictionary,
+for example:
+
+#+begin_src python
+>>> pd.DataFrame(param_grid)
+   opt_name                 opt_params
+0       SGD          {'momentum': 0.1}
+1       SGD          {'momentum': 0.5}
+2      Adam    {'betas': (0.85, 0.99)}
+3      Adam   {'betas': (0.85, 0.999)}
+4      Adam  {'betas': (0.85, 0.9999)}
+5      Adam     {'betas': (0.9, 0.99)}
+6      Adam    {'betas': (0.9, 0.999)}
+7      Adam   {'betas': (0.9, 0.9999)}
+8      Adam    {'betas': (0.95, 0.99)}
+9      Adam   {'betas': (0.95, 0.999)}
+10     Adam  {'betas': (0.95, 0.9999)}
+#+end_src
+
+Save best hyper-parameters in learner_instance.best_param, which
+should be a dictionary, one of the elements of param_grid. Finally use
+best_param dictionary to set attributes of estimator, save that as
+learner_instance.estimator, and call estimator.fit(train_features,
+train_labels). Then the predict/decision_function methods can just
+call the respective methods of learner_instance.estimator.
+
+** Plotting loss for various optimizers
+
+- Load the spam and zip data sets as usual from CSV.
+- Scale each input matrix, same as in previous projects.
+- Next instantiate MyCV with at least two different optimization
+  algorithms, and at least two different parameters for each. Use its
+  fit method to compute mean loss for subtrain/validation sets, which
+  should be saved as the loss_mean attribute.
+- Make a two-panel plot (one panel for spam, one for zip) which shows
+  the zero-one loss as a function of epochs, with different
+  opt_name/opt_params in different facets/plots. Use a different color
+  for each set, e.g. subtrain=red, validation=blue. Draw a point to
+  emphasize the minimum of the validation loss curve. Which
+  combination of hyper-parameters resulted in the best validation loss?
+- Your plots should show the characteristic U shape of the validation
+  loss curve, and monotonic subtrain loss curve.
+
+** Test error experiment
+
+- Use similar experimental setup as previous homeworks
+  (with 3-fold CV train/test splits defined by KFold, and with
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
+  your new algorithm to compare.
+- Make sure to run experiments on both spam and zip data. This time
+  make sure to scale the data sets before putting them into the
+  data_dict and before any splitting (so you don't have to worry about
+  scaling in neural network code). Show a table of resulting test
+  accuracy numbers, as well as a ggplot like in last homework. On the
+  ggplot y axis there should be at least the following algorithms:
+  featureless, GridSearchCV+KNeighborsClassifier,
+  LogisticRegressionCV, MyCV+OptimizerMLP.
+- Does your implementation get similar test accuracy as scikit-learn,
+  or better?  (it should!)
+
+** Extra credit
+
+- 10 points if you do an additional comparison of batch sizes, for
+  example 1,10,100,nrow. Plot subtrain/validation loss for each batch
+  size in a different panel. Which batch size results in the best
+  validation loss?
