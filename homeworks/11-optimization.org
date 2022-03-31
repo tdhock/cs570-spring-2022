@@ -127,3 +127,21 @@ call the respective methods of learner_instance.estimator.
   example 1,10,100,nrow. Plot subtrain/validation loss for each batch
   size in a different panel. Which batch size results in the best
   validation loss?
+
+** FAQ
+
+I get nan in a DataFrame column when I expected a dictionary? There
+are two ways to construct a valid DataFrame, see below:
+
+#+begin_src python
+  >>> import pandas as pd
+  >>> list_of_dicts = [{"algo":"SGD", "params":{"momentum":0.5}}]
+  >>> pd.DataFrame(list_of_dicts)
+    algo             params
+  0  SGD  {'momentum': 0.5}
+  >>> dict_of_iterables = {"algo":["SGD"], "params":[{"momentum":0.5}]}
+  >>> pd.DataFrame(dict_of_iterables)
+    algo             params
+  0  SGD  {'momentum': 0.5}
+
+#+end_src
