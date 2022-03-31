@@ -91,3 +91,14 @@ be no code that is specific to nearest neighbors).
   # This is how to call the method (self argument is omitted).
   my_instance.fit(X=train_X, y=train_y)
 #+END_SRC
+
+What should MyCV fit method look like? Here is some pseudo-code:
+
+#+begin_src python
+  def fit(train):
+      split train into subtrain/validation
+      call estimator.fit(subtrain) on each hyper-parameter
+      compute validation error for each
+      best params = hyper-params with min validation error
+      self.best_model = fit(train, best params)
+#+end_src
