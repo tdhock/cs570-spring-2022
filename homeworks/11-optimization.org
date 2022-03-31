@@ -143,5 +143,23 @@ are two ways to construct a valid DataFrame, see below:
   >>> pd.DataFrame(dict_of_iterables)
     algo             params
   0  SGD  {'momentum': 0.5}
-
+  ### what not to do:
+  >>> pd.DataFrame({"algo":"SGD", "params":{"momentum":0.5}}, index=[0])
+    algo  params
+  0  SGD     NaN
+  >>> pd.DataFrame({"algo":"SGD", "params":{"momentum":0.5}})
+	   algo  params
+  momentum  SGD     0.5
+  >>> pd.DataFrame({"algo":["SGD"], "params":{"momentum":0.5}})
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "c:\Users\th798\miniconda3\envs\cs570s22\lib\site-packages\pandas\core\frame.py", line 614, in __init__
+      mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+    File "c:\Users\th798\miniconda3\envs\cs570s22\lib\site-packages\pandas\core\internals\construction.py", line 465, in dict_to_mgr
+      arrays, data_names, index, columns, dtype=dtype, typ=typ, consolidate=copy
+    File "c:\Users\th798\miniconda3\envs\cs570s22\lib\site-packages\pandas\core\internals\construction.py", line 119, in arrays_to_mgr
+      index = _extract_index(arrays)
+    File "c:\Users\th798\miniconda3\envs\cs570s22\lib\site-packages\pandas\core\internals\construction.py", line 639, in _extract_index
+      "Mixing dicts with non-Series may lead to ambiguous ordering."
+  ValueError: Mixing dicts with non-Series may lead to ambiguous ordering.
 #+end_src
