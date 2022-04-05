@@ -68,6 +68,7 @@ that week, 11:59PM.
   - [[file:slides/11-optimization.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/optimization.html][DL8]].
 - Apr 4, Homework week 12: convolutional networks.
+  - [[file:slides/torch-part1/12-convolutional-networks.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
 - Apr 11, Homework week 13: recurrent networks.
   - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
