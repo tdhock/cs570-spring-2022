@@ -21,9 +21,10 @@ zip_df = pd.read_csv(
     "~/teaching/cs570-spring-2022/data/zip.train.gz",
     header=None,
     sep=" ")
-zip_01 = zip_df[ zip_df.iloc[:,0].isin([0,1]) ]
-zip_features = zip_01.iloc[:,1:257].to_numpy()
-zip_labels = zip_01.iloc[:,0].to_numpy()
+zip_71 = zip_df[ zip_df.iloc[:,0].isin([7,1]) ]
+zip_features = zip_71.iloc[:,1:257].to_numpy()
+zip_labels_71 = zip_71.iloc[:,0].to_numpy()
+zip_labels = np.where(zip_labels_71==1, 1, 0)
 np.random.seed(1)
 n_folds = 5
 fold_vec = np.random.randint(low=0, high=n_folds, size=zip_labels.size)
@@ -54,17 +55,38 @@ class NNet(torch.nn.Module):
     def forward(self, feature_mat):
         return self.seq(feature_mat)
 
+n_pixels = int(np.sqrt(ncol))
+class ConvNet(torch.nn.Module):
+    def __init__(self, out_channels=50, kernel_size=3):
+        super(ConvNet, self).__init__()
+        outputs_per_filter_per_dim = n_pixels-kernel_size+1
+        outputs_per_filter = outputs_per_filter_per_dim ** 2
+        total_outputs = out_channels * outputs_per_filter
+        self.seq = torch.nn.Sequential(
+            torch.nn.Conv2d(
+                in_channels=1,
+                out_channels=out_channels,
+                kernel_size=(kernel_size,kernel_size)),
+            torch.nn.ReLU(),
+            torch.flatten(start_dim=1),
+            torch.nn.Linear(total_outputs, 1))
+    def forward(self, feature_mat):
+        return self.seq(feature_mat)
+
 loss_fun = torch.nn.BCEWithLogitsLoss()
 class CSVtoImage(torch.utils.data.Dataset):
     def __init__(self, features, labels):
         self.features = features
         self.labels = labels
     def __getitem__(self, item):
-        return self.features[item,:].reshape(16,16), self.labels[item]
+        return (
+            self.features[item,:].reshape(n_pixels,n_pixels),
+            self.labels[item])
     def __len__(self):
         return len(self.labels)
 
-subtrain_dataset = CSVtoImage(set_features["subtrain"], set_labels["subtrain"])
+subtrain_dataset = CSVtoImage(
+    set_features["subtrain"], set_labels["subtrain"])
 batch_size = 20
 # random path through batches of subtrain data when shuffle=True
 subtrain_dataloader = torch.utils.data.DataLoader(
@@ -74,6 +96,7 @@ for batch_features, batch_labels in subtrain_dataloader:
 batch_labels.shape
 batch_features.shape
 model = NNet(100)
+conv_model = ConvNet()
 model(batch_features)
 batch_reshaped = batch_features.reshape(
     batch_features.shape[0], zip_features.shape[1])
