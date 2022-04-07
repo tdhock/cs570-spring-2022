@@ -55,7 +55,7 @@ convolutional network.
     last.
   - How many hidden units are there in each layer? How many total
     parameters to learn in the neural network?
-- dense: fully connected (256,TODO,TODO,128,10) network. First fill in
+- dense: fully connected (256,TODO,TODO,128,1) network. First fill in
   the TODOs by choosing numbers which result in the same/similar
   number of parameters to learn as in the convolutional network. Note
   that there are fewer hidden units for the same number of parameters.
