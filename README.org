@@ -70,9 +70,9 @@ that week, 11:59PM.
 - Apr 4, [[file:homeworks/12-convolutional-networks.org][Homework week 12]]: convolutional networks.
   - [[file:slides/torch-part1/12-convolutional-networks.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
-- Apr 11, Homework week 13: recurrent networks.
+- Apr 11, [[file:homeworks/13-recurrent-networks.org][Homework week 13]]: recurrent networks.
   - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
-- Apr 18, Homework week 14: Residual learning or reinforcement learning?
+- Apr 18, Homework week 14: interpretability via attention mechanism.
 - Apr 25, reading week, exam review Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
 

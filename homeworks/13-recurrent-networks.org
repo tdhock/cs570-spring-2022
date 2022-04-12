@@ -1,0 +1,63 @@
+Recurrent neural networks for sequence data
+
+In previous projects we have used feed-forward neural networks for
+image and matrix data. In this project the goal is to compare three
+algorithms for text classification:
+- a linear model and nearest neighbors on a bag of words vector, 
+- and a recurrent neural network called LSTM, for Long Short Term
+  Memory.
+
+** Class: MyLSTM
+
+This class should define a learner with fit and predict methods,
+similar to what we have been doing in previous weeks, but with a
+LSTM network. 
+- https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html
+
+** Plotting loss vs number of epochs
+
+- Load at least two binary classification data sets from torchtext
+  (IMDB, YelpReviewPolarity,
+  AmazonReviewPolarity). https://pytorch.org/text/stable/datasets.html
+  For simplicity use split="train" only (not test), and consider this
+  the full data set.
+- Create a data_dict variable which defines two different binary
+  classification data sets. You should down-sample the training data
+  for speed while testing your code.
+- Define folds and train/test splits as usual via 3-fold
+  cross-validation.
+- Count words in the training data, make a dictionary of most common
+  words, compute bag of words vectors for each observation.
+- Split train into subtrain/validation sets.
+- Run gradient descent learning with early stopping regularization
+  using LSTM.
+- Make a plot for each data set which shows loss as a function of
+  epochs. Use a different color for each set, e.g. subtrain=red,
+  validation=blue. Draw a point to emphasize the minimum of the
+  validation loss curve. Which number of epochs resulted in the best
+  validation loss for each case?
+- Your plots should show the characteristic U shape of the validation
+  loss curve, and monotonic subtrain loss curve.
+
+** Test error experiment
+
+- Use similar experimental setup as previous homeworks
+  (with 3-fold CV train/test splits defined by KFold, and with
+  GridSearchCV+KNeighborsClassifier and LogisticRegressionCV), but add
+  your new algorithm to compare.
+- Make sure to run experiments on at least two text classification
+  data sets. Show a table of resulting test accuracy numbers, as well
+  as a ggplot. On the ggplot y axis there should be at least the
+  following algorithms:
+  - featureless, 
+  - GridSearchCV+KNeighborsClassifier,
+  - LogisticRegressionCV, 
+  - MyLSTM
+- Does your implementation get similar test accuracy as scikit-learn,
+  and the dense/fully connected network?  (it should!)
+
+** Extra credit
+
+- 10 points if your test error/accuracy figure includes an additional
+  third data set.
+
