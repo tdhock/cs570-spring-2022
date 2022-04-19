@@ -72,7 +72,7 @@ that week, 11:59PM.
   - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
 - Apr 11, [[file:homeworks/13-recurrent-networks.org][Homework week 13]]: recurrent networks.
   - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
-- Apr 18, [[file:homeworks/14-attention-mechanism.org][Homew xork week 14]]: interpretability via attention mechanism.
+- Apr 18, [[file:homeworks/14-attention-mechanism.org][Homework week 14]]: interpretability via attention mechanism.
   - Readings: [[https://faculty.cc.gatech.edu/~dyang888/docs/naacl16.pdf][Yang et al, 2016]], [[https://blog.floydhub.com/gru-with-pytorch/][GRU vs LSTM]], [[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html][PyTorch translation
     attention tutorial using GRU]], [[https://medium.com/intel-student-ambassadors/implementing-attention-models-in-pytorch-f947034b3e66][Another attention tutorial using
     LSTM]].
