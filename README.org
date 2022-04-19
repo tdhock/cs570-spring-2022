@@ -49,7 +49,7 @@ that week, 11:59PM.
     use one page of handwritten notes.
   - [[file:exams/exam1_practice.pdf][Practice exam PDF]].
 - Feb 14, [[file:homeworks/06-backprop.org][Homework week 6]]: backpropagation algorithm, training neural
-  networks from scratch.
+  networks from scratch. Other losses (multi-class, regression).
   - [[file:slides/torch-part1/06-backprop.pdf][Slides]].
   - Reading [[https://www.deeplearningbook.org/contents/mlp.html][DL6]].
 - Feb 21, [[file:homeworks/07-auto-diff.org][Homework week 7]]: implementing a simple auto-grad system.
@@ -72,9 +72,10 @@ that week, 11:59PM.
   - Reading [[https://www.deeplearningbook.org/contents/convnets.html][DL9]].
 - Apr 11, [[file:homeworks/13-recurrent-networks.org][Homework week 13]]: recurrent networks.
   - Reading [[https://www.deeplearningbook.org/contents/rnn.html][DL10]].
-- Apr 18, Homework week 14: interpretability via attention mechanism.
-  - Readings: [[https://blog.floydhub.com/gru-with-pytorch/][GRU vs LSTM]], [[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html][PyTorch translation attention tutorial
-    using GRU]], [[https://medium.com/intel-student-ambassadors/implementing-attention-models-in-pytorch-f947034b3e66][Another attention tutorial using LSTM]],
+- Apr 18, [[file:homeworks/14-attention-mechanism.org][Homew xork week 14]]: interpretability via attention mechanism.
+  - Readings: [[https://faculty.cc.gatech.edu/~dyang888/docs/naacl16.pdf][Yang et al, 2016]], [[https://blog.floydhub.com/gru-with-pytorch/][GRU vs LSTM]], [[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html][PyTorch translation
+    attention tutorial using GRU]], [[https://medium.com/intel-student-ambassadors/implementing-attention-models-in-pytorch-f947034b3e66][Another attention tutorial using
+    LSTM]].
 - Apr 25, reading week, exam review Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
 

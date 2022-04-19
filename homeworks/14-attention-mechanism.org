@@ -1,18 +1,16 @@
-Recurrent neural networks for sequence data
+Attention mechanism for sequence data
 
-In previous projects we have used feed-forward neural networks for
-image and matrix data. In this project the goal is to compare three
-algorithms for text classification:
-- a linear model and nearest neighbors on a bag of words vector, 
-- and a recurrent neural network called LSTM, for Long Short Term
-  Memory.
+Last week we used a recurrent neural network for text classification,
+which begs the question, which words are important for making the
+decision in each text? This week we will explore an attention
+mechanism, which the neural network can use to learn which words in
+the sequence are important.
 
-** Class: MyLSTM
+** Class: AttentionLSTM
 
 This class should define a learner with fit and predict methods,
-similar to what we have been doing in previous weeks, but with a
-LSTM network. 
-- https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html
+similar to what we did last week, but with an attention mechanism for
+prediction.
 
 ** Plotting loss vs number of epochs
 
@@ -38,6 +36,11 @@ LSTM network.
   validation loss for each case?
 - Your plots should show the characteristic U shape of the validation
   loss curve, and monotonic subtrain loss curve.
+- After having learned a model for each data set, use it to predict
+  for a few examples and show the corresponding values of the
+  normalized importance weights (which should sum to 1 over the
+  sequence of words in that example). Do the words with largest value
+  make sense in terms of determining the prediction?
 
 ** Test error experiment
 
@@ -52,13 +55,18 @@ LSTM network.
   - featureless, 
   - GridSearchCV+KNeighborsClassifier,
   - LogisticRegressionCV, 
-  - MyLSTM
-- Does your implementation get similar test accuracy as scikit-learn?  (it should!)
+  - AttentionLSTM
+- Does your implementation get similar test accuracy as scikit-learn?
+  (it should!)
 
 ** Extra credit
 
-- 10 points if your test error/accuracy figure includes an additional
-  third data set.
-- 10 points for a comparison between GRU and LSTM.
-- 10 points for a comparison between predictions based on the last
-  hidden state vs average of hidden states.
+- Implement a hierarchical attention mechanism and compare it to the
+  word-level attention mechanism
+  https://faculty.cc.gatech.edu/~dyang888/docs/naacl16.pdf
+- Compare with LSTM from last week (predicted class depends on last
+  hidden state).
+- Compare with a LSTM which derives predictions from a fixed average
+  of output states (every item in the sequence equally weighted).
+- Compare unidirectional LSTM with bidirectional LSTM.
+- Compare LSTM with GRU.
