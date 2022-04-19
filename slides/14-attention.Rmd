@@ -23,7 +23,7 @@ output:
 
 # Intuition/visualization of attention weights
 
-![](04-gradient-descent-regression.png){width=100%}
+![](14-attention-figs-5-6.png){width=100%}
 
 Yang et al, 2016. Hierarchical Attention Networks for Document
 Classification.
@@ -37,7 +37,7 @@ Classification.
 - In math notation assume we have a sequence of $\tau$ inputs
   $x_1,\dots,x_\tau$.
 - The RNN $r$ gives us $r(x_t)=o_t, h_t$, output and hidden state.
-- We learned a function $f(o_\tau)$ for predicting the output label
+- We learned a function $f(h_\tau)$ for predicting the output label
   $y$ of that sequence using the last hidden state.
 - Instead we could use an average of the hidden states $h_t$, say
   $\sum_{t=1}^\tau h_t/\tau$.
