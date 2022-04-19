@@ -27,9 +27,6 @@ for label, text in items_list:
     split_list.append(item)
 
 [(k,word_dict[k]) for k in word_dict.keys()][:5]
-max([count for word, count in word_dict.items()])
-# TODO for increased prediction accuracy use a larger dictionary (but
-# that is slower for the demo in class).
 frequent_word_dict = {
     word:count 
     for word, count in word_dict.items() 
@@ -61,10 +58,11 @@ index_tensor = torch.tensor(index_list, dtype=torch.long)
 embed = torch.nn.Embedding(vocab_size, embed_dim)
 embed_out = embed(index_tensor)
 embed_out.shape
+
 lstm = torch.nn.LSTM(embed_dim, hidden_dim) 
 lstm_in = embed_out.view(len(word_list), 1, -1)
 lstm_in.shape
-embed_out.shape
+
 lstm_out, (hidden, cell) = lstm(lstm_in)
 lstm_out.shape
 hidden.shape
@@ -73,19 +71,28 @@ cell.shape
 ## start attention mechanism.
 process_hidden = torch.nn.Linear(hidden_dim, hidden_dim)
 hidden_act = torch.nn.Tanh()
-u_mat = hidden_act(process_hidden(lstm_out))
+n_items, n_batches, n_hidden = lstm_out.shape
+u_mat = hidden_act(process_hidden(lstm_out)).reshape(n_items, n_hidden)
 u_mat.shape
+
+U_to_V = torch.nn.Linear(hidden_dim, 1, bias=False)
+v_mat = U_to_V(u_mat)
+v_mat.shape
 
 weight_proj_word = torch.nn.Parameter(torch.rand(hidden_dim, 1))
 mm_out = torch.matmul(u_mat, weight_proj_word).squeeze(-1)
 mm_out.shape
 
+## Compute normalized importance weights, all positive and sum to one.
 softmax = torch.nn.Softmax(dim=0)
-alpha_mat = softmax(mm_out).unsqueeze(-1)
+alpha_mat = softmax(v_mat).unsqueeze(-1)
 alpha_mat.shape
+torch.sum(alpha_mat)
 
 lstm_out_norm = torch.mul(lstm_out, alpha_mat.expand_as(lstm_out))
+lstm_out_norm.shape
 feature_vec = torch.sum(lstm_out_norm, dim=0)
+feature_vec.shape
 ## end attention mechanism.
 linear =torch.nn.Linear(hidden_dim, 1)
 pred_score = linear(hidden.reshape(1,hidden_dim))
@@ -96,3 +103,54 @@ loss_value = loss_fun(pred_score.reshape(1), label_tensor)
 ## TODO connect to label.
 loss_value.backward()
 
+
+
+## Try same thing with GRU = Gated Recurrent Unit.
+gru = torch.nn.GRU(embed_dim, hidden_dim) 
+gru_in = embed_out.view(len(word_list), 1, -1)
+gru_in.shape
+
+gru_out, hidden = gru(lstm_in)
+gru_out.shape
+hidden.shape
+
+## start attention mechanism.
+process_hidden = torch.nn.Linear(hidden_dim, hidden_dim)
+hidden_act = torch.nn.Tanh()
+u_mat = hidden_act(process_hidden(gru_out)).reshape(n_items, n_hidden)
+u_mat.shape
+
+U_to_V = torch.nn.Linear(hidden_dim, 1, bias=False)
+v_mat = U_to_V(u_mat)
+v_mat.shape
+
+## Compute normalized importance weights, all positive and sum to one.
+softmax = torch.nn.Softmax(dim=0)
+alpha_mat = softmax(v_mat).unsqueeze(-1)
+alpha_mat.shape
+torch.sum(alpha_mat)
+
+gru_out_norm = torch.mul(gru_out, alpha_mat.expand_as(gru_out))
+gru_out_norm.shape
+feature_vec = torch.sum(gru_out_norm, dim=0)
+feature_vec.shape
+## end attention mechanism.
+linear =torch.nn.Linear(hidden_dim, 1)
+pred_score = linear(hidden.reshape(1,hidden_dim))
+label_int = 1 if label is "pos" else 0
+label_tensor = torch.tensor([float(label_int)])
+loss_fun = torch.nn.BCEWithLogitsLoss()
+loss_value = loss_fun(pred_score.reshape(1), label_tensor)
+## TODO connect to label.
+loss_value.backward()
+
+class AttentionRNN(torch.nn.Module):
+    def __init__(self):
+        self.embedding = torch.nn.Embedding(vocab_size, embed_dim)
+        self.gru = torch.nn.GRU(embed_dim, hidden_dim) 
+        self.U_to_V = torch.nn.Linear(hidden_dim, 1, bias=False)
+        self.last_linear = torch.nn.Linear(hidden_dim, 1)
+        super(self, AttentionRNN).__init__()
+    def forward(self, index_tensor):
+        ## TODO use all steps/operations to compute predictions.
+        return pred_score, alpha_mat
