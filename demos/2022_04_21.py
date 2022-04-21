@@ -30,7 +30,8 @@ for label, text in items_list:
 frequent_word_dict = {
     word:count 
     for word, count in word_dict.items() 
-    if count > 9999}
+    if count > 999}
+len(frequent_word_dict)
 word_to_ix = {
     word:ix 
     for ix, word in enumerate(frequent_word_dict)}
@@ -80,7 +81,6 @@ label_tensor = torch.tensor([float(label_int)])
 loss_fun = torch.nn.BCEWithLogitsLoss()
 loss_value = loss_fun(pred_score.reshape(1), label_tensor)
 loss_value.backward()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 
 ## subtrain/validation split.
 np.random.seed(1)
@@ -107,9 +107,12 @@ for set_name, is_set in is_set_dict.items():
         set_list_dict[set_name].append( (label_tensor, index_tensor) )
 {set_name:len(set_list) for set_name,set_list in set_list_dict.items()}
 
+optimizer = torch.optim.SGD(model.parameters(), lr=0.5)
 max_epochs = 10
+samples_per_print = 100
 for epoch in range(max_epochs):
-    for sample_i in range(len(set_list_dict["subtrain"])):
+    n_steps = len(set_list_dict["subtrain"])
+    for sample_i in range(n_steps):
         optimizer.zero_grad()
         label_tensor, index_tensor = set_list_dict["subtrain"][sample_i]
         pred_score, norm_imp_weights = model(index_tensor)
@@ -117,13 +120,19 @@ for epoch in range(max_epochs):
         loss_value = loss_fun(pred_score.reshape(1), label_tensor)
         loss_value.backward()
         optimizer.step()
-    for set_name, set_list in set_list_dict.items():
-        set_label_list = []
-        set_pred_list = []
-        for label_tensor, index_tensor in set_list:
-            pred_tensor, norm_imp_weights = model(index_tensor)
-            set_label_list.append(label_tensor)
-            set_pred_list.append(pred_tensor)
-
-            
-
+    epoch_loss_dict = {"epoch":epoch}
+    with torch.no_grad():
+        for set_name, set_list in set_list_dict.items():
+            set_label_list = []
+            set_pred_list = []
+            for label_tensor, index_tensor in set_list:
+                pred_tensor, norm_imp_weights = model(index_tensor)
+                set_label_list.append(label_tensor)
+                set_pred_list.append(pred_tensor)
+            set_label_tensor = torch.cat(set_label_list)
+            set_pred_tensor = torch.cat(
+                set_pred_list).reshape(len(set_list))
+            set_loss_tensor = loss_fun(
+                set_pred_tensor, set_label_tensor)
+            epoch_loss_dict[set_name] = float(set_loss_tensor)
+    print("epoch=%(epoch)d subtrain=%(subtrain)f valid=%(validation)f"%epoch_loss_dict)
