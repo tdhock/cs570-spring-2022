@@ -78,6 +78,7 @@ that week, 11:59PM.
     LSTM]].
 - Apr 25, reading week, exam review Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
+- Other topics: [[https://arxiv.org/pdf/1512.03385.pdf][Residual Learning]]
 
 ** Rubric for homeworks
 
