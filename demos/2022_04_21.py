@@ -136,3 +136,40 @@ for epoch in range(max_epochs):
                 set_pred_tensor, set_label_tensor)
             epoch_loss_dict[set_name] = float(set_loss_tensor)
     print("epoch=%(epoch)d subtrain=%(subtrain)f valid=%(validation)f"%epoch_loss_dict)
+
+loss_text = """
+epoch=0 subtrain=0.736914 valid=0.699236
+epoch=1 subtrain=0.736004 valid=0.698525
+epoch=2 subtrain=0.733049 valid=0.696248
+epoch=3 subtrain=0.727531 valid=0.691829
+epoch=4 subtrain=0.701838 valid=0.668578
+epoch=5 subtrain=0.639475 valid=0.626510
+epoch=6 subtrain=0.557031 valid=0.624553
+epoch=7 subtrain=0.512921 valid=0.650581
+epoch=8 subtrain=0.491017 valid=0.686842
+epoch=9 subtrain=0.458467 valid=0.725732
+"""
+import re
+loss_df_list = []
+for line in loss_text.split("\n"):
+    if line != "":
+        my_dict = {}
+        for text in line.split(" "):
+            key, value = text.split("=")
+            my_dict[key] = [float(value)]
+        for set_name in "subtrain", "valid":
+            set_dict = {
+                "epoch":my_dict["epoch"],
+                "set_name":[set_name],
+                "loss":my_dict[set_name]}
+            loss_df_list.append(pd.DataFrame(set_dict))
+loss_df = pd.concat(loss_df_list)
+import plotnine as p9
+p9.ggplot()+\
+    p9.geom_line(
+        p9.aes(
+            x="epoch",
+            y="loss",
+            color="set_name"
+        ),
+        data=loss_df)
