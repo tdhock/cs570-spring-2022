@@ -172,7 +172,7 @@ pred.dt[, pattern.step := paste(pattern, step.size)]
 pred.dt[, inf.pred := ifelse(
   prediction>max(y), Inf, ifelse(
     prediction<min(y), -Inf, prediction))]
-animint(
+viz <- animint(
   title="Gradient descent for regression",
   data=ggplot()+
     ggtitle("Data and regression model")+
@@ -195,12 +195,17 @@ animint(
       chunk_vars="pattern.step",
       size=1,
       showSelected=c("pattern.step", "iteration"))+
-    geom_abline(aes(
-      slope=orig.slope, intercept=orig.intercept,
-      color=line,
-      key=1),
-      data=data.table(weight.dt, line="prediction"),
-      showSelected=c("pattern.step", "iteration")),
+    geom_line(aes(
+      x, inf.pred, key=1, color=line),
+      chunk_vars="pattern.step",
+      data=data.table(pred.dt, line="prediction"),
+      showSelected=c("pattern.step","iteration")),
+    ## geom_abline(aes(
+    ##   slope=orig.slope, intercept=orig.intercept,
+    ##   color=line,
+    ##   key=1),
+    ##   data=data.table(weight.dt, line="prediction"),
+    ##   showSelected=c("pattern.step", "iteration")),
   lossIterations=ggplot()+
     ggtitle("Loss, select iteration/data/step size")+
     theme_bw()+
