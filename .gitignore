@@ -12,3 +12,4 @@ auto
 *.toc
 *.vrb
 *solution.py
+.httr-oauth

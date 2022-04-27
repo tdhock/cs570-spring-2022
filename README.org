@@ -78,6 +78,12 @@ that week, 11:59PM.
     LSTM]].
 - Apr 25, reading week, [[file:exams/exam3_practice.org][exam review]] Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
+- Other topics:
+  - [[https://arxiv.org/pdf/1512.03385.pdf][Residual Learning]]
+  - Pre-trained word embeddings. [[https://pytorch.org/tutorials/beginner/nlp/word_embeddings_tutorial.html][Word embeddings tutorial]], [[https://medium.com/@martinpella/how-to-use-pre-trained-word-embeddings-in-pytorch-71ca59249f76][How to use
+    Pre-trained Word embeddings in Pytorch]], [[https://arxiv.org/pdf/1301.3781.pdf][Efficient Estimation of
+    Word Representations in Vector Space]], [[https://towardsdatascience.com/word2vec-with-pytorch-implementing-original-paper-2cd7040120b0][tutorial on implementing
+    that paper]].
 
 ** Rubric for homeworks
 
