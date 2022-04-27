@@ -1,7 +1,6 @@
 import torch
 import torchtext
 import numpy as np
-import pandas as pd
 torchtext.datasets.YelpReviewPolarity    
 torchtext.datasets.AmazonReviewPolarity
 
@@ -150,6 +149,7 @@ epoch=8 subtrain=0.491017 valid=0.686842
 epoch=9 subtrain=0.458467 valid=0.725732
 """
 import re
+import pandas as pd
 loss_df_list = []
 for line in loss_text.split("\n"):
     if line != "":

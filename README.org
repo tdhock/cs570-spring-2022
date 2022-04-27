@@ -76,7 +76,7 @@ that week, 11:59PM.
   - Readings: [[https://faculty.cc.gatech.edu/~dyang888/docs/naacl16.pdf][Yang et al, 2016]], [[https://blog.floydhub.com/gru-with-pytorch/][GRU vs LSTM]], [[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html][PyTorch translation
     attention tutorial using GRU]], [[https://medium.com/intel-student-ambassadors/implementing-attention-models-in-pytorch-f947034b3e66][Another attention tutorial using
     LSTM]].
-- Apr 25, reading week, exam review Thurs Apr 28.
+- Apr 25, reading week, [[file:exams/exam3_practice.org][exam review]] Thurs Apr 28.
 - Final exam, Thursday May 5, 8-9:30AM.
 
 ** Rubric for homeworks
